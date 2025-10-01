@@ -12,4 +12,5 @@ const routes = [
   history: createMemoryHistory(),
   routes,
 });
+
 export default router;
