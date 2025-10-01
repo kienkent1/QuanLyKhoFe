@@ -2,7 +2,7 @@
     <div class="flex h-screen bg-gray-100">
         <!-- Logo -->
         <div class="absolute top-6 left-6 flex items-center gap-2">
-            <img src="./logo.png" alt="Logo" class="h-25 w-25" />
+            <img src="/public/logo.png" alt="Logo" class="h-25 w-25" />
             <span class="text-lg font-semibold " style="color: #071B41">Công ty Bấu De</span>
         </div>
 
@@ -10,7 +10,7 @@
             <div class="animate-slide-in-left bg-white p-8 rounded-2xl border border-gray-300 
             shadow-[10px_10px_25px_rgba(0,0,0,0.25),-10px_10px_25px_rgba(0,0,0,0.25),0px_-5px_5px_rgba(0,0,0,0.15)] 
             w-full max-w-md">
-                <h2 class="text-2xl font-bold text-left text-gray-900 mb-2" style="color: #071B41">Tạo tài khoản mới
+                <h2 class="text-2xl font-bold text-left text-gray-900 mb-2 text-shadow-lg " style="color: #071B41">Tạo tài khoản mới
                 </h2>
                 <p class="text-center text-gray-600 mb-6">Chào mừng đến với công ty Bấu De</p>
 
