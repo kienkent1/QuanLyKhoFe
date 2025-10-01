@@ -1,10 +1,11 @@
 <script setup>
-import Sidebar from './components/sidebar/Sidebar.vue';
-
+// import Sidebar from './components/sidebar/Sidebar.vue';
+import Register from './components/Register/Register.vue';
 </script>
 
 <template>
-  <Sidebar></Sidebar>
+  <Register></Register>
+  <!-- <Sidebar></Sidebar> -->
   <main>
     <router-view/>
   </main>
