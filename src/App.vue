@@ -1,14 +1,20 @@
 <script setup>
 // import Sidebar from './components/sidebar/Sidebar.vue';
+
 // import Register from './components/Register/Register.vue';
-import NotFound from './components/NotFound/NotFound.vue';
+import Register from './components/Register/Register.vue';
+import Slidebar_Navbar from './components/Slidebar_Navbar/Slidebar_Navbar.vue';
 </script>
 
 <template>
-  <main>
-    <NotFound />
-    <router-view />
-  </main>
+  <slidebar_-navbar>
+    
+  <router-view></router-view>
+  </slidebar_-navbar>
+  <!-- <Sidebar></Sidebar> -->
+ 
+
+
 </template>
 
 

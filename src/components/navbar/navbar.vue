@@ -10,7 +10,9 @@
       <h1 class="font-extrabold text-3xl text-gray-900 select-none">Spending List</h1>
     </div>
 
-    <div class="flex-grow flex justify-center mx-6">
+    <div class="flex-grow"></div> 
+    
+    <div class="mx-6">
       <div class="relative w-[500px] max-w-full">
         <input
           type="text"
@@ -24,9 +26,9 @@
       </div>
     </div>
 
-    <div class="flex items-center gap-4"> 
+    <div class="flex items-center gap-6"> 
       
-      <div class="flex items-center gap-3">
+      <div class="flex items-center gap-6">
         
         <button class="relative text-gray-600 p-1 hover:text-gray-800">
           <svg class="w-6 h-6 text-gray-600" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
@@ -61,9 +63,9 @@
             class="w-11 h-11 rounded-xl flex items-center justify-center shadow-md overflow-hidden" 
             style="background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(200, 200, 200, 0.3)); border: 1px solid rgba(255, 255, 255, 0.4);"
           >
-              <div class="text-3xl" style="color: rgba(255, 255, 255, 0.8); text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);">
-                  😊
-              </div>
+            <div class="text-3xl" style="color: rgba(255, 255, 255, 0.8); text-shadow: 0 0 5px rgba(0, 0, 0, 0.2);">
+              😊
+            </div>
           </div>
           
           <svg class="w-4 h-4 text-gray-400 ml-1" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
