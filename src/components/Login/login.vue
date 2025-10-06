@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-
+import Logo from '../Logo.vue';
 
 const showPassword = ref(false);
 const togglePassword = () => {
@@ -11,10 +11,7 @@ const togglePassword = () => {
 <template>
   <div class="flex h-screen bg-gray-100">
     <!-- Logo -->
-    <div class="absolute top-6 left-6 flex items-center gap-2">
-      <img src="/public/logo.png" alt="Logo Dâu" class="h-20 w-auto" />
-      <span class="text-lg font-semibold" style="color:#071B41;">Công ty Bấu De</span>
-    </div>
+    <Logo />
 
     <!-- Form Login -->
     <div class="flex flex-1 items-center justify-center">

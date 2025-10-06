@@ -61,12 +61,6 @@
           </li>
           <li>
             <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">warehouse</span>
-              <span class="ms-3">Nhà kho</span>
-            </a>
-          </li>
-          <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
               <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">bar_chart</span>
               <span class="ms-3">Thống kê, báo cáo</span>
             </a>
@@ -89,7 +83,7 @@
       <!-- Header -->
     <header
         :class="sidebarOpen ? 'sm:w-[calc(100%-16rem)]' : 'w-full'"
-        class="fixed top-0 z-30 flex items-center justify-between bg-white px-6 py-4 shadow-sm border-b border-gray-100 h-[80px] transition-all">
+        class="fixed top-0 z-30 flex items-center justify-between  px-6 py-4  h-[80px] transition-all">
         <!-- Left -->
         <div class="flex items-center gap-4">
           <button @click="toggleSidebar" class="text-gray-600 p-2">
