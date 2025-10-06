@@ -1,6 +1,7 @@
 import { createMemoryHistory, createWebHistory, createRouter } from 'vue-router';
 
 import HomeView from './src/components/HomePage/HomePage.vue';
+
 import login from './src/components/Login/login.vue';
 import register from './src/components/Register/Register.vue'
 import NotFound from './src/components/NotFound/NotFound.vue';
@@ -23,6 +24,9 @@ const routes = [
     meta: { internalOnly: true } 
    } ,
 
+
+const routes = [
+  { path: '/', component: HomeView },
 ];
 
  const router = createRouter({
