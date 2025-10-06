@@ -1,5 +1,7 @@
 <script setup>
 // import Sidebar from './components/sidebar/Sidebar.vue';
+
+// import Register from './components/Register/Register.vue';
 import Register from './components/Register/Register.vue';
 import Slidebar_Navbar from './components/Slidebar_Navbar/Slidebar_Navbar.vue';
 </script>
@@ -12,6 +14,8 @@ import Slidebar_Navbar from './components/Slidebar_Navbar/Slidebar_Navbar.vue';
   <!-- <Sidebar></Sidebar> -->
  
 
+
 </template>
+
 
 
