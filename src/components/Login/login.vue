@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import logoDau from './assets/logo-Photoroom1.png'; 
+import Logo from '../Logo.vue';
 
 const showPassword = ref(false);
 const togglePassword = () => {
@@ -11,10 +11,7 @@ const togglePassword = () => {
 <template>
   <div class="flex h-screen bg-gray-100">
     <!-- Logo -->
-    <div class="absolute top-6 left-6 flex items-center gap-2">
-      <img :src="logoDau" alt="Logo Dâu" class="h-20 w-auto" />
-      <span class="text-lg font-semibold" style="color:#071B41;">Công ty Bấu De</span>
-    </div>
+    <Logo />
 
     <!-- Form Login -->
     <div class="flex flex-1 items-center justify-center">
@@ -31,7 +28,7 @@ const togglePassword = () => {
           <div class="relative">
             <input type="text" id="username" required
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm 
-              focus:ring-blue-500 focus:border-blue-700 placeholder-transparent"
+              focus:ring-blue-500 focus:border-blue-700 "
               placeholder="Tên đăng nhập hoặc Email" />
             <label for="username"
               class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200
