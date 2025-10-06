@@ -24,9 +24,6 @@ const routes = [
     meta: { internalOnly: true } 
    } ,
 
-
-const routes = [
-  { path: '/', component: HomeView },
 ];
 
  const router = createRouter({
