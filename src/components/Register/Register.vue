@@ -1,10 +1,11 @@
+<script setup>
+import logo from '../Logo.vue';
+</script>
+
 <template>
     <div class="flex h-screen bg-gray-100">
         <!-- Logo -->
-        <div class="absolute top-6 left-6 flex items-center gap-2">
-            <img src="/public/logo.png" alt="Logo" class="h-25 w-25" />
-            <span class="text-lg font-semibold " style="color: #071B41">Công ty Bấu De</span>
-        </div>
+        <logo />
 
         <div class="flex flex-1 items-center justify-center ">
             <div class="animate-slide-in-left bg-white p-8 rounded-2xl border border-gray-300 
