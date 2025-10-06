@@ -10,7 +10,7 @@
         </button>
       </div>
       <div class="h-full px-3 py-4 overflow-y-auto">
-        <a href="#" class="flex items-center ps-2.5 mb-5">
+        <a href="/" class="flex items-center ps-2.5 mb-5">
           <img src="/public/logo.png" class="h-20  " alt="dau Logo" />
           <span class="self-center text-lg font-semibold">Công ty Bấu De</span>
         </a>
@@ -99,6 +99,7 @@
         </div>
 
         <!-- Search -->
+         <div v-if="windowWidth > 600">
         <div class="flex-grow flex justify-center mx-6">
           <div class="relative w-[400px] max-w-full">
             <input type="text" placeholder="Tìm kiếm..."
@@ -108,6 +109,7 @@
               <span class="material-icons">search</span>
             </button>
           </div>
+        </div>
         </div>
 
         <!-- Right icons + user -->
@@ -152,5 +154,7 @@
 </template>
 <script setup>
 import slidebar_navbar from './Slidebar_Navbar.js';
+
 const { sidebarOpen, windowWidth, toggleSidebar } = slidebar_navbar()
+
 </script>
