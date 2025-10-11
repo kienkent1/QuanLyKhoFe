@@ -27,6 +27,7 @@ const routes = [
     component:Forbidden,
     meta: { internalOnly: true } 
    } ,
+
 ];
 
  const router = createRouter({
