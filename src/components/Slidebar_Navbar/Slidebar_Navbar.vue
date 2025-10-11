@@ -1,10 +1,9 @@
 <template>
-  <div class="flex" >
+  <div class="flex">
     <!-- Sidebar -->
-    <aside
-      :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+    <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
       class="fixed top-0 left-0 z-40 w-64 h-screen bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out">
-       <div class="flex justify-end p-3 sm:hidden">
+      <div class="flex justify-end p-3 sm:hidden">
         <button @click="toggleSidebar" class="text-gray-600 hover:text-gray-900">
           <span class="material-icons text-2xl">close</span>
         </button>
@@ -74,15 +73,13 @@
         </ul>
       </div>
     </aside>
-     <div v-if="sidebarOpen && windowWidth <= 600"
-         @click="toggleSidebar"
-         class="fixed inset-0 bg-white bg-opacity-40 sm:hidden z-10">
+    <div v-if="sidebarOpen && windowWidth <= 600" @click="toggleSidebar"
+      class="fixed inset-0 bg-white bg-opacity-40 sm:hidden z-10">
     </div>
     <!-- Main Content -->
-     <div :class="sidebarOpen ? 'sm:ml-64 w-[calc(100%-16rem)]' : 'ml-0 w-full'" class="flex-1 transition-all">
+    <div :class="sidebarOpen ? 'sm:ml-64 w-[calc(100%-16rem)]' : 'ml-0 w-full'" class="flex-1 transition-all">
       <!-- Header -->
-    <header
-        :class="sidebarOpen ? 'sm:w-[calc(100%-16rem)]' : 'w-full'"
+      <header :class="sidebarOpen ? 'sm:w-[calc(100%-16rem)]' : 'w-full'"
         class="fixed top-0 z-30 flex items-center justify-between  px-6 py-4  h-[80px] transition-all">
         <!-- Left -->
         <div class="flex items-center gap-4">
@@ -93,17 +90,16 @@
         </div>
 
         <!-- Search -->
-         <div v-if="windowWidth > 600">
-        <div class="flex-grow flex justify-center mx-6">
-          <div class="relative w-[400px] max-w-full">
-            <input type="text" placeholder="Tìm kiếm..."
-              class="w-full rounded-xl border border-gray-300 py-3 pl-4 pr-12 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300" />
-            <button
-              class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-xl">
-              <span class="material-icons">search</span>
-            </button>
+        <div v-if="windowWidth > 600">
+          <div class="flex-grow flex justify-center mx-6">
+            <div class="relative w-[400px] max-w-full">
+              <input type="text" placeholder="Tìm kiếm..."
+                class="w-full rounded-xl border border-gray-300 py-3 pl-4 pr-12 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300" />
+              <button class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 text-xl">
+                <span class="material-icons">search</span>
+              </button>
+            </div>
           </div>
-        </div>
         </div>
 
         <!-- Right icons + user -->
@@ -127,15 +123,15 @@
           </button>
 
           <!-- User -->
-          <div class="flex items-center gap-2 ml-2 cursor-pointer">
+          <!-- <div class="flex items-center gap-2 ml-2 cursor-pointer">
             <div class="text-right">
               <p class="text-sm font-semibold text-gray-800">Nguyễn Đức Thắng</p>
               <p class="text-xs text-gray-500">CIO</p>
             </div>
-            <img src="/public/logo.png" class="w-10 h-10 rounded-full shadow-md"
-              alt="user avatar" />
+            <img src="/public/logo.png" class="w-10 h-10 rounded-full shadow-md" alt="user avatar" />
             <span class="material-icons text-gray-400">expand_more</span>
-          </div>
+          </div> -->
+            <dropDownUser />
         </div>
       </header>
 
@@ -148,7 +144,7 @@
 </template>
 <script setup>
 import slidebar_navbar from './Slidebar_Navbar.js';
-
+import dropDownUser from '../users/dropDownUser.vue'
 const { sidebarOpen, windowWidth, toggleSidebar } = slidebar_navbar()
 
 </script>
