@@ -9,8 +9,12 @@ import Forbidden from './src/components/403/403.vue';
 
 const routes = [
   { path: '/', component: HomeView},
-   {path:'/login',component:login} ,
-   {path:'/register',component:register} ,
+   {path:'/login',
+    name: 'login'
+    ,component:login} ,
+   {path:'/register',
+    name: 'register',
+    component:register} ,
 
    {
    path: '/:pathMatch(.*)*',
@@ -23,10 +27,6 @@ const routes = [
     component:Forbidden,
     meta: { internalOnly: true } 
    } ,
-
-
-const routes = [
-  { path: '/', component: HomeView },
 ];
 
  const router = createRouter({
