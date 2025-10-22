@@ -23,22 +23,28 @@
             </a>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">business</span>
+            <routerLink to="/supplier" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+                business
+              </span>
               <span class="ms-3">Nhà cung cấp</span>
-            </a>
+            </routerLink>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">assignment</span>
+            <routerLink to="/xuatKho" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+                assignment
+              </span>
               <span class="ms-3">Tạo phiếu xuất</span>
-            </a>
+            </routerLink>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">file_download</span>
+            <routerLink to="/nhapKho" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+                file_download
+              </span>
               <span class="ms-3">Tạo phiếu nhập</span>
-            </a>
+            </routerLink>
           </li>
           <li>
             <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
@@ -53,9 +59,17 @@
             </a>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+            <router-link to="/User" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
               <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">group</span>
               <span class="ms-3">Nhân viên</span>
+            </router-link>
+          </li>
+          <li>
+            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+                person
+              </span>
+              <span class="ms-3">Trang tài khoản</span>
             </a>
           </li>
           <li>
@@ -69,6 +83,12 @@
               <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">upload_file</span>
               <span class="ms-3">Xuất, nhập file</span>
             </a>
+          </li>
+          <li>
+            <router-link to="/phanQuyen" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">admin_panel_settings</span>
+              <span class="ms-3">Phân Quyền</span>
+            </router-link>
           </li>
         </ul>
       </div>
@@ -131,7 +151,7 @@
             <img src="/public/logo.png" class="w-10 h-10 rounded-full shadow-md" alt="user avatar" />
             <span class="material-icons text-gray-400">expand_more</span>
           </div> -->
-            <dropDownUser />
+          <dropDownUser />
         </div>
       </header>
 
