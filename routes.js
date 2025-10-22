@@ -4,6 +4,7 @@ import {
   createRouter,
 } from "vue-router";
 
+import HomeView from './src/components/HomePage/HomePage.vue'
 import Loaihang from './src/components/Loaihang/Loaihang.vue';
 import login from "./src/components/Login/login.vue";
 import register from "./src/components/Register/Register.vue";
@@ -67,7 +68,6 @@ const routes = [
     name: "phanQuyen",
     component: Role,
   }
->>>>>>> 05f73c139a1c0ea0b720f091cc02f49a29272edd
 ];
 
 const router = createRouter({
