@@ -6,6 +6,7 @@ import login from './src/components/Login/login.vue';
 import register from './src/components/Register/Register.vue'
 import NotFound from './src/components/NotFound/NotFound.vue';
 import Forbidden from './src/components/403/403.vue';
+import Loaihang from './src/components/Loaihang/Loaihang.vue';
 
 const routes = [
   { path: '/', component: HomeView},
@@ -27,7 +28,11 @@ const routes = [
     component:Forbidden,
     meta: { internalOnly: true } 
    } ,
-
+   {
+    path:'/loai',
+    name:'Loai',
+    component: Loaihang
+   }
 ];
 
  const router = createRouter({
