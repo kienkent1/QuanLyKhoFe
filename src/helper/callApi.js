@@ -6,7 +6,7 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const api = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000,
+  //timeout: 10000,
   headers: { "Content-Type": "application/json" },
 });
 
@@ -45,7 +45,7 @@ function setTokens(accessToken, refreshToken) {
 
 api.interceptors.request.use(
   (config) => {
-    if (config.auth) {
+    if (config.requiresAuth) {
       const token = getAccessToken();
       if (!token) {
         router.push("/login");
@@ -104,9 +104,22 @@ api.interceptors.response.use(
     return Promise.reject(err);
   }
 );
+export var objQuery = {
+    query: '',
+    page: 1,
+    pageSize: 10,
+    FieldName: '',
+    Isdesc: false,
+    FilterName: '',
+    FilterValue: ''
+}
 
-
-export const getApi = (url, config = {}) => api.get(url, config);
+export const getApi = (url, config = {}, objQuery) => 
+    api.get(
+    url,{
+    ...config,
+    params: objQuery, 
+  });
 export const postApi = (url, data = {}, config = {}) => api.post(url, data, config);
 export const putApi = (url, data = {}, config = {}) => api.put(url, data, config);
 export const patchApi = (url, data = {}, config = {}) => api.patch(url, data, config);
