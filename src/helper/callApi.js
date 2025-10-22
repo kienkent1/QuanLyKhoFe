@@ -1,34 +1,115 @@
 import axios from "axios";
-import router from '../../routes.js'
-import VueCookies from 'vue-cookies'
+import VueCookies from "vue-cookies";
+import router from "../../routes.js";
 
-const baseApi = import.meta.env.VITE_BASE_URL;
-// const token = VueCookies.get('token')
-// const refreshToken = localStorage.getItem('refreshToken')
-// const checkedToken = () => {
-//     if(token){
-//     axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
-// }
-// else if(refreshToken){
-//     //goi api lay token moi
-//     router.push('/login');
-// }
-// else{
-//     router.push('/login')
-//     //window.location.href = '/login'
-// }
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-// }
+const api = axios.create({
+  baseURL: BASE_URL,
+  timeout: 10000,
+  headers: { "Content-Type": "application/json" },
+});
 
-// axios.defaults.headers.post['Content-Type'] = 'application/json';
-// // export const getApi = async (filer, sort) => {
-
-// //     //const res = await axios.get(`${baseApi}/employees`, 
-export async function postApi(param, obj = {}) {
-    try {
-        const res = await axios.post(baseApi + param, obj);
-        return res;
-    } catch (error) {
-        throw error;
-    }
+function getAccessToken() {
+  return VueCookies.get("accessToken");
 }
+function setTokens(accessToken, refreshToken) {
+  if (accessToken) VueCookies.set("accessToken", accessToken, "1d");
+  if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
+}
+
+
+ export async function refreshAccessToken() {
+  const refreshToken = localStorage.getItem("refreshToken");
+  if (!refreshToken) {
+    router.push("/login");
+    throw new Error("No refresh token found");
+  }
+
+  try {
+    const res = await axios.post(`${BASE_URL}Authentication/refreshtoken`, {
+      refreshToken,
+    });
+    if (res.status === 200 || res.status === 201) {
+      const { accessToken, refreshToken: newRefreshToken } = res.data.data;
+      setTokens(accessToken, newRefreshToken);
+      return accessToken;
+    }
+  } catch (err) {
+    console.error("Refresh token failed:", err);
+    router.push("/login");
+    throw err;
+  }
+}
+
+
+api.interceptors.request.use(
+  (config) => {
+    if (config.auth) {
+      const token = getAccessToken();
+      if (!token) {
+        router.push("/login");
+        throw new Error("Missing access token");
+      }
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+
+let isRefreshing = false;
+let failedQueue = [];
+
+const processQueue = (error, token = null) => {
+  failedQueue.forEach((p) => (error ? p.reject(error) : p.resolve(token)));
+  failedQueue = [];
+};
+
+api.interceptors.response.use(
+  (res) => res,
+  async (err) => {
+    const originalRequest = err.config;
+    if (err.response?.status === 401 && originalRequest.auth && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise((resolve, reject) => {
+          failedQueue.push({ resolve, reject });
+        }).then((token) => {
+          originalRequest.headers.Authorization = `Bearer ${token}`;
+          return api(originalRequest);
+        });
+      }
+
+      originalRequest._retry = true;
+      isRefreshing = true;
+
+      try {
+        const newToken = await refreshAccessToken();
+        processQueue(null, newToken);
+        isRefreshing = false;
+
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return api(originalRequest);
+      } catch (e) {
+        processQueue(e, null);
+        isRefreshing = false;
+        return Promise.reject(e);
+      }
+    }
+    if (err.response?.status === 403) {
+        router.push("/403");
+      }
+
+    return Promise.reject(err);
+  }
+);
+
+
+export const getApi = (url, config = {}) => api.get(url, config);
+export const postApi = (url, data = {}, config = {}) => api.post(url, data, config);
+export const putApi = (url, data = {}, config = {}) => api.put(url, data, config);
+export const patchApi = (url, data = {}, config = {}) => api.patch(url, data, config);
+export const deleteApi = (url, config = {}) => api.delete(url, config);
+
+export default api;

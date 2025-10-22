@@ -47,7 +47,7 @@
             </routerLink>
           </li>
           <li>
-             <routerLink to="/loaiHangHoa" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+             <routerLink to="/loai" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
               <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
                 category
               </span>
