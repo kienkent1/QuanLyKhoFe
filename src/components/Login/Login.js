@@ -3,7 +3,7 @@ import VueCookies from 'vue-cookies'
 
 const controller = 'Authentication/';
 
-export const login = async (username, password) =>{
+export const login = async (username, password, isRemember) =>{
 const payload = {
     userNameOrEmail: username,
     password: password
@@ -17,8 +17,17 @@ try {
         const accessToken = res.data.data.accessToken;
         
         const refreshToken = res.data.data.refreshToken;
-        VueCookies.set('accessToken', `${accessToken}`, '1d');
+        if(isRemember === true){
+            VueCookies.set('accessToken', `${accessToken}`, '1d');
         localStorage.setItem('refreshToken',`${refreshToken}`)
+        localStorage.setItem('isRemember', true)
+        }
+        else{
+            VueCookies.set('accessToken', `${accessToken}`, '1h');
+        localStorage.setItem('refreshToken',`${refreshToken}`)
+        localStorage.removeItem('isRemember');
+        }
+        
 
         return {message:'Đăng nhập thành công',success: true};
     }

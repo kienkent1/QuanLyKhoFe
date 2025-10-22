@@ -7,6 +7,7 @@ import router from '../../../routes.js';
 
 const showPassword = ref(false);
 const showMessage = ref('');
+const isRemember = ref(false)
 const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };
@@ -19,7 +20,7 @@ const togglePassword = () => {
     showMessage.value = '*Vui lòng nhập tên đăng nhập và mật khẩu';
     return;
   }
-  const result = await login(userNameOrEmail.value, password.value) 
+  const result = await login(userNameOrEmail.value, password.value, isRemember.value) 
   if(result.success === true){
     router.push('/');
   }
@@ -111,7 +112,7 @@ const togglePassword = () => {
           <!-- Remember + Forgot -->
           <div class="flex justify-between items-center text-sm">
             <div class="flex items-center">
-              <input type="checkbox" id="remember"
+              <input type="checkbox" id="remember" v-model="isRemember"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
               <label for="remember" class="ml-2 text-gray-500 select-none">Ghi nhớ tài khoản</label>
             </div>
