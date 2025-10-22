@@ -30,7 +30,8 @@ db.json
 .temp/
 vite.config.ts.timestamp*
 vite.config.js.timestamp*
-
+package-lock.json
+node_modules
 # Optional lock files (tuỳ bạn có muốn commit hay không)
 # package-lock.json
 # yarn.lock

@@ -1,13 +1,32 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Logo from '../Logo.vue';
-
+import {login} from './Login.js'
 import BtnGoogle from '../Buttons/BtnGG/BtnGoogle.vue';
+import router from '../../../routes.js';
+
 const showPassword = ref(false);
+const showMessage = ref('');
 const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };
 
+  const userNameOrEmail = ref('');
+  const password = ref('');
+  const loginSystem = async ()=>{ 
+
+  if (!userNameOrEmail.value || !password.value) {
+    showMessage.value = '*Vui lòng nhập tên đăng nhập và mật khẩu';
+    return;
+  }
+  const result = await login(userNameOrEmail.value, password.value) 
+  if(result.success === true){
+    router.push('/');
+  }
+  else{
+    showMessage.value = result?.message ;
+  }
+  }
 </script>
 
 <template>
@@ -26,9 +45,13 @@ const togglePassword = () => {
         <p class="text-left text-gray-600 mb-6 pl-4">Chào mừng quay trở lại</p>
 
         <form class="space-y-5">
+           <div v-if="showMessage.length > 0" class="mb-5 mt-3 text-red-500">
+              <p>{{ showMessage }}</p>
+            </div>
           <!-- Username -->
           <div class="relative">
-            <input type="text" id="username" required
+           
+            <input  type="text" id="username" required v-model="userNameOrEmail"
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm 
               focus:ring-blue-500 focus:border-blue-700 "
               placeholder="Tên đăng nhập hoặc Email" />
@@ -44,7 +67,7 @@ const togglePassword = () => {
 
           <!-- Password -->
           <div class="relative">
-            <input :type="showPassword ? 'text' : 'password'" id="password" required
+            <input :type="showPassword ? 'text' : 'password'" id="password" required v-model="password"
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm 
               focus:ring-blue-500 focus:border-blue-700 placeholder-transparent pr-10"
               placeholder="Mật khẩu" />
@@ -96,7 +119,7 @@ const togglePassword = () => {
           </div>
 
           <!-- Nút login -->
-          <button type="submit"
+          <button type="button" @click="loginSystem()"
             class="w-full bg-blue-800 text-white py-2.5 rounded-lg font-medium 
               shadow-md shadow-gray-500/50 transition-all duration-300 
               hover:bg-blue-900 hover:scale-105 hover:shadow-lg hover:shadow-gray-600/60 
