@@ -10,13 +10,19 @@ export default function useLoaiHang() {
     loaiHang.value = await res.json();
   });
 
+  const totalItems = computed(() => loaiHang.value.length);
+
   const totalPages = computed(() =>
-    Math.ceil(loaiHang.value.length / perPage)
+    Math.ceil(totalItems.value / perPage)
+  );
+
+  const startIndex = computed(() => (currentPage.value - 1) * perPage);
+  const endIndex = computed(() =>
+    Math.min(startIndex.value + perPage, totalItems.value)
   );
 
   const paginatedData = computed(() => {
-    const start = (currentPage.value - 1) * perPage;
-    return loaiHang.value.slice(start, start + perPage);
+    return loaiHang.value.slice(startIndex.value, endIndex.value);
   });
 
   const nextPage = () => {
@@ -34,6 +40,9 @@ export default function useLoaiHang() {
     paginatedData,
     currentPage,
     totalPages,
+    totalItems,
+    startIndex,
+    endIndex,
     nextPage,
     prevPage,
     changePage,

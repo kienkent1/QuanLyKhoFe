@@ -47,16 +47,18 @@
             </routerLink>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">category</span>
+             <routerLink to="/loai" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+                category
+              </span>
               <span class="ms-3">Loại hàng hóa</span>
-            </a>
+            </routerLink>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+            <router-link to="/hangHoa" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
               <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">inventory</span>
-              <span class="ms-3">Hàng hóa</span>
-            </a>
+              <span class="ms-3">Hàng Hóa</span>
+            </router-link>
           </li>
           <li>
             <router-link to="/User" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
@@ -65,12 +67,10 @@
             </router-link>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
-                person
-              </span>
+            <router-link to="/taiKhoan" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">person</span>
               <span class="ms-3">Trang tài khoản</span>
-            </a>
+            </router-link>
           </li>
           <li>
             <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
@@ -79,10 +79,10 @@
             </a>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+            <router-link to="/xuatnhap" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
               <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">upload_file</span>
-              <span class="ms-3">Xuất, nhập file</span>
-            </a>
+              <span class="ms-3">Xuất - nhập file</span>
+            </router-link>
           </li>
           <li>
             <router-link to="/phanQuyen" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
