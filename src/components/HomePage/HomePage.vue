@@ -44,7 +44,7 @@ const lineChartData = {
       label: "Phiếu xuất kho",
       borderColor: "#2563eb",
       backgroundColor: "#2563eb50",
-      data: [5, 10, 25, 35, 37, 20, 45, 40, 30, 50, 60, 55],
+      data: [5, 10, 25, 35, 37, 20, 45, 40, 30, 50],
       tension: 0.4,
       fill: false,
     },
