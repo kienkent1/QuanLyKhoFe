@@ -15,6 +15,8 @@ import nhaCungCap from "./src/components/NCC/nhaCungCap.vue";
 import phieuXuatKho from "./src/components/receipt/phieuXuatKho.vue";
 import phieuNhapKho from "./src/components/receipt/phieuNhapKho.vue";
 import Role from "./src/components/role/Role.vue";
+import loaiHangHoa from "./src/components/Loaihang/Loaihang.vue";
+import hangHoa from "./src/components/HangHoa/hangHoa.vue";
 const routes = [
   { path: "/", component: HomeView },
   { path: "/login", name: "login", component: login },
@@ -55,7 +57,17 @@ const routes = [
     path: "/phanQuyen",
     name: "phanQuyen",
     component: Role,
-  }
+  },
+  {
+    path: "/loaiHangHoa",
+    name: "loaiHangHoa",
+    component: loaiHangHoa,
+  },
+  {
+    path: "/hangHoa",
+    name: "hangHoa",
+    component: hangHoa,
+  },
 ];
 
 const router = createRouter({

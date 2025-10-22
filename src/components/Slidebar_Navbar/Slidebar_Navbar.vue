@@ -47,16 +47,18 @@
             </routerLink>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">category</span>
+             <routerLink to="/loaiHangHoa" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+                category
+              </span>
               <span class="ms-3">Loại hàng hóa</span>
-            </a>
+            </routerLink>
           </li>
           <li>
-            <a href="#" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
+            <router-link to="/hangHoa" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
               <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">inventory</span>
-              <span class="ms-3">Hàng hóa</span>
-            </a>
+              <span class="ms-3">Hàng Hóa</span>
+            </router-link>
           </li>
           <li>
             <router-link to="/User" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
