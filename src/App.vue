@@ -18,8 +18,6 @@ const route = useRoute();
 
 </div>
 
-
-
 </template>
 
 
