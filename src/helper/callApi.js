@@ -150,3 +150,4 @@ export const deleteApi = (url, opts = {}) =>
   api.delete(url, opts);
 
 export default api;
+
