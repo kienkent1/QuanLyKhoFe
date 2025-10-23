@@ -1,5 +1,6 @@
 import { ref, computed, onMounted } from "vue";
 import * as api from "../../helper/callApi.js";
+import axios from "axios";
 
 const controller = "Loai";
 
@@ -37,8 +38,8 @@ export const createLoai = async (data) => {
   try {
     const formData = new FormData();
 
-    formData.append("tenLoai", data.tenLoai || "");
-    formData.append("moTa", data.moTa || "");
+    formData.append("TenLoai", data.tenLoai || "");
+    formData.append("MoTa", data.moTa || "");
 
     // Nếu người dùng chọn ảnh thật (File)
     if (data.HinhAnh instanceof File) {
@@ -48,10 +49,12 @@ export const createLoai = async (data) => {
       formData.append("HinhAnh", data.HinhAnh);
     }
 
-    const res = await api.postApi("Loai", formData, {
+    const res = await api.postApi( `Loai`,{
       requiresAuth: true,
+      data: data,
       headers: { "Content-Type": "multipart/form-data" },
-    });
+    }
+    );
 
     if (res.status === 200 || res.status === 201) {
       return { success: true, data: res.data };
@@ -118,11 +121,11 @@ export default function useLoaiHang() {
   const changePage = (page) => {
     if (page >= 1 && page <= totalPages.value) currentPage.value = page;
   };
-const getImageUrl = (fileName) => {
-  if (!fileName) return "";
-  if (fileName.startsWith("http")) return fileName;
-  return `https://raw.githubusercontent.com/kienkent1/QuanLyKhoImg/main/Loai/${fileName}`;
-};
+// const getImageUrl = (fileName) => {
+//   if (!fileName) return "";
+//   if (fileName.startsWith("http")) return fileName;
+//   return `https://raw.githubusercontent.com/kienkent1/QuanLyKhoImg/main/Loai/${fileName}`;
+// };
   return {
     loaiHang,
     paginatedData,
@@ -135,7 +138,7 @@ const getImageUrl = (fileName) => {
     prevPage,
     changePage,
     loadLoai,
-    getImageUrl,
+   // getImageUrl,
     loading,
     errorMessage,
   };

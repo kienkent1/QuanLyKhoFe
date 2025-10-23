@@ -101,8 +101,8 @@ const handleFile = (e) => {
 const saveLoaiHang = async () => {
   try {
     const data = {
-      tenLoai: newLoai.value.tenLoai,
-      moTa: newLoai.value.moTa,
+      TenLoai: newLoai.value.tenLoai,
+      MoTa: newLoai.value.moTa,
       HinhAnh: newLoai.value.image, // gửi file thật
     };
 

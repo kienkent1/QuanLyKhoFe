@@ -6,10 +6,10 @@ const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const api = axios.create({
   baseURL: BASE_URL,
-  //timeout: 10000,
-  headers: { "Content-Type": "application/json" },
+  headers: {},
 });
 
+// === TOKEN UTIL ===
 function getAccessToken() {
   return VueCookies.get("accessToken");
 }
@@ -18,8 +18,8 @@ function setTokens(accessToken, refreshToken) {
   if (refreshToken) localStorage.setItem("refreshToken", refreshToken);
 }
 
-
- export async function refreshAccessToken() {
+// === REFRESH TOKEN ===
+export async function refreshAccessToken() {
   const refreshToken = localStorage.getItem("refreshToken");
   if (!refreshToken) {
     router.push("/login");
@@ -42,23 +42,32 @@ function setTokens(accessToken, refreshToken) {
   }
 }
 
+// === REQUEST INTERCEPTOR ===
+api.interceptors.request.use((config) => {
+  const isFormData =
+    Object.prototype.toString.call(config.data) === "[object FormData]";
 
-api.interceptors.request.use(
-  (config) => {
-    if (config.requiresAuth) {
-      const token = getAccessToken();
-      if (!token) {
-        router.push("/login");
-        throw new Error("Missing access token");
-      }
-      config.headers.Authorization = `Bearer ${token}`;
+  if (!config.headers["Content-Type"]) {
+    if (isFormData) {
+      delete config.headers["Content-Type"]; // để axios tự set boundary
+    } else {
+      config.headers["Content-Type"] = "application/json";
     }
-    return config;
-  },
-  (error) => Promise.reject(error)
-);
+  }
 
+  if (config.requiresAuth) {
+    const token = getAccessToken();
+    if (!token) {
+      router.push("/login");
+      throw new Error("Missing access token");
+    }
+    config.headers.Authorization = `Bearer ${token}`;
+  }
 
+  return config;
+});
+
+// === RESPONSE INTERCEPTOR ===
 let isRefreshing = false;
 let failedQueue = [];
 
@@ -71,7 +80,11 @@ api.interceptors.response.use(
   (res) => res,
   async (err) => {
     const originalRequest = err.config;
-    if (err.response?.status === 401 && originalRequest.auth && !originalRequest._retry) {
+    if (
+      err.response?.status === 401 &&
+      originalRequest.requiresAuth &&
+      !originalRequest._retry
+    ) {
       if (isRefreshing) {
         return new Promise((resolve, reject) => {
           failedQueue.push({ resolve, reject });
@@ -97,32 +110,43 @@ api.interceptors.response.use(
         return Promise.reject(e);
       }
     }
+
     if (err.response?.status === 403) {
-        router.push("/403");
-      }
+      router.push("/403");
+    }
 
     return Promise.reject(err);
   }
 );
-export var objQuery = {
-    query: '',
-    page: 1,
-    pageSize: 10,
-    FieldName: '',
-    Isdesc: false,
-    FilterName: '',
-    FilterValue: ''
-}
 
-export const getApi = (url, config = {}, objQuery) => 
-    api.get(
-    url,{
-    ...config,
-    params: objQuery, 
+// === API WRAPPERS ===
+export var objQuery = {
+  query: "",
+  page: 1,
+  pageSize: 10,
+  FieldName: "",
+  Isdesc: false,
+  FilterName: "",
+  FilterValue: "",
+};
+
+// ✅ gom config vào data
+export const getApi = (url, opts = {}) =>
+  api.get(url, {
+    params: opts.params ?? objQuery,
+    ...opts,
   });
-export const postApi = (url, data = {}, config = {}) => api.post(url, data, config);
-export const putApi = (url, data = {}, config = {}) => api.put(url, data, config);
-export const patchApi = (url, data = {}, config = {}) => api.patch(url, data, config);
-export const deleteApi = (url, config = {}) => api.delete(url, config);
+
+export const postApi = (url, opts = {}) =>
+  api.post(url, opts.data ?? {}, opts);
+
+export const putApi = (url, opts = {}) =>
+  api.put(url, opts.data ?? {}, opts);
+
+export const patchApi = (url, opts = {}) =>
+  api.patch(url, opts.data ?? {}, opts);
+
+export const deleteApi = (url, opts = {}) =>
+  api.delete(url, opts);
 
 export default api;

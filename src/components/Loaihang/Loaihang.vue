@@ -74,14 +74,14 @@
         <div class="flex flex-col items-center justify-center text-center space-y-2">
           <div
             class="w-[120px] h-[80px] bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
-            <img v-if="item.HinhAnh || item.hinhAnh || item.imageName"
-              :src="getImageUrl(item.HinhAnh || item.hinhAnh || item.imageName)" alt="Ảnh loại hàng"
+            <img v-if="item.hinhAnh"
+              :src="item.hinhAnh" alt="Ảnh loại hàng"
               class="max-w-full max-h-full object-contain p-1 transition-transform duration-300 hover:scale-105" />
+              
             <span v-else class="text-gray-400 text-xs">Không có ảnh</span>
           </div>
           <p class="text-gray-500 text-sm">Hình ảnh</p>
         </div>
-
 
         <div class="flex justify-end items-center gap-3">
           <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-medium transition">
@@ -187,8 +187,10 @@ const {
   nextPage,
   prevPage,
   changePage,
-  getImageUrl,
+ // getImageUrl,
   loadLoai,
+  showModal
+
 } = useLoaiHang();
 
 const q = ref("");
