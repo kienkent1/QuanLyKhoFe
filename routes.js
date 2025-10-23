@@ -13,7 +13,7 @@ import phieuNhapKho from "./src/components/receipt/phieuNhapKho.vue";
 import Role from "./src/components/role/Role.vue";
 import hangHoa from "./src/components/HangHoa/hangHoa.vue";
 import xuatnhap from "./src/components/xuatnhap/xuatNhapFile.vue";
-import Account from "./src/components/Employee/account/account-fixed.vue";
+import Account from "./src/components/Employee/account/account.vue";
 import VueCookies from "vue-cookies";
 import * as api from "./src/helper/callApi.js";
 const routes = [
