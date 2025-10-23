@@ -224,7 +224,7 @@
                 </button>
                 <!-- Nút Menu với Dropdown -->
                 <div class="relative">
-                  <button @click="toggleDropdown(emp.idNhanVien)" class="text-gray-600 hover:text-gray-800 transition">
+                  <button @click="toggleDropdown(emp.idNhanVien, $event)" class="text-gray-600 hover:text-gray-800 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                     </svg>
@@ -232,10 +232,7 @@
                   <!-- Dropdown Menu -->
                   <div v-if="openDropdownId === emp.idNhanVien" 
                     class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                    <button @click="viewEmployee(emp)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg transition">
-                      Xem
-                    </button>
-                    <button @click="deleteEmployee(emp)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition">
+                    <button @click="deleteEmployee(emp)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg transition">
                       Xóa
                     </button>
                     <button @click="blockEmployee(emp)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg transition">
@@ -980,7 +977,12 @@ const editEmployee = (emp) => {
   openDropdownId.value = null;
 };
 
-const toggleDropdown = (empId) => {
+const toggleDropdown = (empId, event) => {
+  // Ngăn chặn event bubbling
+  if (event) {
+    event.stopPropagation();
+  }
+  
   if (openDropdownId.value === empId) {
     openDropdownId.value = null;
   } else {
@@ -1223,22 +1225,52 @@ const submitForm = async () => {
 onMounted(() => {
   loadData();
   
+  // Event listener để đóng dropdown khi click bên ngoài
   document.addEventListener('click', (event) => {
     const target = event.target;
-    const closestRelative = target.closest('.relative');
     
-    if (!closestRelative) {
-      openDropdownId.value = null;
-      showFilterDropdown.value = false;
-    } else {
-      const filterButton = closestRelative.querySelector('button[class*="bg-gray-50"]');
-      if (!filterButton || !filterButton.contains(target)) {
-        const actionDropdown = closestRelative.querySelector('.absolute');
-        if (!actionDropdown || !actionDropdown.contains(target)) {
-          openDropdownId.value = null;
-        }
-      }
+    // Kiểm tra nếu click vào nút lọc thì không đóng
+    if (target.closest('button[class*="bg-gray-50"]') || target.closest('button[class*="bg-blue-50"]')) {
+      return;
     }
+    
+    // Kiểm tra nếu click vào nút 3 chấm thì không đóng
+    if (target.closest('button[class*="text-gray-600"]') && target.closest('svg')) {
+      return;
+    }
+    
+    // Kiểm tra nếu click vào dropdown menu thì không đóng
+    if (target.closest('.absolute')) {
+      return;
+    }
+    
+    // Kiểm tra nếu click vào filter dropdown thì không đóng
+    if (target.closest('[class*="z-50"]')) {
+      return;
+    }
+    
+    // Đóng tất cả dropdown
+    openDropdownId.value = null;
+    showFilterDropdown.value = false;
   });
 });
 </script>
+
+<style scoped>
+/* Đảm bảo nút 3 chấm có thể click được */
+button[class*="text-gray-600"] {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Đảm bảo nút lọc có thể click được */
+button[class*="bg-gray-50"], button[class*="bg-blue-50"] {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Đảm bảo dropdown có z-index cao */
+.absolute {
+    z-index: 9999;
+}
+</style>
