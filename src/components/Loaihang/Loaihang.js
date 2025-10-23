@@ -76,19 +76,41 @@ export default function useLoaiHang() {
   const perPage = 5;
   const loading = ref(false);
   const errorMessage = ref("");
+  const sortBy = ref("CreateAt");
+  const sortOrder = ref("desc");
 
   const loadLoai = async () => {
     loading.value = true;
-    const res = await getAllLoai();
-    loading.value = false;
+    
+    try {
+      // Kiểm tra localStorage trước
+      const savedData = localStorage.getItem('loaiHangData');
+      if (savedData) {
+        // Sử dụng dữ liệu đã lưu trong localStorage
+        loaiHang.value = JSON.parse(savedData);
+        loading.value = false;
+        return;
+      }
+      
+      // Nếu không có dữ liệu trong localStorage, thử API
+      const res = await getAllLoai();
+      loading.value = false;
 
-    if (res.success) {
-      // ✅ luôn đảm bảo là mảng
-      loaiHang.value = Array.isArray(res.data) ? res.data : res.data?.data || [];
-    } else {
-      errorMessage.value = res.message;
-      loaiHang.value = []; // tránh lỗi slice
-      console.error(res.message);
+      if (res.success) {
+        // ✅ luôn đảm bảo là mảng
+        loaiHang.value = Array.isArray(res.data) ? res.data : res.data?.data || [];
+        // Lưu dữ liệu từ API vào localStorage
+        localStorage.setItem('loaiHangData', JSON.stringify(loaiHang.value));
+      } else {
+        errorMessage.value = res.message;
+        loaiHang.value = []; // tránh lỗi slice
+        console.error(res.message);
+      }
+    } catch (error) {
+      loading.value = false;
+      errorMessage.value = "Lỗi khi tải dữ liệu";
+      loaiHang.value = [];
+      console.error("Lỗi khi tải dữ liệu:", error);
     }
   };
 
@@ -104,9 +126,34 @@ export default function useLoaiHang() {
 
   const paginatedData = computed(() => {
     // ✅ Tránh lỗi slice nếu không phải array
-    return Array.isArray(loaiHang.value)
-      ? loaiHang.value.slice(startIndex.value, endIndex.value)
-      : [];
+    if (!Array.isArray(loaiHang.value)) return [];
+    
+    // Sắp xếp dữ liệu trước khi phân trang
+    const sortedData = [...loaiHang.value].sort((a, b) => {
+      let aVal, bVal;
+      
+      switch (sortBy.value) {
+        case 'tenLoai':
+          aVal = a.tenLoai?.toLowerCase() || '';
+          bVal = b.tenLoai?.toLowerCase() || '';
+          break;
+        case 'CreateAt':
+          aVal = new Date(a.CreateAt || '1970-01-01');
+          bVal = new Date(b.CreateAt || '1970-01-01');
+          break;
+        default:
+          aVal = a.id || 0;
+          bVal = b.id || 0;
+      }
+      
+      if (sortOrder.value === 'asc') {
+        return aVal > bVal ? 1 : -1;
+      } else {
+        return aVal < bVal ? 1 : -1;
+      }
+    });
+    
+    return sortedData.slice(startIndex.value, endIndex.value);
   });
 
   const nextPage = () => {
@@ -121,6 +168,7 @@ export default function useLoaiHang() {
 const getImageUrl = (fileName) => {
   if (!fileName) return "";
   if (fileName.startsWith("http")) return fileName;
+  if (fileName.startsWith("blob:")) return fileName; // Hỗ trợ blob URL từ localStorage
   return `https://raw.githubusercontent.com/kienkent1/QuanLyKhoImg/main/Loai/${fileName}`;
 };
   return {
@@ -138,5 +186,7 @@ const getImageUrl = (fileName) => {
     getImageUrl,
     loading,
     errorMessage,
+    sortBy,
+    sortOrder,
   };
 }

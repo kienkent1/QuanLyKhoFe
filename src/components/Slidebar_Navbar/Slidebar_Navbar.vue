@@ -15,58 +15,58 @@
 
         <ul class="space-y-2 font-medium">
           <li>
-            <a href="/" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">home</span>
+            <a href="/" :class="getActiveClasses('/')">
+              <span :class="getActiveIconClasses('/')">home</span>
               <span class="ms-3">Trang chủ</span>
             </a>
           </li>
           <li>
-            <routerLink to="/supplier" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+            <routerLink to="/Supplier" :class="getActiveClasses('/Supplier')">
+              <span :class="getActiveIconClasses('/Supplier')">
                 business
               </span>
               <span class="ms-3">Nhà cung cấp</span>
             </routerLink>
           </li>
           <li>
-            <routerLink to="/xuatKho" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+            <routerLink to="/xuatKho" :class="getActiveClasses('/xuatKho')">
+              <span :class="getActiveIconClasses('/xuatKho')">
                 assignment
               </span>
               <span class="ms-3">Tạo phiếu xuất</span>
             </routerLink>
           </li>
           <li>
-            <routerLink to="/nhapKho" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+            <routerLink to="/nhapKho" :class="getActiveClasses('/nhapKho')">
+              <span :class="getActiveIconClasses('/nhapKho')">
                 file_download
               </span>
               <span class="ms-3">Tạo phiếu nhập</span>
             </routerLink>
           </li>
           <li>
-             <routerLink to="/loai" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">
+             <routerLink to="/loai" :class="getActiveClasses('/loai')">
+              <span :class="getActiveIconClasses('/loai')">
                 category
               </span>
               <span class="ms-3">Loại hàng hóa</span>
             </routerLink>
           </li>
           <li>
-            <router-link to="/hangHoa" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">inventory</span>
+            <router-link to="/hangHoa" :class="getActiveClasses('/hangHoa')">
+              <span :class="getActiveIconClasses('/hangHoa')">inventory</span>
               <span class="ms-3">Hàng Hóa</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/User" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">group</span>
+            <router-link to="/User" :class="getActiveClasses('/User')">
+              <span :class="getActiveIconClasses('/User')">group</span>
               <span class="ms-3">Nhân viên</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/taiKhoan" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">person</span>
+            <router-link to="/taikhoan" :class="getActiveClasses('/taikhoan')">
+              <span :class="getActiveIconClasses('/taikhoan')">person</span>
               <span class="ms-3">Trang tài khoản</span>
             </router-link>
           </li>
@@ -77,14 +77,14 @@
             </a>
           </li>
           <li>
-            <router-link to="/xuatnhap" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">upload_file</span>
+            <router-link to="/xuatNhap" :class="getActiveClasses('/xuatNhap')">
+              <span :class="getActiveIconClasses('/xuatNhap')">upload_file</span>
               <span class="ms-3">Xuất - nhập file</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/phanQuyen" class="flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group">
-              <span class="material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]">admin_panel_settings</span>
+            <router-link to="/phanQuyen" :class="getActiveClasses('/phanQuyen')">
+              <span :class="getActiveIconClasses('/phanQuyen')">admin_panel_settings</span>
               <span class="ms-3">Phân Quyền</span>
             </router-link>
           </li>
@@ -156,7 +156,7 @@ const route = useRoute();
 
 const pageTitleMap = {
   '/': 'Trang chủ',
-  '/supplier': 'Nhà cung cấp',
+  '/Supplier': 'Nhà cung cấp',
   '/xuatKho': 'Tạo phiếu xuất',
   '/nhapKho': 'Tạo phiếu nhập',
   '/loai': 'Loại hàng hóa',
@@ -170,5 +170,24 @@ const pageTitleMap = {
 const currentPageTitle = computed(() => {
   return pageTitleMap[route.path] || 'Trang chủ';
 });
+
+// Function to check if a route is active
+const isActiveRoute = (path) => {
+  return route.path === path;
+};
+
+// Function to get active classes for menu items
+const getActiveClasses = (path) => {
+  return isActiveRoute(path) 
+    ? 'flex items-center p-2 text-[#007AFF] bg-[#E5F2FF] rounded-lg group'
+    : 'flex items-center p-2 text-[#7A8699] rounded-lg hover:bg-[#E5F2FF] group';
+};
+
+// Function to get active icon classes
+const getActiveIconClasses = (path) => {
+  return isActiveRoute(path)
+    ? 'material-icons w-5 h-5 text-[#007AFF]'
+    : 'material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]';
+};
 
 </script>
