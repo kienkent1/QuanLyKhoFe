@@ -160,6 +160,16 @@ export const getMockAccountData = () => {
       vaiTro: "employee",
       ngayTao: "2024-01-19",
       ngayCapNhat: "2024-01-24"
+    },
+    {
+      id: "ACC1761229173264",
+      tenTaiKhoan: "Bé dâu",
+      matKhau: "123456789123",
+      trangThai: "approved",
+      email: "strawbery@gmail.com",
+      vaiTro: "employee",
+      ngayTao: "2024-01-20",
+      ngayCapNhat: "2024-01-25"
     }
   ];
 };

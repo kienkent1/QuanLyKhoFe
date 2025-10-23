@@ -121,13 +121,13 @@
 
     <!-- 🔹 BẢNG DỮ LIỆU -->
     <div class="w-full overflow-hidden bg-white rounded-xl shadow-sm border border-gray-200 mt-4">
-      <table class="w-full border-collapse text-sm">
+      <table class="w-full border-collapse text-sm border border-gray-300">
         <thead class="bg-gray-50 text-gray-700">
           <tr>
-            <th class="p-3 border-b text-center w-[50px]">
+            <th class="p-3 border-b border-r border-gray-300 text-center w-[50px]">
               <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="rounded border-gray-300" />
             </th>
-            <th class="p-3 border-b text-center cursor-pointer w-[100px]" @click="sortBy('id')">
+            <th class="p-3 border-b border-r border-gray-300 text-center cursor-pointer w-[100px]" @click="sortBy('id')">
               <div class="flex items-center justify-center gap-1">
                 ID
                 <div class="flex flex-col">
@@ -143,7 +143,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('tenTaiKhoan')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('tenTaiKhoan')">
               <div class="flex items-center gap-1">
                 Tên tài khoản
                 <div class="flex flex-col">
@@ -159,7 +159,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('matKhau')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('matKhau')">
               <div class="flex items-center gap-1">
                 Mật khẩu
                 <div class="flex flex-col">
@@ -175,7 +175,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('trangThai')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('trangThai')">
               <div class="flex items-center gap-1">
                 Trạng thái
                 <div class="flex flex-col">
@@ -191,7 +191,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('email')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('email')">
               <div class="flex items-center gap-1">
                 Email
                 <div class="flex flex-col">
@@ -241,20 +241,20 @@
         </tbody>
 
          <tbody v-else-if="filteredRows.length">
-           <tr v-for="(account, i) in filteredRows" :key="account.id" class="hover:bg-gray-50 transition border-b">
-            <td class="p-3 text-center">
+           <tr v-for="(account, i) in filteredRows" :key="account.id" class="hover:bg-gray-50 transition border-b border-gray-300">
+            <td class="p-3 border-r border-gray-300 text-center">
               <input type="checkbox" v-model="account.selected" class="rounded border-gray-300" />
             </td>
-            <td class="p-3 text-center text-gray-700 font-medium">{{ account.id || 'XXXXXX' }}</td>
-            <td class="p-3 font-medium text-gray-800">{{ account.tenTaiKhoan || 'Nguyễn Văn A' }}</td>
-            <td class="p-3 text-gray-600">********</td>
-            <td class="p-3">
+            <td class="p-3 border-r border-gray-300 text-center text-gray-700 font-medium">{{ account.id || 'XXXXXX' }}</td>
+            <td class="p-3 border-r border-gray-300 font-medium text-gray-800">{{ account.tenTaiKhoan || 'Nguyễn Văn A' }}</td>
+            <td class="p-3 border-r border-gray-300 text-gray-600">********</td>
+            <td class="p-3 border-r border-gray-300">
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                 :class="getStatusClass(account.trangThai)">
                 {{ getStatusLabel(account.trangThai) }}
               </span>
             </td>
-            <td class="p-3 text-black">{{ account.email || 'NVA@Gmail.com' }}</td>
+            <td class="p-3 border-r border-gray-300 text-black">{{ account.email || 'NVA@Gmail.com' }}</td>
             <td class="p-3 text-center">
               <div class="flex items-center justify-center gap-2">
                 <!-- Nút Edit -->

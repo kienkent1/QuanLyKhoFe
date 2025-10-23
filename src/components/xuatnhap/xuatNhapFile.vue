@@ -30,12 +30,6 @@
                         </select>
                     </div>
 
-                    <!-- THÔNG TIN FILE -->
-                    <div class="mb-6">
-                        <label class="block text-sm font-semibold text-gray-700 mb-2">Thông tin file</label>
-                        <textarea v-model="exportFileInfo" rows="4" placeholder="Thông tin abc"
-                            class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition resize-none"></textarea>
-                    </div>
 
                     <!-- NÚT XUẤT -->
                     <button @click="exportFile" :disabled="isExporting"
@@ -183,7 +177,6 @@ import * as XLSX from 'xlsx';
 
 // DỮ LIỆU
 const selectedExportType = ref('');
-const exportFileInfo = ref('');
 const selectedFile = ref(null);
 const isDragOver = ref(false);
 const isExporting = ref(false);
@@ -681,7 +674,6 @@ const exportFile = async () => {
 
         console.log('Đã xuất file:', fileName);
         console.log('Dữ liệu được xuất:', data);
-        alert(`Đã xuất thành công ${data.length} bản ghi ra file ${fileName}`);
         
     } catch (error) {
         console.error('Lỗi khi xuất file:', error);
@@ -826,7 +818,6 @@ const importFile = async () => {
                 saveFileHistory();
 
                 console.log('Đã nhập file:', selectedFile.value.name, 'Số bản ghi:', importedData.length);
-                alert(`Đã nhập thành công ${importedData.length} bản ghi từ file ${selectedFile.value.name}`);
                 
                 selectedFile.value = null;
                 

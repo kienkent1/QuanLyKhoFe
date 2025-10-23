@@ -93,13 +93,13 @@
     <!-- 🔹 BẢNG DỮ LIỆU -->
     <div class="w-full overflow-hidden bg-white rounded-xl shadow-sm border border-gray-200 mt-4">
 
-      <table class="w-full border-collapse text-sm">
+      <table class="w-full border-collapse text-sm border border-gray-300">
         <thead class="bg-gray-50 text-gray-700">
           <tr>
-            <th class="p-3 border-b text-center w-[50px]">
+            <th class="p-3 border-b border-r border-gray-300 text-center w-[50px]">
               <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="rounded border-gray-300" />
             </th>
-            <th class="p-3 border-b text-center cursor-pointer w-[100px]" @click="sortBy('idNhanVien')">
+            <th class="p-3 border-b border-r border-gray-300 text-center cursor-pointer w-[100px]" @click="sortBy('idNhanVien')">
               <div class="flex items-center justify-center gap-1">
                 Mã NV
                 <div class="flex flex-col">
@@ -115,7 +115,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('tenNhanVien')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('tenNhanVien')">
               <div class="flex items-center gap-1">
               Tên nhân viên
                 <div class="flex flex-col">
@@ -131,7 +131,7 @@
                 </div>
               </div>
             </th>
-             <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('chucVu')">
+             <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('chucVu')">
                <div class="flex items-center gap-1">
                  Chức vụ
                  <div class="flex flex-col">
@@ -147,7 +147,7 @@
                  </div>
                </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('diaChi')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('diaChi')">
               <div class="flex items-center gap-1">
                 Địa chỉ
                 <div class="flex flex-col">
@@ -163,7 +163,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('sdt')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('sdt')">
               <div class="flex items-center gap-1">
               Số điện thoại
                 <div class="flex flex-col">
@@ -179,7 +179,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('email')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('email')">
               <div class="flex items-center gap-1">
                 Email
                 <div class="flex flex-col">
@@ -200,20 +200,20 @@
         </thead>
 
         <tbody v-if="!loading && rows.length">
-          <tr v-for="(emp, i) in rows" :key="emp.idNhanVien" class="hover:bg-gray-50 transition border-b">
-            <td class="p-3 text-center">
+          <tr v-for="(emp, i) in rows" :key="emp.idNhanVien" class="hover:bg-gray-50 transition border-b border-gray-300">
+            <td class="p-3 border-r border-gray-300 text-center">
               <input type="checkbox" v-model="emp.selected" class="rounded border-gray-300" />
             </td>
-             <td class="p-3 text-center text-gray-700 font-medium">{{ emp.idNhanVien || 'XXXXXX' }}</td>
-             <td class="p-3 font-medium text-gray-800">{{ emp.tenNhanVien || 'Nguyễn Văn A' }}</td>
-             <td class="p-3 text-gray-600">{{ emp.chucVu || 'Nhân viên' }}</td>
-             <td class="p-3 text-gray-600 max-w-[200px]">
+             <td class="p-3 border-r border-gray-300 text-center text-gray-700 font-medium">{{ emp.idNhanVien || 'XXXXXX' }}</td>
+             <td class="p-3 border-r border-gray-300 font-medium text-gray-800">{{ emp.tenNhanVien || 'Nguyễn Văn A' }}</td>
+             <td class="p-3 border-r border-gray-300 text-gray-600">{{ emp.chucVu || 'Nhân viên' }}</td>
+             <td class="p-3 border-r border-gray-300 text-gray-600 max-w-[200px]">
                <div class="truncate" :title="formatAddress(emp.diaChi)">
                  {{ formatAddress(emp.diaChi) }}
                </div>
              </td>
-             <td class="p-3 text-gray-600">{{ emp.sdt || '0123456789' }}</td>
-            <td class="p-3 text-gray-600">{{ emp.email || 'NVA@Gmail.com' }}</td>
+             <td class="p-3 border-r border-gray-300 text-gray-600">{{ emp.sdt || '0123456789' }}</td>
+            <td class="p-3 border-r border-gray-300 text-gray-600">{{ emp.email || 'NVA@Gmail.com' }}</td>
             <td class="p-3 text-center">
               <div class="flex items-center justify-center gap-2">
                 <!-- Nút Edit -->
