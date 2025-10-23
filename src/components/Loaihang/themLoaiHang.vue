@@ -116,12 +116,48 @@ const saveLoaiHang = async () => {
       closeModal();
     } else {
       alert("❌ Lỗi: " + res.message);
+
+    // Validation
+    if (!newLoai.value.tenLoai.trim()) {
+      alert('Vui lòng nhập tên loại hàng');
+      return;
+
     }
-  } catch (error) {
-    console.error("❌ Lỗi khi lưu loại hàng:", error);
-    alert("Đã xảy ra lỗi khi lưu loại hàng!");
+    
+    if (newLoai.value.tenLoai.trim().length < 2) {
+      alert('Tên loại hàng phải có ít nhất 2 ký tự');
+      return;
+    }
+    
+    // Tạo ID mới
+    const existingData = JSON.parse(localStorage.getItem('loaiHangData') || '[]');
+    const newId = existingData.length > 0 ? Math.max(...existingData.map(item => item.id)) + 1 : 1;
+    
+    // Tạo loại hàng mới
+    const newCategory = {
+      id: newId,
+      tenLoai: newLoai.value.tenLoai.trim(),
+      moTa: newLoai.value.moTa.trim() || `Mô tả cho ${newLoai.value.tenLoai.trim()}`,
+      HinhAnh: newLoai.value.image ? URL.createObjectURL(newLoai.value.image) : null,
+      imageName: newLoai.value.imageName,
+      CreateAt: new Date().toISOString().split('T')[0]
+    };
+    
+    // Thêm vào localStorage
+    existingData.unshift(newCategory);
+    localStorage.setItem('loaiHangData', JSON.stringify(existingData));
+    
+    // Reload và đóng modal
+    emit("reload");
+    closeModal();
+    
+  }
+ } catch (error) {
+    console.error('❌ Lỗi khi lưu loại hàng:', error);
+    alert('Đã xảy ra lỗi khi lưu loại hàng!');
   }
 };
+
 
 // 🖱 Kéo thả popup
 const isDragging = ref(false);

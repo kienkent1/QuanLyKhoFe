@@ -93,13 +93,13 @@
     <!-- 🔹 BẢNG DỮ LIỆU -->
     <div class="w-full overflow-hidden bg-white rounded-xl shadow-sm border border-gray-200 mt-4">
 
-      <table class="w-full border-collapse text-sm">
+      <table class="w-full border-collapse text-sm border border-gray-300">
         <thead class="bg-gray-50 text-gray-700">
           <tr>
-            <th class="p-3 border-b text-center w-[50px]">
+            <th class="p-3 border-b border-r border-gray-300 text-center w-[50px]">
               <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="rounded border-gray-300" />
             </th>
-            <th class="p-3 border-b text-center cursor-pointer w-[100px]" @click="sortBy('idNhanVien')">
+            <th class="p-3 border-b border-r border-gray-300 text-center cursor-pointer w-[100px]" @click="sortBy('idNhanVien')">
               <div class="flex items-center justify-center gap-1">
                 Mã NV
                 <div class="flex flex-col">
@@ -115,7 +115,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('tenNhanVien')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('tenNhanVien')">
               <div class="flex items-center gap-1">
               Tên nhân viên
                 <div class="flex flex-col">
@@ -131,7 +131,7 @@
                 </div>
               </div>
             </th>
-             <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('chucVu')">
+             <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('chucVu')">
                <div class="flex items-center gap-1">
                  Chức vụ
                  <div class="flex flex-col">
@@ -147,7 +147,7 @@
                  </div>
                </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('diaChi')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('diaChi')">
               <div class="flex items-center gap-1">
                 Địa chỉ
                 <div class="flex flex-col">
@@ -163,7 +163,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('sdt')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('sdt')">
               <div class="flex items-center gap-1">
               Số điện thoại
                 <div class="flex flex-col">
@@ -179,7 +179,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('email')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('email')">
               <div class="flex items-center gap-1">
                 Email
                 <div class="flex flex-col">
@@ -200,20 +200,20 @@
         </thead>
 
         <tbody v-if="!loading && rows.length">
-          <tr v-for="(emp, i) in rows" :key="emp.idNhanVien" class="hover:bg-gray-50 transition border-b">
-            <td class="p-3 text-center">
+          <tr v-for="(emp, i) in rows" :key="emp.idNhanVien" class="hover:bg-gray-50 transition border-b border-gray-300">
+            <td class="p-3 border-r border-gray-300 text-center">
               <input type="checkbox" v-model="emp.selected" class="rounded border-gray-300" />
             </td>
-             <td class="p-3 text-center text-gray-700 font-medium">{{ emp.idNhanVien || 'XXXXXX' }}</td>
-             <td class="p-3 font-medium text-gray-800">{{ emp.tenNhanVien || 'Nguyễn Văn A' }}</td>
-             <td class="p-3 text-gray-600">{{ emp.chucVu || 'Nhân viên' }}</td>
-             <td class="p-3 text-gray-600 max-w-[200px]">
+             <td class="p-3 border-r border-gray-300 text-center text-gray-700 font-medium">{{ emp.idNhanVien || 'XXXXXX' }}</td>
+             <td class="p-3 border-r border-gray-300 font-medium text-gray-800">{{ emp.tenNhanVien || 'Nguyễn Văn A' }}</td>
+             <td class="p-3 border-r border-gray-300 text-gray-600">{{ emp.chucVu || 'Nhân viên' }}</td>
+             <td class="p-3 border-r border-gray-300 text-gray-600 max-w-[200px]">
                <div class="truncate" :title="formatAddress(emp.diaChi)">
                  {{ formatAddress(emp.diaChi) }}
                </div>
              </td>
-             <td class="p-3 text-gray-600">{{ emp.sdt || '0123456789' }}</td>
-            <td class="p-3 text-gray-600">{{ emp.email || 'NVA@Gmail.com' }}</td>
+             <td class="p-3 border-r border-gray-300 text-gray-600">{{ emp.sdt || '0123456789' }}</td>
+            <td class="p-3 border-r border-gray-300 text-gray-600">{{ emp.email || 'NVA@Gmail.com' }}</td>
             <td class="p-3 text-center">
               <div class="flex items-center justify-center gap-2">
                 <!-- Nút Edit -->
@@ -224,7 +224,7 @@
                 </button>
                 <!-- Nút Menu với Dropdown -->
                 <div class="relative">
-                  <button @click="toggleDropdown(emp.idNhanVien)" class="text-gray-600 hover:text-gray-800 transition">
+                  <button @click="toggleDropdown(emp.idNhanVien, $event)" class="text-gray-600 hover:text-gray-800 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                     </svg>
@@ -232,10 +232,7 @@
                   <!-- Dropdown Menu -->
                   <div v-if="openDropdownId === emp.idNhanVien" 
                     class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                    <button @click="viewEmployee(emp)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg transition">
-                      Xem
-                    </button>
-                    <button @click="deleteEmployee(emp)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition">
+                    <button @click="deleteEmployee(emp)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg transition">
                       Xóa
                     </button>
                     <button @click="blockEmployee(emp)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg transition">
@@ -980,7 +977,12 @@ const editEmployee = (emp) => {
   openDropdownId.value = null;
 };
 
-const toggleDropdown = (empId) => {
+const toggleDropdown = (empId, event) => {
+  // Ngăn chặn event bubbling
+  if (event) {
+    event.stopPropagation();
+  }
+  
   if (openDropdownId.value === empId) {
     openDropdownId.value = null;
   } else {
@@ -1223,22 +1225,52 @@ const submitForm = async () => {
 onMounted(() => {
   loadData();
   
+  // Event listener để đóng dropdown khi click bên ngoài
   document.addEventListener('click', (event) => {
     const target = event.target;
-    const closestRelative = target.closest('.relative');
     
-    if (!closestRelative) {
-      openDropdownId.value = null;
-      showFilterDropdown.value = false;
-    } else {
-      const filterButton = closestRelative.querySelector('button[class*="bg-gray-50"]');
-      if (!filterButton || !filterButton.contains(target)) {
-        const actionDropdown = closestRelative.querySelector('.absolute');
-        if (!actionDropdown || !actionDropdown.contains(target)) {
-          openDropdownId.value = null;
-        }
-      }
+    // Kiểm tra nếu click vào nút lọc thì không đóng
+    if (target.closest('button[class*="bg-gray-50"]') || target.closest('button[class*="bg-blue-50"]')) {
+      return;
     }
+    
+    // Kiểm tra nếu click vào nút 3 chấm thì không đóng
+    if (target.closest('button[class*="text-gray-600"]') && target.closest('svg')) {
+      return;
+    }
+    
+    // Kiểm tra nếu click vào dropdown menu thì không đóng
+    if (target.closest('.absolute')) {
+      return;
+    }
+    
+    // Kiểm tra nếu click vào filter dropdown thì không đóng
+    if (target.closest('[class*="z-50"]')) {
+      return;
+    }
+    
+    // Đóng tất cả dropdown
+    openDropdownId.value = null;
+    showFilterDropdown.value = false;
   });
 });
 </script>
+
+<style scoped>
+/* Đảm bảo nút 3 chấm có thể click được */
+button[class*="text-gray-600"] {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Đảm bảo nút lọc có thể click được */
+button[class*="bg-gray-50"], button[class*="bg-blue-50"] {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Đảm bảo dropdown có z-index cao */
+.absolute {
+    z-index: 9999;
+}
+</style>

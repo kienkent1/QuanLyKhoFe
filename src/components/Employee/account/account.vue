@@ -4,18 +4,26 @@
     <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl shadow-sm border">
       <!-- Ô tìm kiếm -->
       <div class="relative flex-1 min-w-[250px] max-w-[400px]">
-        <input
-          v-model="searchQuery"
-          type="text"
-          placeholder="Search here..."
-          class="w-full rounded-xl border border-gray-300 bg-white py-3.5 pl-4 pr-10 text-sm text-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
-        />
-        <svg xmlns="http://www.w3.org/2000/svg"
-          class="absolute right-3 top-1/2 h-4 w-4 text-gray-400 -translate-y-1/2"
-          fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
-        </svg>
+         <input
+           v-model="searchQuery"
+           type="text"
+           placeholder="Tìm kiếm theo ID, tên, email, trạng thái..."
+           class="w-full rounded-xl border border-gray-300 bg-white py-3.5 pl-4 pr-20 text-sm text-gray-600 placeholder-gray-400 focus:ring-2 focus:ring-blue-500"
+         />
+         <!-- Icon tìm kiếm -->
+         <svg xmlns="http://www.w3.org/2000/svg"
+           class="absolute right-12 top-1/2 h-4 w-4 text-gray-400 -translate-y-1/2"
+           fill="none" viewBox="0 0 24 24" stroke="currentColor">
+           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+             d="M21 21l-4.35-4.35M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16z"/>
+         </svg>
+         <!-- Nút xóa tìm kiếm -->
+         <button v-if="searchQuery.trim()" @click="clearSearch"
+           class="absolute right-3 top-1/2 h-4 w-4 text-gray-400 hover:text-red-500 -translate-y-1/2 transition">
+           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+           </svg>
+         </button>
       </div>
 
        <div class="flex gap-3">
@@ -85,6 +93,27 @@
                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
                </svg>
              </button>
+             <button
+               @click="applyStatusFilter('blocked')"
+               class="w-full text-left px-4 py-2 hover:bg-gray-50 transition flex items-center justify-between"
+               :class="{ 'bg-blue-50 text-blue-600': selectedStatusFilter === 'blocked' }"
+             >
+               <span>Bị khóa</span>
+               <svg v-if="selectedStatusFilter === 'blocked'" xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+               </svg>
+             </button>
+             <div class="border-t border-gray-200 mt-1 pt-1">
+               <button
+                 @click="clearFilter"
+                 class="w-full text-left px-4 py-2 hover:bg-gray-50 transition flex items-center justify-between text-gray-500"
+               >
+                 <span>Xóa bộ lọc</span>
+                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                 </svg>
+               </button>
+             </div>
            </div>
          </div>
        </div>
@@ -92,13 +121,13 @@
 
     <!-- 🔹 BẢNG DỮ LIỆU -->
     <div class="w-full overflow-hidden bg-white rounded-xl shadow-sm border border-gray-200 mt-4">
-      <table class="w-full border-collapse text-sm">
+      <table class="w-full border-collapse text-sm border border-gray-300">
         <thead class="bg-gray-50 text-gray-700">
           <tr>
-            <th class="p-3 border-b text-center w-[50px]">
+            <th class="p-3 border-b border-r border-gray-300 text-center w-[50px]">
               <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" class="rounded border-gray-300" />
             </th>
-            <th class="p-3 border-b text-center cursor-pointer w-[100px]" @click="sortBy('id')">
+            <th class="p-3 border-b border-r border-gray-300 text-center cursor-pointer w-[100px]" @click="sortBy('id')">
               <div class="flex items-center justify-center gap-1">
                 ID
                 <div class="flex flex-col">
@@ -114,7 +143,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('tenTaiKhoan')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('tenTaiKhoan')">
               <div class="flex items-center gap-1">
                 Tên tài khoản
                 <div class="flex flex-col">
@@ -130,7 +159,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('matKhau')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('matKhau')">
               <div class="flex items-center gap-1">
                 Mật khẩu
                 <div class="flex flex-col">
@@ -146,7 +175,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('trangThai')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('trangThai')">
               <div class="flex items-center gap-1">
                 Trạng thái
                 <div class="flex flex-col">
@@ -162,7 +191,7 @@
                 </div>
               </div>
             </th>
-            <th class="p-3 border-b text-left cursor-pointer" @click="sortBy('email')">
+            <th class="p-3 border-b border-r border-gray-300 text-left cursor-pointer" @click="sortBy('email')">
               <div class="flex items-center gap-1">
                 Email
                 <div class="flex flex-col">
@@ -182,31 +211,52 @@
           </tr>
         </thead>
 
-        <tbody v-if="!loading && rows.length">
-          <tr v-for="(account, i) in rows" :key="account.id" class="hover:bg-gray-50 transition border-b">
+        <tbody v-if="loading">
+          <tr v-for="n in 5" :key="n" class="animate-pulse">
             <td class="p-3 text-center">
+              <div class="w-4 h-4 bg-gray-200 rounded mx-auto skeleton-shimmer"></div>
+            </td>
+            <td class="p-3">
+              <div class="h-4 bg-gray-200 rounded w-16 mx-auto skeleton-shimmer"></div>
+            </td>
+            <td class="p-3">
+              <div class="h-4 bg-gray-200 rounded w-32 skeleton-shimmer"></div>
+            </td>
+            <td class="p-3">
+              <div class="h-4 bg-gray-200 rounded w-20 skeleton-shimmer"></div>
+            </td>
+            <td class="p-3">
+              <div class="h-6 bg-gray-200 rounded-full w-20 skeleton-shimmer"></div>
+            </td>
+            <td class="p-3">
+              <div class="h-4 bg-gray-200 rounded w-28 skeleton-shimmer"></div>
+            </td>
+            <td class="p-3 text-center">
+              <div class="flex items-center justify-center gap-2">
+                <div class="w-4 h-4 bg-gray-200 rounded skeleton-shimmer"></div>
+                <div class="w-4 h-4 bg-gray-200 rounded skeleton-shimmer"></div>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+
+         <tbody v-else-if="filteredRows.length">
+           <tr v-for="(account, i) in filteredRows" :key="account.id" class="hover:bg-gray-50 transition border-b border-gray-300">
+            <td class="p-3 border-r border-gray-300 text-center">
               <input type="checkbox" v-model="account.selected" class="rounded border-gray-300" />
             </td>
-            <td class="p-3 text-center text-gray-700 font-medium">{{ account.id || 'XXXXXX' }}</td>
-            <td class="p-3 font-medium text-gray-800">{{ account.tenTaiKhoan || 'Nguyễn Văn A' }}</td>
-            <td class="p-3 text-gray-600">{{ account.matKhau || '123456789123' }}</td>
-            <td class="p-3">
+            <td class="p-3 border-r border-gray-300 text-center text-gray-700 font-medium">{{ account.id || 'XXXXXX' }}</td>
+            <td class="p-3 border-r border-gray-300 font-medium text-gray-800">{{ account.tenTaiKhoan || 'Nguyễn Văn A' }}</td>
+            <td class="p-3 border-r border-gray-300 text-gray-600">********</td>
+            <td class="p-3 border-r border-gray-300">
               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
                 :class="getStatusClass(account.trangThai)">
                 {{ getStatusLabel(account.trangThai) }}
               </span>
             </td>
-            <td class="p-3 text-green-600">{{ account.email || 'NVA@Gmail.com' }}</td>
+            <td class="p-3 border-r border-gray-300 text-black">{{ account.email || 'NVA@Gmail.com' }}</td>
             <td class="p-3 text-center">
               <div class="flex items-center justify-center gap-2">
-                <!-- Nút Xác nhận -->
-                <button 
-                  v-if="account.trangThai === 'pending'"
-                  @click="confirmAccount(account)" 
-                  class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1.5 rounded text-xs font-medium transition"
-                >
-                  Xác nhận
-                </button>
                 <!-- Nút Edit -->
                 <button @click="editAccount(account)" class="text-purple-600 hover:text-purple-800 transition">
                   <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -215,24 +265,27 @@
                 </button>
                 <!-- Nút Menu với Dropdown -->
                 <div class="relative">
-                  <button @click="toggleDropdown(account.id)" class="text-gray-600 hover:text-gray-800 transition">
+                  <button @click="toggleDropdown(account.id, $event)" class="text-gray-600 hover:text-gray-800 transition">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
                     </svg>
                   </button>
-                  <!-- Dropdown Menu -->
-                  <div v-if="openDropdownId === account.id" 
-                    class="absolute right-0 mt-2 w-32 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
-                    <button @click="viewAccount(account)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-t-lg transition">
-                      Xem
-                    </button>
-                    <button @click="deleteAccount(account)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition">
-                      Xóa
-                    </button>
-                    <button @click="toggleAccountStatus(account)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 rounded-b-lg transition">
-                      {{ account.trangThai === 'blocked' ? 'Mở khóa' : 'Khóa' }}
-                    </button>
-                  </div>
+                   <!-- Dropdown Menu -->
+                   <div v-if="openDropdownId === account.id" 
+                     class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 z-50">
+                     <button @click="updateAccountStatus(account)" class="w-full text-left px-4 py-2 text-sm text-blue-600 hover:bg-blue-50 transition flex items-center gap-2">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                       </svg>
+                       Cập nhật status
+                     </button>
+                     <button @click="deleteAccount(account)" class="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-50 transition flex items-center gap-2">
+                       <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                       </svg>
+                       Xóa
+                     </button>
+                   </div>
                 </div>
               </div>
             </td>
@@ -242,8 +295,8 @@
         <tbody v-else>
           <tr>
             <td colspan="7" class="h-72">
-              <div class="flex justify-center items-center">
-                <Loader />
+              <div class="flex justify-center items-center text-gray-500">
+                Không có dữ liệu
               </div>
             </td>
           </tr>
@@ -251,11 +304,17 @@
       </table>
     </div>
 
-    <!-- 🔹 PHÂN TRANG -->
-    <div v-if="!loading" class="flex flex-wrap items-center justify-between pt-4 border-t border-gray-200 bg-white px-4 py-3 rounded-xl">
-      <p class="text-sm text-gray-600">
-        Hiển thị {{ pagination.pageSize }} trong số {{ pagination.totalItems }} dữ liệu
-      </p>
+     <!-- 🔹 PHÂN TRANG -->
+     <div v-if="!loading && filteredRows.length" class="flex flex-wrap items-center justify-between pt-4 border-t border-gray-200 bg-white px-4 py-3 rounded-xl">
+       <p class="text-sm text-gray-600">
+         Hiển thị {{ filteredRows.length }} trong số {{ rows.length }} dữ liệu
+         <span v-if="selectedStatusFilter" class="text-blue-600 font-medium">
+           (Đã lọc theo: {{ getStatusLabel(selectedStatusFilter) }})
+         </span>
+         <span v-if="searchQuery.trim()" class="text-green-600 font-medium">
+           (Tìm kiếm: "{{ searchQuery }}")
+         </span>
+       </p>
 
       <div class="flex items-center gap-2">
         <button @click="prevPage" :disabled="pagination.currentPage === 1"
@@ -598,18 +657,104 @@
           </button>
         </div>
 
-        <!-- Nút đóng X -->
-        <button @click="showDeleteModal = false"
-          class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold transition">
-          ✕
-        </button>
-      </div>
-    </div>
-  </div>
-</template>
+         <!-- Nút đóng X -->
+         <button @click="showDeleteModal = false"
+           class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold transition">
+           ✕
+         </button>
+       </div>
+     </div>
+
+     <!-- 🔹 MODAL CẬP NHẬT TRẠNG THÁI -->
+     <div v-if="showStatusModal" class="fixed inset-0 flex items-center justify-center bg-black/40 z-50">
+       <div class="bg-white rounded-2xl p-8 w-[500px] max-w-[90%] relative shadow-2xl">
+         <button @click="closeStatusModal"
+           class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold">
+           ✕
+         </button>
+         
+         <!-- HEADER -->
+         <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-6">
+           <h2 class="text-2xl font-bold text-gray-800">Cập nhật trạng thái</h2>
+           <div class="flex items-center gap-2">
+             <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+               </svg>
+             </div>
+             <span class="text-lg font-semibold text-blue-600">Dâu</span>
+           </div>
+         </div>
+
+         <!-- THÔNG TIN TÀI KHOẢN -->
+         <div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">
+           <div class="space-y-2">
+             <div class="flex justify-between">
+               <span class="text-sm font-semibold text-gray-700">ID:</span>
+               <span class="text-sm text-gray-900">{{ selectedAccount.id || 'XXXXXX' }}</span>
+             </div>
+             <div class="flex justify-between">
+               <span class="text-sm font-semibold text-gray-700">Tên tài khoản:</span>
+               <span class="text-sm text-gray-900">{{ selectedAccount.tenTaiKhoan || 'Nguyễn Văn A' }}</span>
+             </div>
+             <div class="flex justify-between">
+               <span class="text-sm font-semibold text-gray-700">Trạng thái hiện tại:</span>
+               <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                 :class="getStatusClass(selectedAccount.trangThai)">
+                 {{ getStatusLabel(selectedAccount.trangThai) }}
+               </span>
+             </div>
+           </div>
+         </div>
+
+         <!-- FORM CẬP NHẬT -->
+         <div class="space-y-4">
+           <div>
+             <label class="block text-sm font-semibold text-gray-700 mb-2">Trạng thái mới</label>
+             <select v-model="newStatus"
+               class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none bg-white">
+               <option value="">Chọn trạng thái mới</option>
+               <option value="pending">Chờ duyệt</option>
+               <option value="approved">Đã duyệt</option>
+               <option value="rejected">Từ chối</option>
+               <option value="blocked">Bị khóa</option>
+             </select>
+           </div>
+           
+           <div>
+             <label class="block text-sm font-semibold text-gray-700 mb-2">Ghi chú (tùy chọn)</label>
+             <textarea v-model="statusNote"
+               placeholder="Nhập ghi chú về việc thay đổi trạng thái..."
+               class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition h-20"></textarea>
+           </div>
+         </div>
+
+         <!-- NÚT HÀNH ĐỘNG -->
+         <div class="flex justify-center gap-4 pt-6 border-t border-gray-200">
+           <button @click="closeStatusModal"
+             class="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white font-medium px-6 py-3 rounded-lg transition shadow-sm">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+             </svg>
+             Hủy
+           </button>
+           
+           <button @click="saveStatusUpdate"
+             :disabled="!newStatus || loading"
+             class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition shadow-sm disabled:opacity-50">
+             <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+             </svg>
+             {{ loading ? 'Đang cập nhật...' : 'Cập nhật' }}
+           </button>
+         </div>
+       </div>
+     </div>
+   </div>
+ </template>
 
 <script setup>
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted, computed } from "vue";
 import Loader from "../../HelperComponents/Loader.vue";
 import * as accountJs from "./account.js";
 
@@ -623,9 +768,12 @@ const openDropdownId = ref(null);
 const showViewAccount = ref(false);
 const viewAccountData = ref({});
 const showDeleteModal = ref(false);
+const showStatusModal = ref(false);
 const selectedAccount = ref({});
 const showFilterDropdown = ref(false);
 const selectedStatusFilter = ref("");
+const newStatus = ref("");
+const statusNote = ref("");
 
 const sort = ref({ field: "", isDesc: false });
 
@@ -652,9 +800,20 @@ async function loadData() {
     objQuery.value.FieldName = sort.value.field;
     objQuery.value.Isdesc = sort.value.isDesc;
     
-    // Sử dụng dữ liệu mẫu để test
-    const mockData = accountJs.getMockAccountData();
-    rows.value = mockData.map((account) => ({ 
+    // Kiểm tra localStorage trước, nếu không có thì dùng dữ liệu mẫu
+    const savedData = localStorage.getItem('accountData');
+    let accountData;
+    
+    if (savedData) {
+      // Sử dụng dữ liệu đã lưu trong localStorage
+      accountData = JSON.parse(savedData);
+    } else {
+      // Lần đầu tiên, sử dụng dữ liệu mẫu và lưu vào localStorage
+      accountData = accountJs.getMockAccountData();
+      localStorage.setItem('accountData', JSON.stringify(accountData));
+    }
+    
+    rows.value = accountData.map((account) => ({ 
       ...account, 
       selected: false
     }));
@@ -663,7 +822,7 @@ async function loadData() {
       currentPage: 1,
       totalPages: 1,
       pageSize: 10,
-      totalItems: mockData.length,
+      totalItems: accountData.length,
     };
   } catch (err) {
     console.error("Lỗi tải dữ liệu:", err);
@@ -672,11 +831,7 @@ async function loadData() {
   }
 }
 
-watch(searchQuery, (newVal) => {
-  objQuery.value.query = newVal;
-  objQuery.value.page = 1;
-  loadData();
-});
+// Bỏ watch searchQuery vì đã sử dụng computed property filteredRows
 
 const sortBy = (field) => {
   if (sort.value.field === field) {
@@ -715,8 +870,90 @@ const applyStatusFilter = (status) => {
   objQuery.value.FilterValue = status;
   objQuery.value.page = 1;
   showFilterDropdown.value = false;
-  loadData();
+  // Không cần gọi loadData() vì đã có computed property filteredRows
 };
+
+const clearFilter = () => {
+  selectedStatusFilter.value = "";
+  objQuery.value.FilterName = "";
+  objQuery.value.FilterValue = "";
+  showFilterDropdown.value = false;
+};
+
+const clearSearch = () => {
+  searchQuery.value = "";
+};
+
+// Đóng modal cập nhật status
+const closeStatusModal = () => {
+  showStatusModal.value = false;
+  selectedAccount.value = {};
+  newStatus.value = "";
+  statusNote.value = "";
+};
+
+// Lưu cập nhật trạng thái
+const saveStatusUpdate = async () => {
+  try {
+    loading.value = true;
+    
+    if (!newStatus.value) {
+      alert('Vui lòng chọn trạng thái mới!');
+      return;
+    }
+    
+    // Cập nhật trạng thái trong danh sách
+    const index = rows.value.findIndex(item => item.id === selectedAccount.value.id);
+    if (index > -1) {
+      rows.value[index].trangThai = newStatus.value;
+      
+      // Lưu vào localStorage
+      localStorage.setItem('accountData', JSON.stringify(rows.value));
+      
+      closeStatusModal();
+    }
+  } catch (error) {
+    console.error('Lỗi cập nhật trạng thái:', error);
+    alert('Có lỗi xảy ra khi cập nhật trạng thái!');
+  } finally {
+    loading.value = false;
+  }
+};
+
+// Function để reset dữ liệu về trạng thái ban đầu (dùng cho development)
+const resetToMockData = () => {
+  const mockData = accountJs.getMockAccountData();
+  localStorage.setItem('accountData', JSON.stringify(mockData));
+  loadData();
+  alert('Đã reset về dữ liệu mẫu ban đầu!');
+};
+
+// Computed property để lọc dữ liệu theo trạng thái và tìm kiếm
+const filteredRows = computed(() => {
+  let filteredData = [...rows.value]; // Tạo copy để tránh mutation
+  
+  // Lọc theo trạng thái
+  if (selectedStatusFilter.value) {
+    filteredData = filteredData.filter(account => account.trangThai === selectedStatusFilter.value);
+  }
+  
+  // Lọc theo từ khóa tìm kiếm
+  if (searchQuery.value && searchQuery.value.trim()) {
+    const query = searchQuery.value.toLowerCase().trim();
+    
+    filteredData = filteredData.filter(account => {
+      return (
+        (account.id && account.id.toLowerCase().includes(query)) ||
+        (account.tenTaiKhoan && account.tenTaiKhoan.toLowerCase().includes(query)) ||
+        (account.email && account.email.toLowerCase().includes(query)) ||
+        getStatusLabel(account.trangThai).toLowerCase().includes(query) ||
+        getRoleLabel(account.vaiTro).toLowerCase().includes(query)
+      );
+    });
+  }
+  
+  return filteredData;
+});
 
 const getStatusLabel = (status) => {
   const statusMap = {
@@ -774,7 +1011,12 @@ const editAccount = (account) => {
   openDropdownId.value = null;
 };
 
-const toggleDropdown = (accountId) => {
+const toggleDropdown = (accountId, event) => {
+  // Ngăn chặn event bubbling
+  if (event) {
+    event.stopPropagation();
+  }
+  
   if (openDropdownId.value === accountId) {
     openDropdownId.value = null;
   } else {
@@ -788,6 +1030,15 @@ const viewAccount = (account) => {
   openDropdownId.value = null;
 };
 
+const updateAccountStatus = (account) => {
+  // Đóng dropdown
+  openDropdownId.value = null;
+  
+  // Mở modal cập nhật status
+  selectedAccount.value = { ...account };
+  showStatusModal.value = true;
+};
+
 const deleteAccount = (account) => {
   selectedAccount.value = { ...account };
   showDeleteModal.value = true;
@@ -798,7 +1049,25 @@ const confirmDeleteAccount = async () => {
   try {
     loading.value = true;
     // await accountJs.deleteAccount(selectedAccount.value.id);
-    await loadData();
+    
+     // Xóa tài khoản khỏi danh sách
+     const index = rows.value.findIndex(item => item.id === selectedAccount.value.id);
+     if (index > -1) {
+       rows.value.splice(index, 1);
+       
+       // Lưu dữ liệu đã xóa vào localStorage
+       localStorage.setItem('accountData', JSON.stringify(rows.value));
+       
+       // Cập nhật pagination
+       pagination.value.totalItems = rows.value.length;
+       pagination.value.totalPages = Math.ceil(rows.value.length / pagination.value.pageSize);
+       
+       // Điều chỉnh trang hiện tại nếu cần
+       if (pagination.value.currentPage > pagination.value.totalPages && pagination.value.totalPages > 0) {
+         pagination.value.currentPage = pagination.value.totalPages;
+       }
+     }
+    
     showDeleteModal.value = false;
     alert('Xóa tài khoản thành công!');
   } catch (err) {
@@ -809,19 +1078,7 @@ const confirmDeleteAccount = async () => {
   }
 };
 
-const confirmAccount = async (account) => {
-  try {
-    loading.value = true;
-    // await accountJs.confirmAccount(account.id);
-    await loadData();
-    alert('Xác nhận tài khoản thành công!');
-  } catch (err) {
-    console.error('Lỗi xác nhận tài khoản:', err);
-    alert('Có lỗi xảy ra khi xác nhận tài khoản!');
-  } finally {
-    loading.value = false;
-  }
-};
+// Function confirmAccount đã được xóa vì không còn nút xác nhận
 
 const toggleAccountStatus = async (account) => {
   try {
@@ -906,17 +1163,44 @@ const submitForm = async () => {
     };
     
     let response;
-    if (isEditMode.value) {
-      // response = await accountJs.updateAccount(formData.value.id, submitData);
-    } else {
-      // response = await accountJs.createAccount(submitData);
-    }
+     if (isEditMode.value) {
+       // response = await accountJs.updateAccount(formData.value.id, submitData);
+       // Cập nhật tài khoản trong danh sách
+       const index = rows.value.findIndex(item => item.id === formData.value.id);
+       if (index > -1) {
+         rows.value[index] = {
+           ...rows.value[index],
+           ...submitData,
+           id: formData.value.id
+         };
+         
+         // Lưu dữ liệu đã cập nhật vào localStorage
+         localStorage.setItem('accountData', JSON.stringify(rows.value));
+       }
+     } else {
+       // response = await accountJs.createAccount(submitData);
+       // Thêm tài khoản mới vào danh sách
+       const newAccount = {
+         id: `ACC${Date.now()}`, // Tạo ID duy nhất
+         ...submitData,
+         ngayTao: new Date().toISOString().split('T')[0],
+         ngayCapNhat: new Date().toISOString().split('T')[0],
+         selected: false
+       };
+       rows.value.unshift(newAccount); // Thêm vào đầu danh sách
+       
+       // Lưu dữ liệu mới vào localStorage
+       localStorage.setItem('accountData', JSON.stringify(rows.value));
+       
+       // Cập nhật pagination
+       pagination.value.totalItems = rows.value.length;
+       pagination.value.totalPages = Math.ceil(rows.value.length / pagination.value.pageSize);
+     }
     
     const wasEditMode = isEditMode.value;
     showAddAccount.value = false;
     isEditMode.value = false;
     refreshForm();
-    await loadData();
     
     alert(wasEditMode ? 'Cập nhật tài khoản thành công!' : 'Thêm tài khoản thành công!');
   } catch (err) {
@@ -931,22 +1215,83 @@ const submitForm = async () => {
 onMounted(() => {
   loadData();
   
+  // Event listener để đóng dropdown khi click bên ngoài
   document.addEventListener('click', (event) => {
     const target = event.target;
-    const closestRelative = target.closest('.relative');
     
-    if (!closestRelative) {
-      openDropdownId.value = null;
-      showFilterDropdown.value = false;
-    } else {
-      const filterButton = closestRelative.querySelector('button[class*="bg-gray-50"]');
-      if (!filterButton || !filterButton.contains(target)) {
-        const actionDropdown = closestRelative.querySelector('.absolute');
-        if (!actionDropdown || !actionDropdown.contains(target)) {
-          openDropdownId.value = null;
-        }
-      }
+    // Kiểm tra nếu click vào nút lọc thì không đóng
+    if (target.closest('button[class*="bg-gray-50"]') || target.closest('button[class*="bg-blue-50"]')) {
+      return;
     }
+    
+    // Kiểm tra nếu click vào nút 3 chấm thì không đóng
+    if (target.closest('button[class*="text-gray-600"]') && target.closest('svg')) {
+      return;
+    }
+    
+    // Kiểm tra nếu click vào dropdown menu thì không đóng
+    if (target.closest('.absolute')) {
+      return;
+    }
+    
+    // Kiểm tra nếu click vào filter dropdown thì không đóng
+    if (target.closest('[class*="z-50"]')) {
+      return;
+    }
+    
+    // Đóng tất cả dropdown
+    openDropdownId.value = null;
+    showFilterDropdown.value = false;
   });
 });
 </script>
+
+<style scoped>
+.fade-enter-active,
+.fade-leave-active {
+    transition: opacity 0.15s ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+    opacity: 0;
+}
+
+/* Skeleton loading animation */
+@keyframes shimmer {
+    0% {
+        background-position: -200px 0;
+    }
+    100% {
+        background-position: calc(200px + 100%) 0;
+    }
+}
+
+.skeleton-shimmer {
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200px 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 4px;
+}
+
+.animate-pulse {
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Đảm bảo nút 3 chấm có thể click được */
+button[class*="text-gray-600"] {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Đảm bảo nút lọc có thể click được */
+button[class*="bg-gray-50"], button[class*="bg-blue-50"] {
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+/* Đảm bảo dropdown có z-index cao */
+.absolute {
+    z-index: 9999;
+}
+</style>
