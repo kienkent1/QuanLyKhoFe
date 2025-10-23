@@ -152,29 +152,29 @@
                     <div class="bg-gray-50 p-6 rounded-xl space-y-6">
                         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div>
-                                <label class="block text-sm font-medium mb-1">Nguồn nhập *</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Nguồn nhập *</label>
                                 <input v-model="newPhieu.supplier" type="text" placeholder="Nhập tên nguồn nhập"
-                                    class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-200" />
+                                    class="w-full bg-white text-gray-800 placeholder-gray-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition border border-gray-200" />
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-1">Tên hàng *</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Tên hàng *</label>
                                 <input v-model="newPhieu.product" type="text" placeholder="Nhập tên hàng"
-                                    class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-200" />
+                                    class="w-full bg-white text-gray-800 placeholder-gray-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition border border-gray-200" />
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-1">Số lượng *</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Số lượng *</label>
                                 <input v-model="newPhieu.quantity" type="number" placeholder="Nhập số lượng"
-                                    class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-200" />
+                                    class="w-full bg-white text-gray-800 placeholder-gray-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition border border-gray-200" />
                             </div>
                             <div>
-                                <label class="block text-sm font-medium mb-1">Giá nhập *</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Giá nhập *</label>
                                 <input v-model="newPhieu.price" type="number" placeholder="Nhập giá nhập"
-                                    class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-200" />
+                                    class="w-full bg-white text-gray-800 placeholder-gray-400 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition border border-gray-200" />
                             </div>
                             <div class="sm:col-span-2">
-                                <label class="block text-sm font-medium mb-1">Tình trạng</label>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Tình trạng</label>
                                 <select v-model="newPhieu.status"
-                                    class="w-full rounded-lg border border-gray-300 px-3 py-2 focus:ring-2 focus:ring-blue-200">
+                                    class="w-full bg-white text-gray-800 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-blue-400 transition border border-gray-200">
                                     <option value="Chờ duyệt">Chờ duyệt</option>
                                     <option value="Đã duyệt">Đã duyệt</option>
                                     <option value="Đã hủy">Đã hủy</option>
@@ -183,16 +183,20 @@
                         </div>
 
                         <!-- Nút -->
-                        <div class="flex justify-center gap-6 pt-2">
+                        <div class="flex justify-center gap-6 pt-6">
                             <button @click="closeModal"
-                                class="bg-gray-500 hover:bg-gray-600 text-white px-5 py-2 rounded-xl flex items-center gap-2 shadow-sm">
-                                <span class="material-icons text-lg">close</span>
+                                class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-6 py-3 rounded-lg shadow transition active:scale-95">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+                                </svg>
                                 Hủy
                             </button>
 
                             <button @click="savePhieu"
-                                class="bg-blue-500 hover:bg-blue-600 text-white px-5 py-2 rounded-xl flex items-center gap-2 shadow-sm">
-                                <span class="material-icons text-lg">save</span>
+                                class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-3 rounded-lg shadow transition active:scale-95">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" class="w-5 h-5">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+                                </svg>
                                 Lưu phiếu
                             </button>
                         </div>
@@ -618,7 +622,7 @@ const closeStatusModal = () => {
 // Lưu cập nhật status
 const saveStatusUpdate = () => {
     if (!newStatus.value) {
-        alert('Vui lòng chọn trạng thái mới!');
+        console.log('Vui lòng chọn trạng thái mới!');
         return;
     }
     
@@ -690,19 +694,19 @@ const savePhieu = async () => {
     try {
         // Validation
         if (!newPhieu.supplier.trim()) {
-            alert("Vui lòng nhập nguồn nhập!");
+            console.log("Vui lòng nhập nguồn nhập!");
             return;
         }
         if (!newPhieu.product.trim()) {
-            alert("Vui lòng nhập tên hàng!");
+            console.log("Vui lòng nhập tên hàng!");
             return;
         }
         if (!newPhieu.quantity || newPhieu.quantity <= 0) {
-            alert("Vui lòng nhập số lượng hợp lệ!");
+            console.log("Vui lòng nhập số lượng hợp lệ!");
             return;
         }
         if (!newPhieu.price || newPhieu.price <= 0) {
-            alert("Vui lòng nhập giá nhập hợp lệ!");
+            console.log("Vui lòng nhập giá nhập hợp lệ!");
             return;
         }
 
@@ -730,12 +734,12 @@ const savePhieu = async () => {
         // Đóng modal và reset form
         closeModal();
         
-        // Thông báo thành công
-        alert("Tạo phiếu nhập kho thành công!");
+        // Thông báo thành công (đã bỏ alert)
+        console.log("Tạo phiếu nhập kho thành công!");
         
     } catch (error) {
         console.error("Lỗi khi tạo phiếu nhập kho:", error);
-        alert("Có lỗi xảy ra khi tạo phiếu nhập kho!");
+        console.log("Có lỗi xảy ra khi tạo phiếu nhập kho!");
     }
 };
 
