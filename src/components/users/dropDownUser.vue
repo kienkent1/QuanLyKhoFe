@@ -17,16 +17,16 @@
         expand_more
       </span>
 
-      <!-- Tên + chức vụ -->
+      <!-- Tên + email (dùng dữ liệu từ API) -->
       <div class="text-right">
-        <p class="text-sm font-semibold text-gray-900">Nguyễn Đức Thắng</p>
-        <p class="text-xs text-gray-500">thangdn@gmail.com</p>
+        <p class="text-sm font-semibold text-gray-900">{{ user.fullName || 'Người dùng' }}</p>
+        <p class="text-xs text-gray-500">{{ user.email || '' }}</p>
       </div>
 
-      <!-- Avatar -->
+      <!-- Avatar (dùng dữ liệu từ API) -->
       <img
-        src="/public/logo.png"
-        class="w-10 h-10 rounded-full shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300"
+        :src="user.avatar || '/default-avatar.png'"
+        class="w-10 h-10 rounded-full shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 avatar"
         alt="user avatar"
       />
     </div>
@@ -39,21 +39,23 @@
       >
         <!-- Header -->
         <div class="flex items-center gap-3 pb-3 border-b border-gray-100">
-          <img src="/public/logo.png" class="w-10 h-10 rounded-full" alt="user avatar" />
+          <img :src="user.avatar || '/default-avatar.png'" class="w-10 h-10 rounded-full" alt="user avatar" />
           <div>
-            <p class="font-semibold text-gray-900">Nguyễn Đức Thắng</p>
-            <p class="text-sm text-gray-500">thangdn@gmail.com</p>
+            <p class="font-semibold text-gray-900">{{ user.fullName || 'Người dùng' }}</p>
+            <p class="text-sm text-gray-500">{{ user.email || '' }}</p>
           </div>
         </div>
 
         <!-- Menu -->
         <ul class="text-gray-800 space-y-1 mt-2">
-          <li
+          <router-link
+            to="/profile"
             class="menu-item flex items-center gap-3 p-2 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-500 hover:shadow-md hover:-translate-y-[1px] hover:text-gray-900 group"
+            active-class="bg-gradient-to-r from-gray-100 to-gray-300 text-gray-900"
           >
             <span class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors">person</span>
             Thông tin
-          </li>
+          </router-link>
           <li
             class="menu-item flex items-center gap-3 p-2 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-500 hover:shadow-md hover:-translate-y-[1px] hover:text-gray-900 group"
           >
@@ -74,19 +76,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { useUserDropdown } from "./dropDownUser"; // <-- chỉnh đường dẫn nếu cần
+const { user, open, hasOpened, toggleDropdown, refreshProfile } = useUserDropdown(true);
 
-const open = ref(false)
-const hasOpened = ref(false)
-
-const toggleDropdown = () => {
-  hasOpened.value = true
-  open.value = !open.value
-}
-
-const handleClickOutside = (e) => {
-  if (!e.target.closest('.relative')) open.value = false
-}
 
 const logout = () => {
   // Xóa tất cả dữ liệu authentication
@@ -113,6 +105,7 @@ const logout = () => {
 
 onMounted(() => document.addEventListener('click', handleClickOutside))
 onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
+
 </script>
 
 <style scoped>
@@ -127,9 +120,9 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
   transform: translateY(-8px) scale(0.98);
 }
 
-/* Xoay mũi tên mượt */
+/* Xoay mũi tên mượt (sửa lại từ rotate(360deg) -> rotate(180deg)) */
 .rotate-180 {
-  transform: rotate(360deg);
+  transform: rotate(180deg);
 }
 
 /* Cấu hình cơ bản cho item */
@@ -167,7 +160,6 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
   );
   transform: skewX(-20deg);
   transition: none;
-  
 }
 .menu-item:hover::after {
   animation: light-sweep 0.8s ease forwards;
@@ -183,14 +175,17 @@ onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
   }
 }
 
-/* Hiệu ứng glow nhẹ khi hover avatar */
-img:hover {
+/* Hiệu ứng glow nhẹ khi hover avatar - giới hạn cho class .avatar */
+.avatar:hover {
   box-shadow: 0 0 10px rgba(59,130,246,0.3);
   transition: box-shadow 0.3s ease;
 }
 
-/* Toàn bộ animation mượt */
-* {
+/* Hạn chế scope transition tổng quát để tránh ảnh hưởng toàn bộ app */
+/* Chỉ áp dụng cho menu-item và .material-icons để mượt mà */
+.menu-item,
+.material-icons,
+.avatar {
   transition: all 0.25s ease-in-out;
 }
 </style>
