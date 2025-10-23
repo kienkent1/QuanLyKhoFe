@@ -4,7 +4,10 @@ import VueCookies from 'vue-cookies';
 const param = 'Authentication/google-Login'
 const loginGG = async (idToken, isRemember) => {
   try {
-    const res = await api.postApi(param, {idToken:idToken});
+    const res = await api.postApi(param, {
+        data: {idToken:idToken},
+        headers:{ "Content-Type": "application/json" },
+    });
     if(res.status === 400)  return {message:`${res.data.message}`, success: true};
 
     else if(res.status === 200 || res.status === 201){

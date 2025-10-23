@@ -77,6 +77,7 @@
 
 <script setup>
 import { useUserDropdown } from "./dropDownUser"; // <-- chỉnh đường dẫn nếu cần
+import{onMounted, onBeforeUnmount} from 'vue'
 const { user, open, hasOpened, toggleDropdown, refreshProfile } = useUserDropdown(true);
 
 

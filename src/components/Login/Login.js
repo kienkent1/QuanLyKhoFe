@@ -9,7 +9,10 @@ const payload = {
     password: password
 };
 try {
-    const res = await api.postApi(controller + 'login', payload);
+    const res = await api.postApi(controller + 'login', {
+        data: payload,
+        headers:{ "Content-Type": "application/json" },
+    });
     if(res.status === 400)  return {message:`${res.data.message}`, success: true};
 
     else if(res.status === 200 || res.status === 201){
