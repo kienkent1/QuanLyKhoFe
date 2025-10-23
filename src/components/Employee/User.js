@@ -4,6 +4,6 @@ const controller = 'NhanVien'
 export const userData = async (query = {}) => {
 
    
-  const data = await  api.getApi(controller, {requiresAuth: true}, query)
-  return data.data.data
-} 
+    const data = await  api.getApi(controller, {requiresAuth: true}, query)
+    return data.data.data
+  } 

@@ -1,7 +1,8 @@
 import { onMounted } from 'vue'
 
-export function useGoogleOAuth({ onSuccess, onError } = {}) {
+export function useGoogleOAuth() {
   let client = null
+  let ready = false
 
   onMounted(() => {
     const script = document.createElement('script')
@@ -9,28 +10,35 @@ export function useGoogleOAuth({ onSuccess, onError } = {}) {
     script.async = true
     script.defer = true
     script.onload = () => {
-      client = google.accounts.oauth2.initCodeClient({
+      ready = true
+      client = google.accounts.oauth2.initTokenClient({
         client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
         scope: 'openid profile email',
-        ux_mode: 'popup', // mở popup chứ không redirect
         callback: (resp) => {
-          if (resp.error) {
-            onError && onError(resp)
-          } else {
-            onSuccess && onSuccess(resp)
-          }
+
         },
       })
     }
     document.head.appendChild(script)
   })
 
+
   const startLogin = () => {
-    if (!client) {
-      console.warn('Google SDK chưa sẵn sàng')
-      return
-    }
-    client.requestCode() 
+    return new Promise((resolve, reject) => {
+      if (!client || !ready) {
+        console.warn('⚠️ Google SDK chưa sẵn sàng')
+        reject(new Error('Google SDK chưa sẵn sàng'))
+        return
+      }
+
+      // Override callback mỗi lần gọi
+      client.callback = (resp) => {
+        if (resp.error) reject(resp)
+        else resolve(resp.access_token) 
+      }
+
+      client.requestAccessToken()
+    })
   }
 
   return { startLogin }
