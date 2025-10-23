@@ -1,9 +1,9 @@
 <template>
   <div class="p-6 space-y-6">
-    <!-- THANH CÔNG CỤ -->
+    <!-- ================= THANH CÔNG CỤ ================= -->
     <div class="flex flex-wrap justify-between items-center gap-3">
       <!-- Ô tìm kiếm -->
-      <div class="relative w-full sm:w-200">
+      <div class="relative w-full sm:w-80">
         <input v-model="q" type="text" placeholder="Tìm kiếm loại hàng..."
           class="w-full rounded-xl border border-gray-300 bg-white px-3 py-2.5 pr-10 text-sm shadow-sm focus:ring-2 focus:ring-blue-400 focus:border-blue-400 outline-none transition" />
         <svg xmlns="http://www.w3.org/2000/svg"
@@ -14,8 +14,8 @@
         </svg>
       </div>
 
+      <!-- Nút công cụ -->
       <div class="flex items-center gap-3">
-        <!-- Bookmark -->
         <button
           class="flex items-center justify-center bg-white hover:bg-gray-300 text-gray-700 font-medium px-5 py-2 rounded-xl shadow transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -24,7 +24,6 @@
           </svg>
         </button>
 
-        <!-- Play -->
         <button
           class="flex items-center justify-center bg-white hover:bg-gray-300 text-green-600 font-medium px-5 py-2 rounded-xl shadow transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 20 20" fill="currentColor">
@@ -32,7 +31,6 @@
           </svg>
         </button>
 
-        <!-- Pause -->
         <button
           class="flex items-center justify-center bg-white hover:bg-gray-300 text-gray-700 font-medium px-5 py-2 rounded-xl shadow transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -40,7 +38,6 @@
           </svg>
         </button>
 
-        <!-- Stop -->
         <button
           class="flex items-center justify-center bg-white hover:bg-gray-300 text-red-500 font-medium px-5 py-2 rounded-xl shadow transition">
           <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -49,47 +46,23 @@
         </button>
 
         <!-- Thêm loại hàng -->
-        <button @click="showModal = true"
-          class="flex items-center gap-2 bg-white text-black font-medium px-5 py-2 rounded-xl shadow hover:bg-gray-300 transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
-          Thêm loại hàng
-        </button>
-
-        <!-- Filter -->
-        <button
-          class="flex items-center justify-center bg-white hover:bg-gray-300 text-gray-700 font-medium px-5 py-2 rounded-xl shadow transition">
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6h18M6 12h12M10 18h4" />
-          </svg>
-        </button>
-
-        <!-- Newest -->
-        <button
-          class="flex items-center justify-between bg-white hover:bg-gray-300 font-medium shadow rounded-xl px-5 py-2 transition">
-          Newest
-          <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 ms-2 text-gray-700" fill="none" viewBox="0 0 24 24"
-            stroke="currentColor" stroke-width="2">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-          </svg>
-        </button>
+        <Addloai />
       </div>
     </div>
 
-    <!-- DANH SÁCH LOẠI HÀNG -->
+    <!-- ================= DANH SÁCH LOẠI HÀNG ================= -->
     <div class="space-y-4">
       <div v-for="item in paginatedData" :key="item.id"
         class="grid grid-cols-[2fr_2.5fr_2fr_auto] items-center gap-4 bg-white rounded-2xl shadow p-4 hover:shadow-md transition">
         <div>
           <p class="text-sm text-blue-500 font-medium">Mã loại: {{ item.id }}</p>
-          <p class="font-semibold text-black">Tên loại: {{ item.tenLoai }}</p>
+          <p class="font-semibold text-black">Tên loại:  {{ item.tenLoai }}</p>
           <div class="flex items-center text-gray-500 text-sm mt-1">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24"
               stroke="currentColor" stroke-width="2">
               <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
             </svg>
-            Published on {{ item.ngayDang || 'January 25, 2021' }}
+            Published on {{ item.CreateAt || 'September 25, 2025' }}
           </div>
         </div>
 
@@ -98,12 +71,17 @@
           <p class="text-gray-500 text-sm line-clamp-2">{{ item.moTa }}</p>
         </div>
 
-        <div class="flex flex-col justify-center items-center text-center">
-          <div class="w-[100px] h-[60px] flex items-center justify-center bg-gray-100 text-gray-400 text-xs rounded-md">
-            Ảnh
+        <div class="flex flex-col items-center justify-center text-center space-y-2">
+          <div
+            class="w-[120px] h-[80px] bg-white border border-gray-200 rounded-xl overflow-hidden shadow-sm flex items-center justify-center">
+            <img v-if="item.HinhAnh || item.hinhAnh || item.imageName"
+              :src="getImageUrl(item.HinhAnh || item.hinhAnh || item.imageName)" alt="Ảnh loại hàng"
+              class="max-w-full max-h-full object-contain p-1 transition-transform duration-300 hover:scale-105" />
+            <span v-else class="text-gray-400 text-xs">Không có ảnh</span>
           </div>
-          <p class="text-gray-500 text-sm mt-1">Hình ảnh</p>
+          <p class="text-gray-500 text-sm">Hình ảnh</p>
         </div>
+
 
         <div class="flex justify-end items-center gap-3">
           <button class="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg font-medium transition">
@@ -130,39 +108,17 @@
 
       <div v-if="paginatedData.length === 0"
         class="flex flex-col items-center justify-center py-10 text-gray-500 min-h-[200px]">
-        <loader />
+        <Loader />
       </div>
     </div>
 
-    <!-- PHÂN TRANG -->
-    <div class="flex flex-wrap items-center justify-between pt-4 border-t border-gray-200">
-      <p class="text-sm text-gray-600">
-        Hiển thị {{ startIndex + 1 }}–{{ endIndex }} trên tổng {{ totalItems }}
-      </p>
+    <!-- ================= PHÂN TRANG ================= -->
+    <Pagination :currentPage="currentPage" :totalPages="totalPages" :startIndex="startIndex" :endIndex="endIndex"
+      :totalItems="totalItems" @page-change="changePage" @next="nextPage" @prev="prevPage" />
 
-      <div class="flex items-center gap-2">
-        <button @click="prevPage" :disabled="currentPage === 1"
-          class="px-3 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 disabled:opacity-50 flex items-center gap-1">
-          « Trước
-        </button>
-
-        <div class="flex items-center border border-blue-500 rounded-md overflow-hidden">
-          <button v-for="page in totalPages" :key="page" @click="changePage(page)" class="px-3 py-2 text-sm"
-            :class="page === currentPage ? 'bg-blue-500 text-white' : 'text-blue-600 hover:bg-blue-100'">
-            {{ page }}
-          </button>
-        </div>
-
-        <button @click="nextPage" :disabled="currentPage === totalPages"
-          class="px-3 py-2 bg-blue-500 text-white text-sm rounded-md hover:bg-blue-600 disabled:opacity-50 flex items-center gap-1">
-          Sau »
-        </button>
-      </div>
-    </div>
-
-    <!-- ✅ POPUP CÓ THỂ DI CHUYỂN -->
+    <!-- ================= POPUP THÊM LOẠI HÀNG ================= -->
     <div v-if="showModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/15">
-      <div ref="modalRef" class="bg-white rounded-2xl shadow-2xl w-[750px] max-w-[90%] p-20 relative cursor-move"
+      <div ref="modalRef" class="bg-white rounded-2xl shadow-2xl w-[750px] max-w-[90%] p-6 relative cursor-move"
         @mousedown="startDrag">
         <button @click="closeModal" class="absolute top-3 right-3 text-gray-500 hover:text-black transition">✕</button>
 
@@ -181,13 +137,9 @@
           </div>
           <div>
             <label class="block text-sm font-semibold mb-1">Hình ảnh</label>
-
-            <!-- ô click để chọn file (hiển thị tên nếu có) -->
             <div @click="selectImage"
               class="flex items-center justify-between w-full border rounded-lg px-3 py-2 text-sm bg-gray-50 cursor-pointer hover:bg-gray-100">
-              <span>{{ newLoai.imageName || 'Bấm vào để chọn ảnh' }}</span>
-
-              <!-- Icon máy ảnh chuẩn -->
+              <span>{{ newLoai.HinhAnh || 'Bấm vào để chọn ảnh' }}</span>
               <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 text-gray-600" fill="none" viewBox="0 0 24 24"
                 stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round"
@@ -196,38 +148,20 @@
               </svg>
             </div>
 
-            <!-- hidden file input -->
             <input ref="fileInput" type="file" accept="image/*" @change="handleFile" class="hidden" />
-
-            <!-- preview ảnh -->
             <div v-if="previewUrl" class="mt-3">
               <img :src="previewUrl" alt="Preview" class="w-28 h-16 object-cover rounded-md border" />
             </div>
           </div>
         </div>
 
-        <!-- Nút chức năng -->
         <div class="flex justify-center gap-6">
           <button @click="resetForm"
             class="flex items-center gap-2 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-6 py-2 rounded-lg shadow transition">
-            <!-- Icon reload -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M4 4v5h.582M20 20v-5h-.581M5.632 9A9 9 0 0120 12m-1.632 3A9 9 0 014 12" />
-            </svg>
             Làm mới
           </button>
-
           <button @click="saveLoaiHang"
             class="flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white font-medium px-6 py-2 rounded-lg shadow transition">
-            <!-- Icon save -->
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2"
-              stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round"
-                d="M17 16v2a2 2 0 01-2 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11l4 4v8a2 2 0 01-2 2h-1z" />
-              <path stroke-linecap="round" stroke-linejoin="round" d="M7 10h8v4H7z" />
-            </svg>
             Lưu lại
           </button>
         </div>
@@ -239,8 +173,10 @@
 <script setup>
 import { ref } from "vue";
 import useLoaiHang from "./Loaihang.js";
+import Pagination from "../HelperComponents/pagination.vue";
+import Loader from "../HelperComponents/Loader.vue";
+import Addloai from "./themLoaiHang.vue";
 
-// Import hàm trong composable
 const {
   paginatedData,
   currentPage,
@@ -251,51 +187,15 @@ const {
   nextPage,
   prevPage,
   changePage,
+  getImageUrl,
+  loadLoai,
 } = useLoaiHang();
 
-// Tìm kiếm
 const q = ref("");
-
-// Popup thêm loại hàng
-const showModal = ref(false);
-const newLoai = ref({ tenLoai: "", moTa: "", image: null });
-const fileInput = ref(null);
-
-// Reset form
-const resetForm = () => {
-  newLoai.value = { tenLoai: "", moTa: "", image: null };
-};
-
-// Đóng popup
-const closeModal = () => {
-  showModal.value = false;
-  resetForm();
-};
-const isDragging = ref(false);
-const offset = ref({ x: 0, y: 0 });
-
-const startDrag = (e) => {
-  if (!modalRef.value) return;
-  isDragging.value = true;
-
-  const rect = modalRef.value.getBoundingClientRect();
-  offset.value = { x: e.clientX - rect.left, y: e.clientY - rect.top };
-
-  const move = (ev) => {
-    if (!isDragging.value) return;
-    modalRef.value.style.position = "fixed";
-    modalRef.value.style.left = `${ev.clientX - offset.value.x}px`;
-    modalRef.value.style.top = `${ev.clientY - offset.value.y}px`;
-  };
-
-  const stop = () => {
-    isDragging.value = false;
-    window.removeEventListener("mousemove", move);
-    window.removeEventListener("mouseup", stop);
-  };
-
-  window.addEventListener("mousemove", move);
-  window.addEventListener("mouseup", stop);
-};
-const modalRef = ref(null);
 </script>
+
+<style scoped>
+button {
+  transition: all 0.2s ease;
+}
+</style>
