@@ -49,12 +49,26 @@
             <table class="w-full border-collapse text-sm">
                 <thead class="bg-gray-100 text-gray-700">
                     <tr>
-                        <th v-for="header in headers" :key="header" class="border border-gray-200 p-3 text-left">{{
-                            header }}</th>
+                        <th v-for="header in headers" :key="header" class="border border-gray-200 p-3 text-left cursor-pointer hover:bg-gray-200">
+                            <div class="flex items-center gap-1">
+                                {{ header }}
+                                <div class="flex flex-col">
+                                    <svg class="h-3 w-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M14.707 12.707a1 1 0 01-1.414 0L10 9.414l-3.293 3.293a1 1 0 01-1.414-1.414l4-4a1 1 0 011.414 0l4 4a1 1 0 010 1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                    <svg class="h-3 w-3 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                        </th>
                         <th class="border border-gray-200 p-3 text-center">
                             <button
                                 class="flex items-center justify-center gap-2 bg-blue-500 hover:bg-blue-600 text-white text-xs font-semibold px-3 py-1.5 rounded-md transition">
-                                💾 Lưu
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3-3m0 0l-3 3m3-3v12" />
+                                </svg>
+                                Lưu
                             </button>
                         </th>
                     </tr>
@@ -62,16 +76,27 @@
 
                 <tbody v-if="!loading && paginatedData.length > 0">
                     <tr v-for="(row, i) in paginatedData" :key="row.id" class="hover:bg-gray-50 transition relative">
-                        <td class="border border-gray-200 p-3">{{ row.code }}</td>
-                        <td class="border border-gray-200 p-3">{{ row.supplier }}</td>
-                        <td class="border border-gray-200 p-3">{{ row.product }}</td>
-                        <td class="border border-gray-200 p-3">{{ row.quantity }}</td>
-                        <td class="border border-gray-200 p-3 text-green-600">{{ row.price }}</td>
-                        <td class="border border-gray-200 p-3">{{ row.status }}</td>
-                        <td class="border border-gray-200 p-3">{{ row.date }} {{ row.time }}</td>
+                        <td class="border border-gray-200 p-3">{{ row.code || 'XXXXXX' }}</td>
+                        <td class="border border-gray-200 p-3">{{ row.supplier || 'Nhà cung cấp A' }}</td>
+                        <td class="border border-gray-200 p-3">{{ row.product || 'XXXXXX' }}</td>
+                        <td class="border border-gray-200 p-3">{{ row.quantity || 'XXXXXX' }}</td>
+                        <td class="border border-gray-200 p-3 text-black">{{ formatPrice(row.price) || '500.000 VNĐ' }}</td>
+                        <td class="border border-gray-200 p-3">
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                                :class="getStatusClass(row.status)">
+                                {{ getStatusLabel(row.status) }}
+                            </span>
+                        </td>
+                        <td class="border border-gray-200 p-3">{{ row.creator || 'XXXXXX' }}</td>
+                        <td class="border border-gray-200 p-3">{{ row.date || '13/11/2025' }} {{ row.time || '15:00' }}</td>
                         <td class="border border-gray-200 p-3 text-center relative">
                             <div class="flex items-center justify-center gap-3">
-                                <button class="text-gray-700 hover:text-blue-500">👁️</button>
+                                <button @click="viewPhieu(row)" class="text-gray-700 hover:text-blue-500">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                    </svg>
+                                </button>
                                 <button @click="toggleRowMenu(i)" class="text-gray-700 hover:text-blue-500">⋯</button>
                             </div>
 
@@ -79,12 +104,10 @@
                             <transition name="fade">
                                 <div v-if="row.showMenu"
                                     class="absolute right-3 top-10 z-50 w-32 bg-white border border-gray-200 rounded-lg shadow-md text-sm text-gray-700">
-                                    <button @click="editRow(row)"
-                                        class="block w-full text-left px-4 py-2 hover:bg-gray-100">✏️ Sửa</button>
-                                    <button @click="deleteRow(row.id)"
+                                    <button @click="updateStatus(row)"
+                                        class="block w-full text-left px-4 py-2 hover:bg-gray-100">🔄 Cập nhật status</button>
+                                    <button @click="confirmDeletePhieu(row)"
                                         class="block w-full text-left px-4 py-2 hover:bg-gray-100">🗑️ Xóa</button>
-                                    <button class="block w-full text-left px-4 py-2 hover:bg-gray-100">👁️ Xem</button>
-                                    <button class="block w-full text-left px-4 py-2 hover:bg-gray-100">🚫 Chặn</button>
                                 </div>
                             </transition>
                         </td>
@@ -93,7 +116,7 @@
 
                 <tbody v-else>
                     <tr>
-                        <td colspan="8" class="h-80">
+                        <td colspan="9" class="h-80">
                             <div class="flex items-center justify-center h-full">
                                 <Loader />
                             </div>
@@ -101,6 +124,7 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
 
             <!-- Popup -->
             <div v-if="showModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/15">
@@ -161,6 +185,258 @@
                     </div>
                 </div>
             </div>
+
+        <!-- MODAL XEM CHI TIẾT PHIẾU XUẤT -->
+        <div v-if="showViewModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/15">
+            <div class="bg-white rounded-2xl border border-gray-200 shadow-xl w-full max-w-4xl p-8 space-y-6">
+                <button @click="closeViewModal"
+                    class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold">
+                    ✕
+                </button>
+                
+                <!-- HEADER -->
+                <div class="flex justify-between items-center border-b border-gray-100 pb-4">
+                    <h2 class="text-2xl font-bold text-gray-800">Chi tiết phiếu xuất kho</h2>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                        </div>
+                        <span class="text-lg font-semibold text-blue-600">Dâu</span>
+                    </div>
+                </div>
+
+                <!-- THÔNG TIN CHI TIẾT -->
+                <div class="bg-gray-50 p-6 rounded-xl space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Cột trái -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Mã phiếu</label>
+                                <input :value="selectedPhieu.code || 'XXXXXX'" type="text" readonly
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-gray-50 text-gray-600" />
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Nguồn nhập</label>
+                                <input :value="selectedPhieu.supplier || 'Nhà cung cấp A'" type="text" readonly
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-gray-50 text-gray-600" />
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Tên hàng</label>
+                                <input :value="selectedPhieu.product || 'XXXXXX'" type="text" readonly
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-gray-50 text-gray-600" />
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Số lượng</label>
+                                <input :value="selectedPhieu.quantity || 'XXXXXX'" type="text" readonly
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-gray-50 text-gray-600" />
+                            </div>
+                        </div>
+
+                        <!-- Cột phải -->
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Giá xuất</label>
+                                <input :value="selectedPhieu.price || '$500'" type="text" readonly
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-gray-50 text-gray-600" />
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Tình trạng</label>
+                                <div class="flex items-center gap-2">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                        {{ selectedPhieu.status || 'Đã duyệt' }}
+                                    </span>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Người tạo phiếu</label>
+                                <input :value="selectedPhieu.creator || 'XXXXXX'" type="text" readonly
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-gray-50 text-gray-600" />
+                            </div>
+                            
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Thời gian</label>
+                                <input :value="(selectedPhieu.date || '13/11/2025') + ' ' + (selectedPhieu.time || '15:00')" type="text" readonly
+                                    class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-gray-50 text-gray-600" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mô tả thêm -->
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Ghi chú</label>
+                        <textarea readonly
+                            class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm bg-gray-50 text-gray-600 h-20"
+                            placeholder="Không có ghi chú nào..."></textarea>
+                    </div>
+                </div>
+
+                <!-- NÚT HÀNH ĐỘNG -->
+                <div class="flex justify-center pt-6 border-t border-gray-200">
+                    <button @click="closeViewModal"
+                        class="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white font-medium px-6 py-3 rounded-lg transition shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Đóng
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- MODAL XÁC NHẬN XÓA PHIẾU -->
+        <div v-if="showDeleteModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
+            <div class="bg-white rounded-2xl p-8 w-[500px] max-w-[90%] relative shadow-2xl">
+                <!-- Icon cảnh báo -->
+                <div class="flex justify-center mb-4">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Tiêu đề -->
+                <h2 class="text-2xl font-bold text-gray-900 text-center mb-2">Xóa phiếu xuất kho</h2>
+                <p class="text-gray-600 text-center mb-6">Hành động này không thể hoàn tác!</p>
+
+                <!-- Thông tin phiếu -->
+                <div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm font-semibold text-gray-700">Mã phiếu:</span>
+                            <span class="text-sm text-gray-900">{{ phieuToDelete.code || 'XXXXXX' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm font-semibold text-gray-700">Nguồn nhập:</span>
+                            <span class="text-sm text-gray-900">{{ phieuToDelete.supplier || 'Nhà cung cấp A' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm font-semibold text-gray-700">Giá xuất:</span>
+                            <span class="text-sm text-gray-900">{{ phieuToDelete.price || '$500' }}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Câu hỏi xác nhận -->
+                <p class="text-center text-gray-700 mb-6">
+                    Bạn có chắc chắn muốn xóa phiếu xuất kho <span class="font-bold text-red-600">{{ phieuToDelete.code || 'XXXXXX' }}</span>?
+                </p>
+
+                <!-- Nút hành động -->
+                <div class="flex gap-3">
+                    <button @click="showDeleteModal = false"
+                        class="flex-1 bg-gray-200 hover:bg-gray-300 text-gray-800 font-medium px-6 py-3 rounded-lg transition">
+                        Hủy
+                    </button>
+                    <button @click="deletePhieu"
+                        :disabled="loading"
+                        class="flex-1 bg-red-600 hover:bg-red-700 text-white font-medium px-6 py-3 rounded-lg transition disabled:opacity-50 flex items-center justify-center gap-2">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+                        </svg>
+                        {{ loading ? 'Đang xóa...' : 'Xóa' }}
+                    </button>
+                </div>
+
+                <!-- Nút đóng X -->
+                <button @click="showDeleteModal = false"
+                    class="absolute top-4 right-4 text-gray-400 hover:text-red-500 text-2xl font-bold transition">
+                    ✕
+                </button>
+            </div>
+        </div>
+
+        <!-- MODAL CẬP NHẬT STATUS -->
+        <div v-if="showStatusModal" class="fixed inset-0 flex items-center justify-center z-50 bg-black/40">
+            <div class="bg-white rounded-2xl p-8 w-[500px] max-w-[90%] relative shadow-2xl">
+                <button @click="closeStatusModal"
+                    class="absolute top-4 right-4 text-gray-500 hover:text-red-500 text-xl font-bold">
+                    ✕
+                </button>
+                
+                <!-- HEADER -->
+                <div class="flex justify-between items-center border-b border-gray-100 pb-4 mb-6">
+                    <h2 class="text-2xl font-bold text-gray-800">Cập nhật trạng thái</h2>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                            </svg>
+                        </div>
+                        <span class="text-lg font-semibold text-blue-600">Dâu</span>
+                    </div>
+                </div>
+
+                <!-- THÔNG TIN PHIẾU -->
+                <div class="bg-gray-50 rounded-lg p-4 mb-6 border border-gray-200">
+                    <div class="space-y-2">
+                        <div class="flex justify-between">
+                            <span class="text-sm font-semibold text-gray-700">Mã phiếu:</span>
+                            <span class="text-sm text-gray-900">{{ phieuToUpdate.code || 'XXXXXX' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm font-semibold text-gray-700">Nguồn nhập:</span>
+                            <span class="text-sm text-gray-900">{{ phieuToUpdate.supplier || 'Nhà cung cấp A' }}</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span class="text-sm font-semibold text-gray-700">Trạng thái hiện tại:</span>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium"
+                                :class="getStatusClass(phieuToUpdate.status)">
+                                {{ getStatusLabel(phieuToUpdate.status) }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORM CẬP NHẬT -->
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Trạng thái mới</label>
+                        <select v-model="newStatus"
+                            class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition appearance-none bg-white">
+                            <option value="">Chọn trạng thái mới</option>
+                            <option value="pending">Chờ duyệt</option>
+                            <option value="approved">Đã duyệt</option>
+                            <option value="rejected">Từ chối</option>
+                            <option value="blocked">Bị khóa</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-700 mb-2">Ghi chú (tùy chọn)</label>
+                        <textarea v-model="statusNote"
+                            placeholder="Nhập ghi chú về việc thay đổi trạng thái..."
+                            class="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition h-20"></textarea>
+                    </div>
+                </div>
+
+                <!-- NÚT HÀNH ĐỘNG -->
+                <div class="flex justify-center gap-4 pt-6 border-t border-gray-200">
+                    <button @click="closeStatusModal"
+                        class="flex items-center gap-2 bg-gray-600 hover:bg-gray-700 text-white font-medium px-6 py-3 rounded-lg transition shadow-sm">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                        Hủy
+                    </button>
+                    
+                    <button @click="saveStatusUpdate"
+                        :disabled="!newStatus || loading"
+                        class="flex items-center gap-2 bg-blue-600 hover:bg-blue-700 text-white font-medium px-6 py-3 rounded-lg transition shadow-sm disabled:opacity-50">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                        {{ loading ? 'Đang cập nhật...' : 'Cập nhật' }}
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- PHÂN TRANG -->
@@ -195,7 +471,7 @@
 import { ref, computed, reactive, onMounted } from "vue";
 import Loader from "../HelperComponents/Loader.vue";
 
-const headers = ["Mã phiếu", "Nguồn nhập", "Tên hàng", "Số lượng", "Giá xuất", "Tình trạng", "Thời gian"];
+const headers = ["Mã phiếu", "Nguồn nhập", "Tên hàng", "Số lượng", "Giá xuất", "Tình trạng", "Tên người tạo phiếu", "Thời gian"];
 const showSort = ref(false);
 const sortLabel = ref("Newest");
 const searchQuery = ref("");
@@ -212,9 +488,53 @@ onMounted(async () => {
     try {
         const res = await fetch("http://localhost:3000/phieuXuatKho");
         if (!res.ok) throw new Error("Lỗi tải dữ liệu!");
-        data.value = await res.json();
+        const fetchedData = await res.json();
+        // Thêm trường creator cho mỗi item nếu chưa có
+        data.value = fetchedData.map(item => ({
+            ...item,
+            creator: item.creator || 'Nguyễn Văn A'
+        }));
     } catch (err) {
         console.error("Fetch error:", err);
+        // Dữ liệu mẫu khi không kết nối được API
+        data.value = [
+            {
+                id: 1,
+                code: "PX001",
+                supplier: "Nhà cung cấp A",
+                product: "Sản phẩm A",
+                quantity: "100",
+                price: "$500",
+                status: "approved",
+                creator: "Nguyễn Văn A",
+                date: "13/11/2025",
+                time: "15:00"
+            },
+            {
+                id: 2,
+                code: "PX002",
+                supplier: "Nhà cung cấp B",
+                product: "Sản phẩm B",
+                quantity: "200",
+                price: "$750",
+                status: "pending",
+                creator: "Trần Thị B",
+                date: "14/11/2025",
+                time: "10:30"
+            },
+            {
+                id: 3,
+                code: "PX003",
+                supplier: "Nhà cung cấp C",
+                product: "Sản phẩm C",
+                quantity: "150",
+                price: "$300",
+                status: "approved",
+                creator: "Lê Văn C",
+                date: "15/11/2025",
+                time: "09:15"
+            }
+        ];
     } finally {
         loading.value = false;
     }
@@ -256,6 +576,14 @@ const toggleRowMenu = (index) => {
 const editRow = (row) => alert(`Sửa phiếu: ${row.code}`);
 const deleteRow = (id) => alert(`Xóa phiếu ID: ${id}`);
 const showModal = ref(false);
+const showViewModal = ref(false);
+const showDeleteModal = ref(false);
+const showStatusModal = ref(false);
+const selectedPhieu = ref({});
+const phieuToDelete = ref({});
+const phieuToUpdate = ref({});
+const newStatus = ref("");
+const statusNote = ref("");
 
 const newPhieu = reactive({
     supplier: "",
@@ -290,6 +618,134 @@ const stopDrag = () => {
 };
 const closeModal = () => {
     showModal.value = false;
+};
+
+// Xem chi tiết phiếu xuất
+const viewPhieu = (phieu) => {
+    selectedPhieu.value = { ...phieu };
+    showViewModal.value = true;
+};
+
+// Đóng modal xem chi tiết
+const closeViewModal = () => {
+    showViewModal.value = false;
+    selectedPhieu.value = {};
+};
+
+// Cập nhật trạng thái phiếu xuất
+const updateStatus = (phieu) => {
+    phieuToUpdate.value = { ...phieu };
+    newStatus.value = "";
+    statusNote.value = "";
+    showStatusModal.value = true;
+    // Đóng menu dropdown
+    phieu.showMenu = false;
+};
+
+// Đóng modal cập nhật status
+const closeStatusModal = () => {
+    showStatusModal.value = false;
+    phieuToUpdate.value = {};
+    newStatus.value = "";
+    statusNote.value = "";
+};
+
+// Lưu cập nhật trạng thái
+const saveStatusUpdate = async () => {
+    try {
+        loading.value = true;
+        
+        // TODO: Call API to update status
+        // await updatePhieuStatusAPI(phieuToUpdate.value.id, newStatus.value, statusNote.value);
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Update status in data array
+        const index = data.value.findIndex(item => item.id === phieuToUpdate.value.id);
+        if (index > -1) {
+            data.value[index].status = newStatus.value;
+        }
+        
+        closeStatusModal();
+    } catch (error) {
+        console.error('Lỗi cập nhật trạng thái:', error);
+        alert('Có lỗi xảy ra khi cập nhật trạng thái!');
+    } finally {
+        loading.value = false;
+    }
+};
+
+// Helper functions for status
+const getStatusLabel = (status) => {
+    const statusMap = {
+        'pending': 'Chờ duyệt',
+        'approved': 'Đã duyệt',
+        'rejected': 'Từ chối',
+        'blocked': 'Bị khóa'
+    };
+    return statusMap[status] || status;
+};
+
+const getStatusClass = (status) => {
+    const classMap = {
+        'pending': 'bg-yellow-100 text-yellow-800',
+        'approved': 'bg-green-100 text-green-800',
+        'rejected': 'bg-red-100 text-red-800',
+        'blocked': 'bg-gray-100 text-gray-800'
+    };
+    return classMap[status] || 'bg-gray-100 text-gray-800';
+};
+
+// Format price to Vietnamese Dong
+const formatPrice = (price) => {
+    if (!price) return '500.000 VNĐ';
+    
+    // Remove $ and convert to number
+    let numericPrice = price.toString().replace(/[$,]/g, '');
+    numericPrice = parseFloat(numericPrice);
+    
+    if (isNaN(numericPrice)) return '500.000 VNĐ';
+    
+    // Convert USD to VND (approximate rate 1 USD = 24,000 VND)
+    const vndAmount = Math.round(numericPrice * 24000);
+    
+    // Format with thousand separators
+    return vndAmount.toLocaleString('vi-VN') + ' VNĐ';
+};
+
+// Xác nhận xóa phiếu
+const confirmDeletePhieu = (phieu) => {
+    phieuToDelete.value = { ...phieu };
+    showDeleteModal.value = true;
+    // Đóng menu dropdown
+    phieu.showMenu = false;
+};
+
+// Xóa phiếu xuất
+const deletePhieu = async () => {
+    try {
+        loading.value = true;
+        // TODO: Call API to delete phieu
+        // await deletePhieuAPI(phieuToDelete.value.id);
+        
+        // Simulate API call
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Remove from data array
+        const index = data.value.findIndex(item => item.id === phieuToDelete.value.id);
+        if (index > -1) {
+            data.value.splice(index, 1);
+        }
+        
+        showDeleteModal.value = false;
+        phieuToDelete.value = {};
+    } catch (error) {
+        console.error('Lỗi xóa phiếu:', error);
+        alert('Có lỗi xảy ra khi xóa phiếu xuất kho!');
+    } finally {
+        loading.value = false;
+    }
 };
 
 </script>
