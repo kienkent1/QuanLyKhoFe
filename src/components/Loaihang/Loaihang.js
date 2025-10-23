@@ -73,7 +73,7 @@ export const createLoai = async (data) => {
 export default function useLoaiHang() {
   const loaiHang = ref([]);
   const currentPage = ref(1);
-  const perPage = 5;
+  const perPage = 4;
   const loading = ref(false);
   const errorMessage = ref("");
 

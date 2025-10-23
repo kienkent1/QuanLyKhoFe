@@ -194,12 +194,6 @@
             <p class="text-xs text-gray-400">Đã cập nhật {{ monthsAgo }} tháng trước</p>
           </div>
         </div>
-
-        <button
-          class="mt-3 px-4 py-1.5 bg-gray-200 hover:bg-gray-400 text-blue-500 rounded-lg shadow transition"
-        >
-          Đổi email
-        </button>
       </div>
     </div>
   </div>

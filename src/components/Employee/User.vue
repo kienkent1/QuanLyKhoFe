@@ -1,7 +1,7 @@
 <template>
-  <div class="p-6 space-y-4 min-h-screen bg-gray-50">
+  <div class="p-6 space-y-4 bg-gray-50">
     <!-- 🔹 THANH CÔNG CỤ -->
-    <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl shadow-sm border">
+    <div class="flex flex-wrap items-center justify-between gap-3 bg-white p-4 rounded-xl shadow-sm ">
       <!-- Ô tìm kiếm -->
       <div class="relative flex-1 min-w-[250px] max-w-[400px]">
         <input
@@ -803,7 +803,7 @@ const sort = ref({ field: "", isDesc: false });
 const objQuery = ref({
   query: "",
   page: 1,
-  pageSize: 10,
+  pageSize: 5,
   FieldName: "",
   Isdesc: false,
   FilterName: "",

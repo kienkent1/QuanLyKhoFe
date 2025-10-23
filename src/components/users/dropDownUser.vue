@@ -103,9 +103,6 @@ const logout = () => {
   window.location.href = '/login';
 }
 
-onMounted(() => document.addEventListener('click', handleClickOutside))
-onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
-
 </script>
 
 <style scoped>
