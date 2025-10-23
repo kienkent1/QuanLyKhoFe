@@ -1,6 +1,8 @@
 <template>
   <div class="min-h-screen flex justify-center items-center bg-white">
-    <div class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-[1100px] pb-10">
+    <div
+      class="animate-slide-in-left bg-white shadow-2xl rounded-2xl p-8 w-full max-w-[1100px] pb-10"
+    >
       <div class="flex items-center justify-between mb-6">
         <div>
           <h1 class="text-xl font-semibold text-gray-800">
@@ -10,43 +12,48 @@
         </div>
         <div class="flex gap-3">
           <button
+            v-if="!isEditing"
+            @click="enableEdit"
             class="flex items-center gap-2 px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M15.232 5.232l3.536 3.536M9 11l6.536-6.536a2.5 2.5 0 113.536 3.536L12.536 14.5H9v-3.5z"
-              />
-            </svg>
             Chỉnh sửa
           </button>
 
-          <button
-            @click="showChangePassword = true"
-            class="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition"
+          <div v-else class="flex gap-3">
+            <button
+              @click="saveAvatar"
+              class="px-4 py-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg shadow transition"
+            >
+              Lưu
+            </button>
+
+            <button
+              @click="cancelEdit"
+              class="px-4 py-1.5 bg-gray-400 hover:bg-gray-500 text-white rounded-lg shadow transition"
+            >
+              Hủy
+            </button>
+          </div>
+
+          <router-link
+            to="/change-password"
+            class="px-4 py-1.5 bg-blue-500 hover:bg-blue-600 text-white rounded-lg shadow transition inline-block"
           >
             Đổi mật khẩu
-          </button>
+          </router-link>
         </div>
       </div>
 
-      <!-- Thông tin người dùng -->
+      <!-- Avatar -->
       <div class="flex items-center mb-6">
         <div class="relative group">
           <img
-            :src="user.avatar"
+            :src="user.avatar || defaultAvatar"
             alt="avatar"
             class="w-20 h-20 rounded-full object-cover border-4 border-white shadow"
           />
           <label
+            v-if="isEditing"
             for="avatarUpload"
             class="absolute bottom-0 right-0 bg-white text-blue-600 p-1.5 rounded-full border border-gray-300 cursor-pointer shadow-md hover:bg-gray-100 transition opacity-0 group-hover:opacity-100"
           >
@@ -67,6 +74,7 @@
             </svg>
           </label>
           <input
+            v-if="isEditing"
             type="file"
             id="avatarUpload"
             accept="image/*"
@@ -81,7 +89,7 @@
         </div>
       </div>
 
-      <!-- Form thông tin -->
+      <!-- Thông tin cá nhân -->
       <div class="grid grid-cols-2 gap-5">
         <div class="space-y-4">
           <div>
@@ -91,7 +99,8 @@
             <input
               type="text"
               v-model="user.username"
-              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              readonly
+              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md focus:outline-none"
             />
           </div>
 
@@ -101,7 +110,8 @@
             </label>
             <select
               v-model="user.gender"
-              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400 bg-white"
+              disabled
+              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md bg-white"
             >
               <option value="" disabled>Chọn giới tính</option>
               <option value="Nam">Nam</option>
@@ -117,7 +127,8 @@
             <input
               type="date"
               v-model="user.dob"
-              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              readonly
+              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md"
             />
           </div>
         </div>
@@ -130,7 +141,8 @@
             <input
               type="text"
               v-model="user.fullName"
-              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              readonly
+              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md"
             />
           </div>
 
@@ -141,7 +153,8 @@
             <input
               type="text"
               v-model="user.role"
-              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              readonly
+              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md bg-gray-100 cursor-not-allowed"
             />
           </div>
 
@@ -152,7 +165,8 @@
             <input
               type="text"
               v-model="user.phone"
-              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md focus:outline-none focus:ring-2 focus:ring-blue-400"
+              readonly
+              class="w-full border border-gray-300 rounded-lg px-3 py-1.5 shadow-md"
             />
           </div>
         </div>
@@ -177,9 +191,7 @@
           </div>
           <div>
             <p class="text-gray-600 font-medium">{{ user.email }}</p>
-            <p class="text-xs text-gray-400">
-              Đã cập nhật {{ monthsAgo }} tháng trước
-            </p>
+            <p class="text-xs text-gray-400">Đã cập nhật {{ monthsAgo }} tháng trước</p>
           </div>
         </div>
 
@@ -191,27 +203,85 @@
       </div>
     </div>
   </div>
-
-  <change-password 
-    v-if="showChangePassword"
-    @close="showChangePassword = false"
-  />
 </template>
 
 <script setup>
-import useProfile from "./Profile.js";
-const {
-  user,
-  formattedDate,
-  monthsAgo,
-  showChangePassword,
-  updateAvatar
-} = useProfile();
+import { ref, onMounted } from "vue";
+import { getProfile } from "./Profile.js";
+import axios from "axios";
+
+const user = ref({});
+const isEditing = ref(false);
+const formattedDate = new Date().toLocaleDateString("vi-VN");
+const monthsAgo = 2;
+const defaultAvatar = "/default-avatar.png";
+
+// Load hồ sơ
+const loadProfile = async () => {
+  const result = await getProfile();
+  if (result.success) user.value = result.data;
+  else alert(result.message);
+};
+
+// Bật chế độ chỉnh sửa avatar
+const enableEdit = () => (isEditing.value = true);
+
+// PATCH avatar
+const saveAvatar = async () => {
+  if (!user.value.avatarFile) {
+    alert("Vui lòng chọn ảnh mới trước khi lưu!");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("avatar", user.value.avatarFile);
+
+  try {
+    const res = await axios.patch("http://localhost:7000/api/NhanVien/avatar", formData, {
+      headers: { "Content-Type": "multipart/form-data" },
+    });
+
+    if (res.status === 200||res.status === 201) {
+      alert("Cập nhật ảnh thành công!");
+      isEditing.value = false;
+      await loadProfile();
+    }
+  } catch (err) {
+    console.error("❌ Lỗi PATCH avatar:", err);
+    alert("Không thể cập nhật ảnh");
+  }
+};
+
+// Hủy chỉnh sửa
+const cancelEdit = async () => {
+  isEditing.value = false;
+  await loadProfile();
+};
+
+// Xem trước avatar
+const updateAvatar = (e) => {
+  const file = e.target.files[0];
+  if (file) {
+    user.value.avatarFile = file;
+    user.value.avatar = URL.createObjectURL(file);
+  }
+};
+
+onMounted(loadProfile);
 </script>
 
-<style lang="postcss">
-html,
-body {
-  overflow: hidden;
+<style>
+@keyframes slide-in-left {
+  0% {
+    transform: translateX(-40px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.animate-slide-in-left {
+  animation: slide-in-left 0.6s ease forwards;
 }
 </style>

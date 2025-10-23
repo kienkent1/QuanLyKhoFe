@@ -13,6 +13,8 @@ import phieuNhapKho from "./src/components/receipt/phieuNhapKho.vue";
 import Role from "./src/components/role/Role.vue";
 import hangHoa from "./src/components/HangHoa/hangHoa.vue";
 import xuatnhap from "./src/components/xuatnhap/xuatNhapFile.vue";
+import profile from "./src/components/Profile/Profile.vue";
+import changePassword from "./src/components/Change_Password/Change_Password.vue";
 import VueCookies from "vue-cookies";
 import * as api from "./src/helper/callApi.js";
 const routes = [
@@ -29,6 +31,16 @@ const routes = [
     name: "register",
     component: Register,
     meta: { public: true },
+  },
+  {
+    path: "/profile",
+    name: "profile",
+    component: profile,
+  },
+  {
+    path: "/change-password",
+    name: "changePassword",
+    component: changePassword,
   },
   {
     path: "/403",
