@@ -63,7 +63,6 @@
             Cài đặt
           </li>
           <li
-            @click="logout"
             class="menu-item flex items-center gap-3 p-2 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-500 hover:shadow-md hover:-translate-y-[1px] hover:text-gray-900 group"
           >
             <span class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors">logout</span>
@@ -79,33 +78,7 @@
 import { useUserDropdown } from "./dropDownUser"; // <-- chỉnh đường dẫn nếu cần
 const { user, open, hasOpened, toggleDropdown, refreshProfile } = useUserDropdown(true);
 
-
-const logout = () => {
-  // Xóa tất cả dữ liệu authentication
-  localStorage.removeItem('accessToken');
-  localStorage.removeItem('refreshToken');
-  localStorage.removeItem('isRemember');
-  localStorage.removeItem('userInfo');
-  localStorage.removeItem('userRole');
-  
-  // Xóa cookies nếu có
-  document.cookie = 'accessToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  document.cookie = 'refreshToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  document.cookie = 'isRemember=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
-  
-  // Xóa sessionStorage nếu có
-  sessionStorage.clear();
-  
-  // Đóng dropdown
-  open.value = false;
-  
-  // Chuyển hướng về trang đăng nhập
-  window.location.href = '/login';
-}
-
-onMounted(() => document.addEventListener('click', handleClickOutside))
-onBeforeUnmount(() => document.removeEventListener('click', handleClickOutside))
-
+// nếu muốn refresh thủ công ở component này, gọi refreshProfile()
 </script>
 
 <style scoped>
