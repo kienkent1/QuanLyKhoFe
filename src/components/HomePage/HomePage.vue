@@ -181,7 +181,7 @@ onMounted(() => {
           </div>
         </div>
 
-        <p class="text-2xl font-bold text-blue-600 mb-2">12.434.000 VND</p>
+        <p class="text-2xl font-bold text-black mb-2">12.434.000 VND</p>
         <Bar :data="expenseChartData" :options="{
           responsive: true,
           plugins: { legend: { display: false }, tooltip: { enabled: true } },
