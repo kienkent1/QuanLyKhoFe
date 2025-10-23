@@ -1,34 +1,43 @@
+import * as api from '../../../helper/callApi.js'
+import VueCookies from 'vue-cookies';
 
-import { onMounted } from "vue"
+const param = 'Authentication/google-Login'
+const loginGG = async (idToken, isRemember) => {
+  try {
+    const res = await api.postApi(param, {idToken:idToken});
+    if(res.status === 400)  return {message:`${res.data.message}`, success: true};
 
-export function useGoogleLogin (){
-const  onGsi = async (resp) => {
-  const idToken = resp?.credential;   // <-- JWT có 2 dấu '.'
-  if (!idToken || idToken.split('.').length !== 3) {
-    console.warn('Không có idToken từ Google');
-    return;
-  }
+    else if(res.status === 200 || res.status === 201){
 
-  // const r = await fetch("https://localhost:7035/api/User/auth/google", {
-  //   method: "POST",
-  //   headers: { "Content-Type": "application/json" },
-  //   body: JSON.stringify({ idToken }) // KEY phải là idToken (khớp DTO)
-  //});
+        const accessToken = res.data.data.accessToken;
+        
+        const refreshToken = res.data.data.refreshToken;
+        if(isRemember === true){
+            VueCookies.set('accessToken', `${accessToken}`, '1d');
+        localStorage.setItem('refreshToken',`${refreshToken}`)
+        localStorage.setItem('isRemember', true)
+        }
+        else{
+            VueCookies.set('accessToken', `${accessToken}`, '1h');
+        localStorage.setItem('refreshToken',`${refreshToken}`)
+        localStorage.removeItem('isRemember');
+        }
+        
 
-  
-};
-
-onMounted(() => {
-  const ready = setInterval(() => {
-    if (window.google?.accounts?.id) {
-      clearInterval(ready);
-      google.accounts.id.initialize({
-        client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
-        callback: onGsi
-      });
+        return {message:'Đăng nhập thành công',success: true};
     }
-  }, 50);
-});
+    else if(res.status === 5000){
+        console.error(res.data.message);
 
-
+        return {message:'Lỗi hệ thống',success: false};
+    }
+} catch (error) {
+    console.error(error);
+    return {
+        status: err.response?.status || 0,
+        data: { message: err.message || 'Không thể kết nối đến máy chủ.' },
+        success: false
+      };
 }
+}
+export default loginGG;

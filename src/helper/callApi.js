@@ -125,4 +125,28 @@ export const putApi = (url, data = {}, config = {}) => api.put(url, data, config
 export const patchApi = (url, data = {}, config = {}) => api.patch(url, data, config);
 export const deleteApi = (url, config = {}) => api.delete(url, config);
 
+// Hàm callApi tổng quát
+export const callApi = async (method, url, data = null, config = {}) => {
+  const requestConfig = {
+    ...config,
+    requiresAuth: true,
+    auth: true
+  };
+
+  switch (method.toUpperCase()) {
+    case 'GET':
+      return await getApi(url, requestConfig, data);
+    case 'POST':
+      return await postApi(url, data, requestConfig);
+    case 'PUT':
+      return await putApi(url, data, requestConfig);
+    case 'PATCH':
+      return await patchApi(url, data, requestConfig);
+    case 'DELETE':
+      return await deleteApi(url, requestConfig);
+    default:
+      throw new Error(`Unsupported HTTP method: ${method}`);
+  }
+};
+
 export default api;

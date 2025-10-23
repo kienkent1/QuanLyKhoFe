@@ -38,7 +38,11 @@ try {
     }
 } catch (error) {
     console.error(error);
-    return { message: 'Không thể kết nối đến server', success: false };
+    return {
+        status: err.response?.status || 0,
+        data: { message: err.message || 'Không thể kết nối đến máy chủ.' },
+        success: false 
+      };
 }
 
 }
