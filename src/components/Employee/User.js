@@ -4,6 +4,7 @@ const controller = 'NhanVien'
 export const userData = async (query = {}) => {
 
    
+
   const data = await  api.getApi(controller, {requiresAuth: true}, query)
   return data.data.data
 } 
@@ -19,3 +20,4 @@ export const updateUser = async (id, data) => {
 export const deleteUser = async (id) => {
   return await api.deleteApi(`${controller}/${id}`, {requiresAuth: true})
 }
+
