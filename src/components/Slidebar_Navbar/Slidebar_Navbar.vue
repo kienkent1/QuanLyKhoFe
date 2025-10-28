@@ -3,7 +3,7 @@
     <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
       class="fixed top-0 left-0 z-40 w-64 h-screen bg-white border-r border-gray-200 transition-transform duration-300 ease-in-out">
       <div class="flex justify-end p-3 sm:hidden">
-        <button @click="toggleSidebar" class="text-gray-600 hover:text-gray-900">
+        <button @click="toggleSidebar()" class="text-gray-600 hover:text-gray-900">
           <span class="material-icons text-2xl">close</span>
         </button>
       </div>
@@ -21,24 +21,24 @@
             </a>
           </li>
           <li>
-            <routerLink to="/Supplier" :class="getActiveClasses('/Supplier')">
-              <span :class="getActiveIconClasses('/Supplier')">
+            <routerLink to="/nha-cung-cap" :class="getActiveClasses('/nha-cung-cap')">
+              <span :class="getActiveIconClasses('/nha-cung-cap')">
                 business
               </span>
               <span class="ms-3">Nhà cung cấp</span>
             </routerLink>
           </li>
           <li>
-            <routerLink to="/xuatKho" :class="getActiveClasses('/xuatKho')">
-              <span :class="getActiveIconClasses('/xuatKho')">
+            <routerLink to="/xuat-Kho" :class="getActiveClasses('/xuat-Kho')">
+              <span :class="getActiveIconClasses('/xuat-Kho')">
                 assignment
               </span>
               <span class="ms-3">Tạo phiếu xuất</span>
             </routerLink>
           </li>
           <li>
-            <routerLink to="/nhapKho" :class="getActiveClasses('/nhapKho')">
-              <span :class="getActiveIconClasses('/nhapKho')">
+            <routerLink to="/nhap-Kho" :class="getActiveClasses('/nhap-Kho')">
+              <span :class="getActiveIconClasses('/nhap-Kho')">
                 file_download
               </span>
               <span class="ms-3">Tạo phiếu nhập</span>
@@ -53,20 +53,20 @@
             </routerLink>
           </li>
           <li>
-            <router-link to="/hangHoa" :class="getActiveClasses('/hangHoa')">
-              <span :class="getActiveIconClasses('/hangHoa')">inventory</span>
+            <router-link to="/hang-Hoa" :class="getActiveClasses('/hang-Hoa')">
+              <span :class="getActiveIconClasses('/hang-Hoa')">inventory</span>
               <span class="ms-3">Hàng Hóa</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/User" :class="getActiveClasses('/User')">
-              <span :class="getActiveIconClasses('/User')">group</span>
+            <router-link to="/nhan-vien" :class="getActiveClasses('/nhan-vien')">
+              <span :class="getActiveIconClasses('/nhan-vien')">group</span>
               <span class="ms-3">Nhân viên</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/taikhoan" :class="getActiveClasses('/taikhoan')">
-              <span :class="getActiveIconClasses('/taikhoan')">person</span>
+            <router-link to="/tai-khoan" :class="getActiveClasses('/tai-khoan')">
+              <span :class="getActiveIconClasses('/tai-khoan')">person</span>
               <span class="ms-3">Trang tài khoản</span>
             </router-link>
           </li>
@@ -77,14 +77,14 @@
             </a>
           </li>
           <li>
-            <router-link to="/xuatNhap" :class="getActiveClasses('/xuatNhap')">
-              <span :class="getActiveIconClasses('/xuatNhap')">upload_file</span>
+            <router-link to="/xuat-Nhap" :class="getActiveClasses('/xuat-Nhap')">
+              <span :class="getActiveIconClasses('/xuat-Nhap')">upload_file</span>
               <span class="ms-3">Xuất - nhập file</span>
             </router-link>
           </li>
           <li>
-            <router-link to="/phanQuyen" :class="getActiveClasses('/phanQuyen')">
-              <span :class="getActiveIconClasses('/phanQuyen')">admin_panel_settings</span>
+            <router-link to="/phan-Quyen" :class="getActiveClasses('/phan-Quyen')">
+              <span :class="getActiveIconClasses('/phan-Quyen')">admin_panel_settings</span>
               <span class="ms-3">Phân Quyền</span>
             </router-link>
           </li>
@@ -156,15 +156,15 @@ const route = useRoute();
 
 const pageTitleMap = {
   '/': 'Trang chủ',
-  '/Supplier': 'Nhà cung cấp',
-  '/xuatKho': 'Tạo phiếu xuất',
-  '/nhapKho': 'Tạo phiếu nhập',
+  '/nha-cung-cap': 'Nhà cung cấp',
+  '/xuat-Kho': 'Tạo phiếu xuất',
+  '/nhap-Kho': 'Tạo phiếu nhập',
   '/loai': 'Loại hàng hóa',
-  '/hangHoa': 'Hàng hóa',
-  '/User': 'Nhân viên',
-  '/taikhoan': 'Trang tài khoản',
-  '/phanQuyen': 'Phân quyền',
-  '/xuatNhap': 'Xuất - nhập file'
+  '/hang-Hoa': 'Hàng hóa',
+  '/nhan-vien': 'Nhân viên',
+  '/tai-khoan': 'Trang tài khoản',
+  '/phan-Quyen': 'Phân quyền',
+  '/xuat-Nhap': 'Xuất - nhập file'
 };
 
 const currentPageTitle = computed(() => {

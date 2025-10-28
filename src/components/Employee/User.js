@@ -1,23 +1,42 @@
 import * as api from '../../helper/callApi.js'
+import * as contenType from '../../helper/baseHeaderContentype.js'
+
 const controller = 'NhanVien'
 
-export const userData = async (query = {}) => {
+export const getNhanVien = async (params = {}) => {
+try {
+  const res = await api.getApi(controller, {
+    params:params,
+    requiresAuth: true,
+  });
 
-   
-
-  const data = await  api.getApi(controller, {requiresAuth: true}, query)
-  return data.data.data
-} 
-
-export const createUser = async (data) => {
-  return await api.postApi(controller, data, {requiresAuth: true});
+  return res;
+} catch (error) {
+  api.throwErr(error, controller);
 }
+};
 
-export const updateUser = async (id, data) => {
-  return await api.putApi(`${controller}/${id}`, data, {requiresAuth: true});
+export const getNhanVienById = async (id) => {
+try {
+  const res = await api.getApi(controller + `/${id}`,{
+    requiresAuth: true
+  });
+
+  return res;
+} catch (error) {
+  api.throwErr(error, controller)
 }
+};
 
-export const deleteUser = async (id) => {
-  return await api.deleteApi(`${controller}/${id}`, {requiresAuth: true})
+export const deleteNhanVien = async (id) => {
+  try {
+    const res = await api.deleteApi(controller + `/${id}`,{
+      requiresAuth: true
+    });
+
+    return res;
+  } catch (error) {
+    api.throwErr(error, controller)
+  }
 }
 

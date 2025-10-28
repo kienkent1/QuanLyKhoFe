@@ -16,6 +16,8 @@ export default function useSlidebarNavbar() {
 
   onMounted(() => {
     handleResize()
+    const saved = localStorage.getItem('isSlideBarShow');
+  sidebarOpen.value = saved === 'true';
     window.addEventListener("resize", handleResize)
   })
 
@@ -24,7 +26,15 @@ export default function useSlidebarNavbar() {
   })
 
   const toggleSidebar = () => {
-    sidebarOpen.value = !sidebarOpen.value
+    const isSlideBarShow = localStorage.getItem('isSlideBarShow');
+
+  if (isSlideBarShow === 'true') {
+    localStorage.setItem('isSlideBarShow', 'false');
+    sidebarOpen.value = false;
+  } else {
+    localStorage.setItem('isSlideBarShow', 'true');
+    sidebarOpen.value = true;
+  }
   }
 
   return {

@@ -58,43 +58,43 @@ const routes = [
     component: Loaihang,
   },
   {
-    path: "/User",
+    path: "/nhan-vien",
     name: "User",
     component: Employee,
   },
   {
-    path: "/Supplier",
+    path: "/nha-cung-cap",
     name: "Supplier",
     component: nhaCungCap,
   },
   {
-    path: "/xuatKho",
+    path: "/xuat-Kho",
     name: "xuatKho",
     component: phieuXuatKho,
   },
   {
-    path: "/nhapKho",
+    path: "/nhap-Kho",
     name: "nhapKho",
     component: phieuNhapKho,
   },
   {
-    path: "/phanQuyen",
+    path: "/phan-Quyen",
     name: "phanQuyen",
     component: Role,
   },
   {
-    path: "/hangHoa",
+    path: "/hang-hoa",
     name: "hangHoa",
     component: hangHoa,
   },
 
     {
-    path: "/xuatNhap",
+    path: "/xuat-Nhap",
     name: "xuatNhap",
     component: xuatnhap,
   },
   {
-    path: "/taikhoan",
+    path: "/tai-khoan",
     name: "taikhoan",
     component: Account,
   },

@@ -1,6 +1,8 @@
-<script setup>
+<script setup lang="ts">
 import { ref, onMounted } from "vue";
 import { Line, Bar } from "vue-chartjs";
+
+
 import {
   Chart as ChartJS,
   Title,
@@ -28,10 +30,10 @@ const loading = ref(false);
 
 // Dữ liệu demo
 const cardStats = [
-  { title: "Số lượng nhân viên", value: 562, color: "#2563eb", data: [3, 8, 6, 10, 7, 9, 8] },
-  { title: "Nhà cung cấp", value: 562, color: "#2563eb", data: [4, 6, 9, 7, 10, 9, 8] },
-  { title: "Số phiếu nhập", value: 1000, percent: "+5%" },
-  { title: "Số phiếu xuất", value: 100, percent: "+8%" },
+  { title: "Số lượng nhân viên", value: 10, color: "#2563eb", data: [3, 8, 6, 10, 7, 9, 8] },
+  { title: "Nhà cung cấp", value: 12, color: "#2563eb", data: [4, 6, 9, 7, 10, 9, 8] },
+  { title: "Số phiếu nhập", value: 2, percent: "+5%" },
+  { title: "Số phiếu xuất", value: 1, percent: "+8%" },
 ];
 
 const lineChartData = {

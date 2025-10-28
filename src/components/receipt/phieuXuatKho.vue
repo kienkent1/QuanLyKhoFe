@@ -470,6 +470,7 @@
 <script setup>
 import { ref, computed, reactive, onMounted } from "vue";
 import Loader from "../HelperComponents/Loader.vue";
+import * as api from '../../helper/callApi.js'
 
 const headers = ["Mã phiếu", "Nguồn nhập", "Tên hàng", "Số lượng", "Giá xuất", "Tình trạng", "Tên người tạo phiếu", "Thời gian"];
 const showSort = ref(false);
@@ -486,8 +487,10 @@ const setSort = (type) => {
 
 onMounted(async () => {
     try {
-        const res = await fetch("http://localhost:3000/phieuXuatKho");
-        if (!res.ok) throw new Error("Lỗi tải dữ liệu!");
+
+        const res = await api.getApi('phieuXuatKho',{
+            requiresAuth: true
+        })
         const fetchedData = await res.json();
         // Thêm trường creator cho mỗi item nếu chưa có
         data.value = fetchedData.map(item => ({

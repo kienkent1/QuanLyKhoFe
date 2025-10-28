@@ -150,29 +150,23 @@ export const patchApi = (url, opts = {}) =>
 export const deleteApi = (url, opts = {}) =>
   api.delete(url, opts);
 
+export function throwErr(error, context = "") {
+  const status = error.response?.status;
+  const msg =
+    error.response?.data?.message ||
+    error.message ||
+    "Lỗi không xác định từ máy chủ";
 
-export const callApi = async (method, url, data = null, config = {}) => {
-  const requestConfig = {
-    ...config,
-    requiresAuth: true,
-    auth: true
-  };
+  console.error(
+    `%c[API ERROR] ${context ? context + " → " : ""}${status || "??"}: ${msg}`,
+    "color: red; font-weight: bold;"
+  );
 
-  switch (method.toUpperCase()) {
-    case 'GET':
-      return await getApi(url, requestConfig, data);
-    case 'POST':
-      return await postApi(url, data, requestConfig);
-    case 'PUT':
-      return await putApi(url, data, requestConfig);
-    case 'PATCH':
-      return await patchApi(url, data, requestConfig);
-    case 'DELETE':
-      return await deleteApi(url, requestConfig);
-    default:
-      throw new Error(`Unsupported HTTP method: ${method}`);
-  }
-};
-
+  // 🔁 Tạo lỗi mới giữ nguyên stack trace & kèm status/message
+  const customError = new Error(msg);
+  customError.status = status;
+  customError.original = error;
+  throw customError;
+}
 export default api;
 
