@@ -1,11 +1,49 @@
 <script setup>
-import { ref } from 'vue';
+import { onMounted, ref } from 'vue';
 import Logo from '../Logo.vue';
+import {login} from './Login.js'
+import BtnGoogle from '../Buttons/BtnGG/BtnGoogle.vue';
+import router from '../../../routes.js';
+import loginGG from '../Buttons/BtnGG/GoogleLogin.js'
 
 const showPassword = ref(false);
+const showMessage = ref('');
+const isRemember = ref(false)
 const togglePassword = () => {
   showPassword.value = !showPassword.value;
 };
+
+  const userNameOrEmail = ref('');
+  const password = ref('');
+  const loginSystem = async ()=>{ 
+
+  if (!userNameOrEmail.value || !password.value) {
+    showMessage.value = '*Vui lòng nhập tên đăng nhập và mật khẩu';
+    return;
+  }
+  const result = await login(userNameOrEmail.value, password.value, isRemember.value) 
+  if(result.success === true){
+    router.push('/');
+  }
+  else{
+    showMessage.value = result?.message ;
+  }
+  }
+ async function handleGoogleToken(token) {
+ 
+   if(token){
+    const res = await loginGG(token, isRemember);
+    if(res.success === true){
+      alert('Đăng nhập thành công')
+      router.push('/')
+    }
+    else{
+      alert(`Đăng nhập thất bại ${res.message}`)
+    }
+  }else{
+    alert('Lỗi không thể xác thực với google')
+  }
+}
 </script>
 
 <template>
@@ -24,9 +62,13 @@ const togglePassword = () => {
         <p class="text-left text-gray-600 mb-6 pl-4">Chào mừng quay trở lại</p>
 
         <form class="space-y-5">
+           <div v-if="showMessage.length > 0" class="mb-5 mt-3 text-red-500">
+              <p>{{ showMessage }}</p>
+            </div>
           <!-- Username -->
           <div class="relative">
-            <input type="text" id="username" required
+           
+            <input  type="text" id="username" required v-model="userNameOrEmail"
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm 
               focus:ring-blue-500 focus:border-blue-700 "
               placeholder="Tên đăng nhập hoặc Email" />
@@ -42,7 +84,7 @@ const togglePassword = () => {
 
           <!-- Password -->
           <div class="relative">
-            <input :type="showPassword ? 'text' : 'password'" id="password" required
+            <input :type="showPassword ? 'text' : 'password'" id="password" required v-model="password"
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm 
               focus:ring-blue-500 focus:border-blue-700 placeholder-transparent pr-10"
               placeholder="Mật khẩu" />
@@ -86,7 +128,7 @@ const togglePassword = () => {
           <!-- Remember + Forgot -->
           <div class="flex justify-between items-center text-sm">
             <div class="flex items-center">
-              <input type="checkbox" id="remember"
+              <input type="checkbox" id="remember" v-model="isRemember"
                 class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500">
               <label for="remember" class="ml-2 text-gray-500 select-none">Ghi nhớ tài khoản</label>
             </div>
@@ -94,7 +136,7 @@ const togglePassword = () => {
           </div>
 
           <!-- Nút login -->
-          <button type="submit"
+          <button type="button" @click="loginSystem()"
             class="w-full bg-blue-800 text-white py-2.5 rounded-lg font-medium 
               shadow-md shadow-gray-500/50 transition-all duration-300 
               hover:bg-blue-900 hover:scale-105 hover:shadow-lg hover:shadow-gray-600/60 
@@ -103,22 +145,17 @@ const togglePassword = () => {
           </button>
 
           <!-- Nút Google -->
-          <button type="button"
-            class="w-full relative flex items-center justify-center gap-2 mt-3
-              border-2 border-gray-300 rounded-lg py-2.5 bg-white 
-              shadow-[0px_8px_12px_rgba(0,0,0,0.15)] 
-              transition-all duration-300 
-              hover:shadow-[0px_10px_15px_rgba(0,0,0,0.25)] 
-              hover:-translate-y-0.5 active:scale-95">
-            <img src="https://www.svgrepo.com/show/355037/google.svg" alt="Google"
-              class="w-5 h-5 absolute left-4" />
-            <span class="text-blue-700 font-medium">Đăng nhập với Google</span>
-          </button>
+          <BtnGoogle
+          @success="handleGoogleToken"
+        >
+          Đăng nhập với Google
+        </BtnGoogle>
+
         </form>
 
         <p class="text-center text-sm text-gray-600 mt-4">
           Bạn chưa có tài khoản?
-          <a href="#" class="text-blue-600 hover:underline">Đăng ký</a>
+          <a href="/register" class="text-blue-600 hover:underline">Đăng ký</a>
         </p>
       </div>
     </div>
