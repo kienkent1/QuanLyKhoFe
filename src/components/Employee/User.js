@@ -1,5 +1,5 @@
-import * as api from '../../helper/callApi.js'
-import * as contenType from '../../helper/baseHeaderContentype.js'
+import * as api from '/src/helper/call-api.js'
+import * as contenType from '/src/helper/base-header-contentype.js'
 
 const controller = 'NhanVien'
 

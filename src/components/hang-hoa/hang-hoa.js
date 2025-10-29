@@ -1,5 +1,5 @@
-import * as api from '../../helper/callApi.js'
-import * as contentType from '../../helper/baseHeaderContentype.js'
+import * as api from '../../helper/call-api.js'
+import * as contentType from '../../helper/base-header-contentype.js'
 
 const controller = 'HangHoa';
 

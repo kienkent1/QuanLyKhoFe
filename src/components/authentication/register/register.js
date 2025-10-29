@@ -1,5 +1,5 @@
-import * as api from '../../helper/callApi.js'
-import router from '../../../routes'
+import * as api from '/src/helper/call-api.js'
+import router from '/routes.js'
 
 const controller = 'Authentication/register'
 const register = async (obj={}) => {

@@ -776,9 +776,9 @@
 
 <script setup>
 import { ref, watch, onMounted } from "vue";
-import Loader from "../HelperComponents/Loader.vue";
-import Pagination from "../HelperComponents/pagination.vue";
-import * as userJs from "./User.js";
+import Loader from "../helper-components/Loader.vue";
+import Pagination from "../helper-components/pagination.vue";
+import * as userJs from "./user.js";
 
 const rows = ref([]);
 const loading = ref(true);

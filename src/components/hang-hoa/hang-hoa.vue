@@ -803,7 +803,8 @@
 
 <script setup>
 import { ref, computed, onMounted, watch } from "vue";
-import loader from "../HelperComponents/Loader.vue";
+import loader from "/src/components/helper-components/loader.vue";
+
 const showAddPopup = ref(false);
 const newItem = ref({
     ten: "",

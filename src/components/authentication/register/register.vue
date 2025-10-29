@@ -1,8 +1,8 @@
 <script setup>
-import logo from '../Logo.vue';
-import GoogleButton from '../Buttons/BtnGG/BtnGoogle.vue'
+import logo from '../../logo.vue';
+import GoogleButton from '../btn-gg/btn-google.vue'
 import { ref } from 'vue';
-import register from './register';
+import register from './register.js';
 
 const errors = ref({})
 const idNhanVien = ref('');

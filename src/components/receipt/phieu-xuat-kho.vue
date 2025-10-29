@@ -469,8 +469,8 @@
 
 <script setup>
 import { ref, computed, reactive, onMounted } from "vue";
-import Loader from "../HelperComponents/Loader.vue";
-import * as api from '../../helper/callApi.js'
+import Loader from "../helper-components/loader.vue";
+import * as api from '../../helper/call-api.js'
 
 const headers = ["Mã phiếu", "Nguồn nhập", "Tên hàng", "Số lượng", "Giá xuất", "Tình trạng", "Tên người tạo phiếu", "Thời gian"];
 const showSort = ref(false);

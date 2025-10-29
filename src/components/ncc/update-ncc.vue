@@ -1,22 +1,19 @@
 <script setup>
-import {  ref,defineEmits, onMounted, reactive, defineExpose, watch } from 'vue';
-import {themNhaCungCap} from './nhaCungCap.js'
+import {getNccById, updateNCC} from './nha-cung-cap.js';
+import {ref, defineProps, onMounted, defineEmits, reactive} from'vue';
 
 const formData = ref({
     TenNCC:'',
     DienThoai:'',
     Email:'',
-    HinhAnh: null,
+    HinhAnh: '',
+    NewAnh: null,
     DiaChi:{
         Tinh:'',
         Phuong:'',
         DiaChiNha:'',
         QuanHuyen:''
     },
-});
-
-const validateData = reactive({
-   message:''
 });
 
 const previewUrl = ref(null);
@@ -24,41 +21,45 @@ const emit = defineEmits(["updatePreview"]);
 
 function handleFileChange(e) {
   const file = e.target.files[0];
-
   if (file) {
-    formData.value.HinhAnh = file;
+    formData.value.NewAnh = file;
     previewUrl.value = URL.createObjectURL(file);
     emit("updatePreview", previewUrl.value);
   }
 };
 
-  const refresh = () => {
-  formData.value = {
-    TenNCC:'',
-    DienThoai:'',
-    Email:'',
-    HinhAnh: null,
-    DiaChi:{
-        Tinh:'',
-        Phuong:'',
-        DiaChiNha:'',
-        QuanHuyen:''
-    },
+
+const props =  defineProps({
+    id:{
+        type: Number
+    }
+})
+
+const data = ref({});
+
+const loadNCC = async () => {
+    const res = await getNccById(props.id);
+    data.value = res.data.data;
+
+    formData.value.TenNCC = data.value.tenNCC;
+    formData.value.DienThoai = data.value.dienThoai;
+    formData.value.Email = data.value.email;
+    formData.value.HinhAnh = data.value.hinhAnh;
+    formData.value.DiaChi.Tinh = data.value.diaChi?.Tinh || '';
+    formData.value.DiaChi.Phuong = data.value.diaChi?.Phuong || '';
+    formData.value.DiaChi.DiaChiNha = data.value.diaChi?.DiaChiNha || '';
+    formData.value.DiaChi.QuanHuyen = data.value.diaChi?.QuanHuyen || '';
 };
-if (previewUrl.value) {
-    URL.revokeObjectURL(previewUrl.value);
-  }
 
-  previewUrl.value = null;
-
-  emit("updatePreview", null);
-}
-
+onMounted(() => {
+loadNCC();
+});
+const validateData = reactive({message:''});
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegexVN = /^(0\d{9}|\+?[1-9]\d{1,14})$/;
 const nameRegex = /^[A-Za-zÀ-ỹ0-9 _-]+$/;
 
- const createNCC = async () => {
+ const SubmitUpdateNCC = async () => {
   if(!formData.value.TenNCC || formData.value.TenNCC.trim() === '') {
     validateData.message = 'Vui lòng nhập tên nhà cung cấp';
 
@@ -84,61 +85,58 @@ const nameRegex = /^[A-Za-zÀ-ỹ0-9 _-]+$/;
     return;
   }
   else{
-    const data = new FormData();
-    data.append('TenNCC', formData.value.TenNCC);
-    data.append('DienThoai', formData.value.DienThoai);
-    data.append('Email', formData.value.Email);
-
-    if (formData.value.HinhAnh) {
-      data.append('HinhAnh', formData.value.HinhAnh);
+    const dataSubmit = new FormData();
+    dataSubmit.append('TenNCC', formData.value.TenNCC);
+    dataSubmit.append('DiaChi', JSON.stringify(formData.value.DiaChi));
+    dataSubmit.append('DienThoai', formData.value.DienThoai);
+    dataSubmit.append('Email', formData.value.Email);
+      dataSubmit.append('HinhAnh', formData.value.HinhAnh);
+    
+    if(formData.value.NewAnh){
+      dataSubmit.append('NewAnh', formData.value.NewAnh);
     }
 
-    data.append('DiaChi', JSON.stringify(formData.value.DiaChi));
-    const res = await themNhaCungCap(data);
+  
+    const res = await updateNCC(props.id, dataSubmit);
 
-    if(res.status === 200 || res.status === 201){
-      alert('Thêm thành công');
-      refresh();
+    if((res.status === 200 && res)|| (res.status === 201 && res)){
+      alert('Sửa thành công');
+    }
+    else{
+      alert(`Lỗi khi sửa nhà cung cấp`);
     }
   }
  };
-
- watch(
-  () => validateData.message ,
-  (newVal) => {
-    if (newVal) {
-      // sau 3 giây xóa message
-      setTimeout(() => {
-        validateData.message = '';
-      }, 3000)
-    }
-  }
-)
- defineExpose({
-  createNCC,
- });
-
 </script>
+
 <template>
-    
-    <div class="min-h-screen flex justify-center items-center  p-6">
+<div class="min-h-screen flex justify-center items-center  p-6">
       <div
         class="bg-white shadow-2xl rounded-2xl p-8 w-full max-w-3xl border border-gray-100"
       >
       <div class="border-b flex mb-2">
-        <h2 class="text-2xl font-bold mb-6   text-gray-800">
-          Thêm nhà cung cấp
-          
+        <h2 class="text-2xl font-bold mb-6 pb-2 text-gray-800 flex gap-3">
+        <img
+          :src="formData.HinhAnh === null ? 'src/assets/NoImg.png' : formData.HinhAnh"
+          alt="Preview"
+          class="h-10 w-auto rounded-lg   object-contain"
+        />
+         {{ data.tenNCC }}
+         
         </h2>
         <p v-if="validateData.message" class="text-red-400 p-2">*{{ validateData.message }}</p>
   </div>
+        
+        
+  
         <!-- Form -->
         <form @submit.prevent class="grid grid-cols-1 md:grid-cols-3 gap-6" enctype="multipart/form-data">
             <div class="mb-2">
           <!-- Tên nhà cung cấp -->
-          <div class="mb-2">         
+          <div class="mb-2">
             <label class="block mb-2 text-sm font-medium text-gray-700">Tên nhà cung cấp</label>
             <input
+            
             v-model="formData.TenNCC"
               type="text"
               placeholder="Nhập tên nhà cung cấp"
@@ -243,19 +241,7 @@ const nameRegex = /^[A-Za-zÀ-ỹ0-9 _-]+$/;
         <!-- Nút hành động -->
         <div class="flex justify-center gap-6 mt-8">
           <button
-          @click="refresh()"
-            type="button"
-            class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white font-medium shadow transition"
-          >
-          <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.651 7.65a7.131 7.131 0 0 0-12.68 3.15M18.001 4v4h-4m-7.652 8.35a7.13 7.13 0 0 0 12.68-3.15M6 20v-4h4"/>
-        </svg>
-
-            Tải lại
-          </button>
-  
-          <button
-            @click="createNCC()"
+            @click="SubmitUpdateNCC()"
             class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-blue-500 hover:bg-blue-600 text-white font-medium shadow transition"
           >
             <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -267,5 +253,4 @@ const nameRegex = /^[A-Za-zÀ-ỹ0-9 _-]+$/;
         </div>
       </div>
     </div>
-  </template>
-  
+</template>

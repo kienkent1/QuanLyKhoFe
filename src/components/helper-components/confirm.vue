@@ -10,7 +10,7 @@ const props = defineProps({
     btnYesColor: {
     type: Object,
     default: () => ({
-      color: 'red-500',
+      color: '[#de1a1a]',
       hover: 'red-700',
       text: 'white'
     })
@@ -18,7 +18,7 @@ const props = defineProps({
   btnCancelColor: {
     type: Object,
     default: () => ({
-      color: 'green-500',
+      color: '[#12ae39]',
       hover: 'green-700',
       text: 'white'
     })

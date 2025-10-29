@@ -25,6 +25,7 @@
 </template>
 
 <script setup>
+import { defineProps } from 'vue';
 const props = defineProps({
   to: { type: String, default: '/' },        
   label: { type: String, default: 'Trở về trang chủ' }, 

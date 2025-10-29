@@ -1,14 +1,13 @@
-import * as api from "../../helper/callApi.js";
-import * as contentType from '../../helper/baseHeaderContentype.js'
+import * as api from "../../helper/call-api.js";
+import * as contentType from '../../helper/base-header-contentype.js'
 
 const controller = "NhanVien";
 
 export const getProfile = async () => {
 try {
-  const res = await api.getApi(controller + `/profile`, {
+  const res = await api.getApi( `${controller}/profile`, {
     requiresAuth: true,
   });
-
   return res;
 } catch (error) {
   api.throwErr(error,controller + '/profile');

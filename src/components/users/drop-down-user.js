@@ -7,7 +7,7 @@ import * as profileApi from "../Profile/Profile"; // <-- sửa đường dẫn n
 const user = ref({
   fullName: "Người dùng",
   email: "",
-  avatar: "/default-avatar.png",
+  avatar: "/src/assets/default-avt.png",
 });
 
 const loading = ref(false);
@@ -24,21 +24,16 @@ const toggleDropdown = () => {
 const refreshProfile = async () => {
   loading.value = true;
   error.value = null;
-  try {
     const res = await profileApi.getProfile();
-    if (res && res.success && res.data) {
-      user.value.fullName = res.data.fullName || res.data.tenNhanVien || "Người dùng";
-      user.value.email = res.data.email || "";
-      user.value.avatar = res.data.avatar || res.data.urlHinh || "/default-avatar.png";
+    const data = res.data.data;
+    if (data && res.data.success && data) {
+      user.value.fullName = data.tenNhanVien|| "Người dùng";
+      user.value.email = data.email || "";
+      user.value.avatar = data.urlHinh || "/default-avatar.png";
     } else {
-      error.value = res?.message || "Không thể tải thông tin người dùng";
+      error.value = res?.data.message || "Không thể tải thông tin người dùng";
     }
-  } catch (err) {
-    console.error("❌ refreshProfile error:", err);
-    error.value = "Không thể kết nối đến server";
-  } finally {
-    loading.value = false;
-  }
+
 };
 
 const handleClickOutside = (e) => {

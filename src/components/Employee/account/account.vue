@@ -755,7 +755,7 @@
 
 <script setup>
 import { ref, watch, onMounted, computed } from "vue";
-import Loader from "../../HelperComponents/Loader.vue";
+import Loader from "../../helper-components/Loader.vue";
 import * as accountJs from "./account.js";
 
 const rows = ref([]);

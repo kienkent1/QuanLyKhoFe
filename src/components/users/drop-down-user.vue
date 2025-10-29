@@ -25,7 +25,7 @@
 
       <!-- Avatar (dùng dữ liệu từ API) -->
       <img
-        :src="user.avatar || '/default-avatar.png'"
+        :src="user.avatar !== null ? user.avatar : '/src/assets/default-avt.png'"
         class="w-10 h-10 rounded-full shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 avatar"
         alt="user avatar"
       />
@@ -39,7 +39,7 @@
       >
         <!-- Header -->
         <div class="flex items-center gap-3 pb-3 border-b border-gray-100">
-          <img :src="user.avatar || '/default-avatar.png'" class="w-10 h-10 rounded-full" alt="user avatar" />
+          <img :src="user.avatar !== null ? user.avatar : '/src/assets/default-avt.png'" class="w-10 h-10 rounded-full" alt="user avatar" />
           <div>
             <p class="font-semibold text-gray-900">{{ user.fullName || 'Người dùng' }}</p>
             <p class="text-sm text-gray-500">{{ user.email || '' }}</p>
@@ -62,7 +62,7 @@
             <span class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors">settings</span>
             Cài đặt
           </li>
-          <li
+          <li @click="logOut()"
             class="menu-item flex items-center gap-3 p-2 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-500 hover:shadow-md hover:-translate-y-[1px] hover:text-gray-900 group"
           >
             <span class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors">logout</span>
@@ -75,11 +75,24 @@
 </template>
 
 <script setup>
-import { useUserDropdown } from "./dropDownUser"; // <-- chỉnh đường dẫn nếu cần
-import{onMounted, onBeforeUnmount} from 'vue'
+import { useUserDropdown } from "./drop-down-user.js"; // 
+import{onMounted, onBeforeUnmount, ref} from 'vue';
+import VueCookies from "vue-cookies";
+import router from "../../../routes.js";
+
 const { user, open, hasOpened, toggleDropdown, refreshProfile } = useUserDropdown(true);
 
-// nếu muốn refresh thủ công ở component này, gọi refreshProfile()
+const logOut = () => {
+  VueCookies.remove("accessToken");
+  localStorage.removeItem("refreshToken");
+  localStorage.removeItem("isRemember");
+  router.push('/login');
+}
+
+onMounted(async () => {
+await refreshProfile();
+})
+
 </script>
 
 <style scoped>

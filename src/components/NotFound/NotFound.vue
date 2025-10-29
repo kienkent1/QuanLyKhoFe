@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import TrangChuBtn from '../Buttons/TrangChuBtn.vue'
+import TrangChuBtn from '../buttons/trang-chu-btn.vue'
 
 import logo from '../Logo.vue'
 import image404 from './404notfound.jpg'

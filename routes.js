@@ -1,28 +1,30 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import HomeView from "./src/components/HomePage/HomePage.vue";
-import Loaihang from "./src/components/Loaihang/Loaihang.vue";
-import Login from "./src/components/Login/login.vue";
-import Register from "./src/components/Register/Register.vue";
-import NotFound from "./src/components/NotFound/NotFound.vue";
+import HomeView from "./src/components/home-page/home-page.vue";
+import Loaihang from "./src/components/loai-hang/loai-hang.vue";
+import Login from "./src/components/authentication/login/login.vue";
+import Register from "./src/components/authentication/register/register.vue";
+import NotFound from "./src/components/notfound/notfound.vue";
 import Forbidden from "./src/components/403/403.vue";
-import Employee from "./src/components/Employee/User.vue";
-import nhaCungCap from "./src/components/NCC/nhaCungCap.vue";
-import phieuXuatKho from "./src/components/receipt/phieuXuatKho.vue";
-import phieuNhapKho from "./src/components/receipt/phieuNhapKho.vue";
-import Role from "./src/components/role/Role.vue";
-import hangHoa from "./src/components/HangHoa/hangHoa.vue";
-import xuatnhap from "./src/components/xuatnhap/xuatNhapFile.vue";
+import Employee from "./src/components/employee/user.vue";
+import nhaCungCap from "./src/components/ncc/nha-cung-cap.vue";
+import phieuXuatKho from "./src/components/receipt/phieu-xuat-kho.vue";
+import phieuNhapKho from "./src/components/receipt/phieu-nhap-kho.vue";
+import Role from "./src/components/role/role.vue";
+import hangHoa from "./src/components/hang-hoa/hang-hoa.vue";
+import xuatnhap from "./src/components/xuat-nhap/xuat-nhap-file.vue";
 
-import profile from "./src/components/Profile/Profile.vue";
-import changePassword from "./src/components/Change_Password/Change_Password.vue";
+import Profile from "./src/components/Profile/Profile.vue";
 
-import Account from "./src/components/Employee/account/account.vue";
+import Account from "./src/components/employee/account/account.vue";
 
 import VueCookies from "vue-cookies";
-import * as api from "./src/helper/callApi.js";
+import * as api from "./src/helper/call-api.js";
 const routes = [
-  { path: "/", component: HomeView },
+  { path: "/",
+    name: "home",
+     component: HomeView 
+    },
 
   {
     path: "/login",
@@ -39,12 +41,7 @@ const routes = [
   {
     path: "/profile",
     name: "profile",
-    component: profile,
-  },
-  {
-    path: "/change-password",
-    name: "changePassword",
-    component: changePassword,
+    component: Profile,
   },
   {
     path: "/403",

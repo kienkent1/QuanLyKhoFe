@@ -104,7 +104,7 @@
           <h1 class="font-extrabold text-2xl text-gray-900 select-none">{{ currentPageTitle }}</h1>
         </div>
 
-        <div v-if="windowWidth > 600">
+        <div v-if="windowWidth > 770">
           <div class="flex-grow flex justify-center mx-6">
             <div class="relative w-[400px] max-w-full">
               <input type="text" placeholder="Tìm kiếm..."
@@ -148,8 +148,8 @@
 <script setup>
 import { computed } from 'vue';
 import { useRoute } from 'vue-router';
-import slidebar_navbar from './Slidebar_Navbar.js';
-import dropDownUser from '../users/dropDownUser.vue'
+import slidebar_navbar from './slidebar_navbar.js';
+import dropDownUser from '../users/drop-down-user.vue'
 
 const { sidebarOpen, windowWidth, toggleSidebar } = slidebar_navbar()
 const route = useRoute();

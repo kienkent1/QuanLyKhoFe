@@ -1,16 +1,11 @@
-import * as api from '../../helper/callApi.js'
-import VueCookies from 'vue-cookies'
+import * as api from '../../../helper/call-api.js'
+import VueCookies from 'vue-cookies';
 
-const controller = 'Authentication/';
-
-export const login = async (username, password, isRemember) =>{
-const payload = {
-    userNameOrEmail: username,
-    password: password
-};
-try {
-    const res = await api.postApi(controller + 'login', {
-        data: payload,
+const param = 'Authentication/google-Login'
+const loginGG = async (idToken, isRemember) => {
+  try {
+    const res = await api.postApi(param, {
+        data: {idToken:idToken},
         headers:{ "Content-Type": "application/json" },
     });
     if(res.status === 400)  return {message:`${res.data.message}`, success: true};
@@ -44,8 +39,8 @@ try {
     return {
         status: err.response?.status || 0,
         data: { message: err.message || 'Không thể kết nối đến máy chủ.' },
-        success: false 
+        success: false
       };
 }
-
 }
+export default loginGG;

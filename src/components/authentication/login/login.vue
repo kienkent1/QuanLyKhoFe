@@ -1,10 +1,10 @@
 <script setup>
 import { onMounted, ref } from 'vue';
-import Logo from '../Logo.vue';
-import {login} from './Login.js'
-import BtnGoogle from '../Buttons/BtnGG/BtnGoogle.vue';
-import router from '../../../routes.js';
-import loginGG from '../Buttons/BtnGG/GoogleLogin.js'
+import Logo from '../../logo.vue';
+import {login} from './login.js'
+import BtnGoogle from '../btn-gg/btn-google.vue';
+import router from '/routes.js';
+import loginGG from '../btn-gg/google-login.js'
 
 const showPassword = ref(false);
 const showMessage = ref('');
@@ -32,7 +32,7 @@ const togglePassword = () => {
  async function handleGoogleToken(token) {
  
    if(token){
-    const res = await loginGG(token, isRemember);
+    const res = await loginGG(token, isRemember.value);
     if(res.success === true){
       alert('Đăng nhập thành công')
       router.push('/')

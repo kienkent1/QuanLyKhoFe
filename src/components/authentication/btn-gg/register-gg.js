@@ -1,4 +1,4 @@
-import * as api from '../../../helper/callApi.js'
+import * as api from '../../../helper/call-api.js'
 const param = 'Authentication/google-register';
 
 const registerGg = async (obj = {}) => {
