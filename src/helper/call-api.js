@@ -137,36 +137,57 @@ export const getApi = (url, opts = {}) =>
     ...opts,
   });
 
+export const postApi = (url, opts = {}) => api.post(url, opts.data ?? {}, opts);
 
-export const postApi = (url, opts = {}) =>
-  api.post(url, opts.data ?? {}, opts);
-
-export const putApi = (url, opts = {}) =>
-  api.put(url, opts.data ?? {}, opts);
+export const putApi = (url, opts = {}) => api.put(url, opts.data ?? {}, opts);
 
 export const patchApi = (url, opts = {}) =>
   api.patch(url, opts.data ?? {}, opts);
 
-export const deleteApi = (url, opts = {}) =>
-  api.delete(url, opts);
+export const deleteApi = (url, opts = {}) => api.delete(url, opts);
 
 export function throwErr(error, context = "") {
-  const status = error.response?.status;
-  const msg =
-    error.response?.data?.message ||
-    error.message ||
-    "Lỗi không xác định từ máy chủ";
+  const res = error.response;
+  const status = res?.status;
+
+  let msg = null;
+
+  // --- 1️⃣ Nếu BE trả về message dạng chuẩn (success + message)
+  if (res?.data?.message) {
+    msg = res.data.message;
+  }
+  // --- 2️⃣ Nếu là lỗi Validation từ ASP.NET (có "errors")
+  else if (res?.data?.errors) {
+    msg = extractValidationMessage(res.data.errors);
+  }
+  // --- 3️⃣ Nếu chỉ có title
+  else if (res?.data?.title) {
+    msg = res.data.title;
+  }
+  // --- 4️⃣ Cuối cùng fallback
+  else {
+    msg = error.message || "Lỗi không xác định từ máy chủ";
+  }
 
   console.error(
     `%c[API ERROR] ${context ? context + " → " : ""}${status || "??"}: ${msg}`,
     "color: red; font-weight: bold;"
   );
 
-  // 🔁 Tạo lỗi mới giữ nguyên stack trace & kèm status/message
-  const customError = new Error(msg);
-  customError.status = status;
-  customError.original = error;
-  throw customError;
+  return {
+    success: false,
+    status,
+    message: msg,
+    data: res?.data?.data || null,
+  };
 }
-export default api;
 
+// 🧩 Hàm trích xuất dòng đầu tiên trong object errors
+function extractValidationMessage(errors) {
+  if (!errors || typeof errors !== "object") return null;
+  const firstKey = Object.keys(errors)[0];
+  const firstVal = errors[firstKey];
+  return Array.isArray(firstVal) ? firstVal[0] : String(firstVal);
+}
+
+export default api;
