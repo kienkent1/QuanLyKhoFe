@@ -468,7 +468,7 @@
 
 <script setup>
 import { ref, computed, reactive, onMounted } from "vue";
-import Loader from "../helper-components/loader.vue";
+import Loader from "../helper-components/Loader.vue";
 
 const headers = ["Mã phiếu", "Nguồn nhập", "Tên hàng", "Số lượng", "Giá nhập", "Tình trạng", "Thời gian"];
 const showSort = ref(false);

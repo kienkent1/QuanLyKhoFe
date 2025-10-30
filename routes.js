@@ -1,30 +1,27 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import HomeView from "./src/components/home-page/home-page.vue";
-import Loaihang from "./src/components/loai-hang/loai-hang.vue";
-import Login from "./src/components/authentication/login/login.vue";
-import Register from "./src/components/authentication/register/register.vue";
-import NotFound from "./src/components/notfound/notfound.vue";
+import HomeView from "./src/components/home-page/HomePage.vue";
+import Loaihang from "./src/components/loai-hang/LoaiHang.vue";
+import Login from "./src/components/authentication/login/Login.vue";
+import Register from "./src/components/authentication/register/Register.vue";
+import NotFound from "./src/components/notfound/NotFound.vue";
 import Forbidden from "./src/components/403/403.vue";
-import Employee from "./src/components/employee/user.vue";
-import nhaCungCap from "./src/components/ncc/nha-cung-cap.vue";
-import phieuXuatKho from "./src/components/receipt/phieu-xuat-kho.vue";
-import phieuNhapKho from "./src/components/receipt/phieu-nhap-kho.vue";
-import Role from "./src/components/role/role.vue";
-import hangHoa from "./src/components/hang-hoa/hang-hoa.vue";
-import xuatnhap from "./src/components/xuat-nhap/xuat-nhap-file.vue";
+import Employee from "./src/components/employee/User.vue";
+import nhaCungCap from "./src/components/ncc/NhaCungCap.vue";
+import phieuXuatKho from "./src/components/receipt/PhieuXuaKho.vue";
+import phieuNhapKho from "./src/components/receipt/PhieuNhapKho.vue";
+import Role from "./src/components/role/Role.vue";
+import hangHoa from "./src/components/hang-hoa/HangHoa.vue";
+import xuatnhap from "./src/components/xuat-nhap/XuatNhapFile.vue";
 
 import Profile from "./src/components/Profile/Profile.vue";
 
-import Account from "./src/components/employee/account/account.vue";
+import Account from "./src/components/employee/account/Account.vue";
 
 import VueCookies from "vue-cookies";
 import * as api from "./src/helper/call-api.js";
 const routes = [
-  { path: "/",
-    name: "home",
-     component: HomeView 
-    },
+  { path: "/", name: "home", component: HomeView },
 
   {
     path: "/login",
@@ -85,7 +82,7 @@ const routes = [
     component: hangHoa,
   },
 
-    {
+  {
     path: "/xuat-Nhap",
     name: "xuatNhap",
     component: xuatnhap,

@@ -9,9 +9,9 @@
       <span
         class="material-icons text-gray-500 text-base transition-transform duration-300 origin-center"
         :class="{
-          'rotate-180': open,    /* Khi mở: xoay 180° */
+          'rotate-180': open /* Khi mở: xoay 180° */,
           'opacity-0 scale-75': !hasOpened,
-          'opacity-100 scale-100': hasOpened
+          'opacity-100 scale-100': hasOpened,
         }"
       >
         expand_more
@@ -19,13 +19,17 @@
 
       <!-- Tên + email (dùng dữ liệu từ API) -->
       <div class="text-right">
-        <p class="text-sm font-semibold text-gray-900">{{ user.fullName || 'Người dùng' }}</p>
-        <p class="text-xs text-gray-500">{{ user.email || '' }}</p>
+        <p class="text-sm font-semibold text-gray-900">
+          {{ user.fullName || "Người dùng" }}
+        </p>
+        <p class="text-xs text-gray-500">{{ user.email || "" }}</p>
       </div>
 
       <!-- Avatar (dùng dữ liệu từ API) -->
       <img
-        :src="user.avatar !== null ? user.avatar : '/src/assets/default-avt.png'"
+        :src="
+          user.avatar !== null ? user.avatar : '/src/assets/default-avt.png'
+        "
         class="w-10 h-10 rounded-full shadow-sm border border-gray-200 hover:shadow-lg transition-all duration-300 avatar"
         alt="user avatar"
       />
@@ -39,10 +43,18 @@
       >
         <!-- Header -->
         <div class="flex items-center gap-3 pb-3 border-b border-gray-100">
-          <img :src="user.avatar !== null ? user.avatar : '/src/assets/default-avt.png'" class="w-10 h-10 rounded-full" alt="user avatar" />
+          <img
+            :src="
+              user.avatar !== null ? user.avatar : '/src/assets/default-avt.png'
+            "
+            class="w-10 h-10 rounded-full"
+            alt="user avatar"
+          />
           <div>
-            <p class="font-semibold text-gray-900">{{ user.fullName || 'Người dùng' }}</p>
-            <p class="text-sm text-gray-500">{{ user.email || '' }}</p>
+            <p class="font-semibold text-gray-900">
+              {{ user.fullName || "Người dùng" }}
+            </p>
+            <p class="text-sm text-gray-500">{{ user.email || "" }}</p>
           </div>
         </div>
 
@@ -53,19 +65,29 @@
             class="menu-item flex items-center gap-3 p-2 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-500 hover:shadow-md hover:-translate-y-[1px] hover:text-gray-900 group"
             active-class="bg-gradient-to-r from-gray-100 to-gray-300 text-gray-900"
           >
-            <span class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors">person</span>
+            <span
+              class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors"
+              >person</span
+            >
             Thông tin
           </router-link>
           <li
             class="menu-item flex items-center gap-3 p-2 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-500 hover:shadow-md hover:-translate-y-[1px] hover:text-gray-900 group"
           >
-            <span class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors">settings</span>
+            <span
+              class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors"
+              >settings</span
+            >
             Cài đặt
           </li>
-          <li @click="logOut()"
+          <li
+            @click="logOut()"
             class="menu-item flex items-center gap-3 p-2 rounded-lg cursor-pointer font-semibold transition-all duration-300 hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-500 hover:shadow-md hover:-translate-y-[1px] hover:text-gray-900 group"
           >
-            <span class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors">logout</span>
+            <span
+              class="material-icons text-gray-500 group-hover:text-blue-500 transition-colors"
+              >logout</span
+            >
             Đăng xuất
           </li>
         </ul>
@@ -75,24 +97,24 @@
 </template>
 
 <script setup>
-import { useUserDropdown } from "./drop-down-user.js"; // 
-import{onMounted, onBeforeUnmount, ref} from 'vue';
+import { useUserDropdown } from "./drop-down-user.js"; //
+import { onMounted, onBeforeUnmount, ref } from "vue";
 import VueCookies from "vue-cookies";
 import router from "../../../routes.js";
 
-const { user, open, hasOpened, toggleDropdown, refreshProfile } = useUserDropdown(true);
+const { user, open, hasOpened, toggleDropdown, refreshProfile } =
+  useUserDropdown(true);
 
 const logOut = () => {
   VueCookies.remove("accessToken");
   localStorage.removeItem("refreshToken");
   localStorage.removeItem("isRemember");
-  router.push('/login');
-}
+  router.push("/login");
+};
 
 onMounted(async () => {
-await refreshProfile();
-})
-
+  await refreshProfile();
+});
 </script>
 
 <style scoped>
@@ -123,7 +145,11 @@ await refreshProfile();
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, rgba(59,130,246,0.08), rgba(59,130,246,0));
+  background: linear-gradient(
+    90deg,
+    rgba(59, 130, 246, 0.08),
+    rgba(59, 130, 246, 0)
+  );
   opacity: 0;
   transition: opacity 0.3s;
 }
@@ -164,7 +190,7 @@ await refreshProfile();
 
 /* Hiệu ứng glow nhẹ khi hover avatar - giới hạn cho class .avatar */
 .avatar:hover {
-  box-shadow: 0 0 10px rgba(59,130,246,0.3);
+  box-shadow: 0 0 10px rgba(59, 130, 246, 0.3);
   transition: box-shadow 0.3s ease;
 }
 
