@@ -19,6 +19,6 @@ trang này</h3>
 </template>
 
 <script setup>
-import TrangChuBtn from "../Buttons/TrangChuBtn.vue";
-import Logo from "../Logo.vue";
+import TrangChuBtn from "../buttons/trang-chu-btn.vue";
+import Logo from "../logo.vue";
 </script>
