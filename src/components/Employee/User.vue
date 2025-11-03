@@ -181,7 +181,44 @@ function handleOutside() {
 function viewNhanVien(id) {
   router.push({ name: "DetailUser", params: { id: id } });
 }
+
+const doneThemNV = async (e) => {
+  if (e) {
+    await loadData();
+  }
+}
 //end hàng động-----------
+
+//Modal
+const openModalThem = ref(false);
+
+//kéo thả modal---------
+const position = ref({ x: 10, y: 0 });
+const dragging = ref(false);
+const offset = ref({ x: 0, y: 0 });
+
+const startDrag = (e) => {
+  dragging.value = true;
+  offset.value = {
+    x: e.clientX - position.value.x,
+    y: e.clientY - position.value.y,
+  };
+};
+
+const stopDrag = () => {
+  dragging.value = false;
+};
+
+const onDrag = (e) => {
+  if (dragging.value) {
+    position.value = {
+      x: e.clientX - offset.value.x,
+      y: e.clientY - offset.value.y,
+    };
+  }
+};
+//end kéo thả-------------
+//end modal
 </script>
 <template>
   <!-- Phần trên top của body -->
@@ -201,7 +238,7 @@ function viewNhanVien(id) {
     <div class="w-30 flex flex-auto justify-end gap-3">
       <!-- btn nhà cung cấp -->
       <div class="relative">
-        <button
+        <button @click="openModalThem = true"
           class="rounded-md h-auto p-2 bg-white shadow-md hover:bg-gray-200 transition-colors duration-300 ease-in-out">
           <span class="flex justify-around">
             <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -401,7 +438,17 @@ function viewNhanVien(id) {
   </div>
   <!-- End List data -->
 
-  <div>
-    <ThemNhanVien />
+  <div class="w-full flex justify-center cursor-move">
+    <div @mousedown="startDrag" @mouseup="stopDrag" @mousemove="onDrag" :style="{
+      top: position.y + 'px',
+      left: position.x + 'px',
+      position: 'absolute',
+    }" v-if="openModalThem" class="fixed top-40 z-50 w-8/12  ">
+      <ThemNhanVien @themNhanVien="doneThemNV" />
+
+      <div class="absolute top-2 right-46 ">
+        <button class="cursor-pointer" @click="openModalThem = false">✕</button>
+      </div>
+    </div>
   </div>
 </template>

@@ -18,75 +18,93 @@ import Profile from "./src/components/Profile/Profile.vue";
 
 import Account from "./src/components/employee/account/Account.vue";
 
+//Import Layout
+import MainLayout from "./src/components/layout/MainLayout.vue";
+import AuthLayout from "./src/components/layout/AuthLayout.vue";
+
 import VueCookies from "vue-cookies";
 import * as api from "./src/helper/call-api.js";
 const routes = [
-  { path: "/", name: "home", component: HomeView },
+  {
+    path: "/",
+    component: MainLayout,
+    children: [
+      { path: "", name: "home", component: HomeView },
+
+      {
+        path: "profile",
+        name: "profile",
+        component: Profile,
+      },
+
+      {
+        path: "loai",
+        name: "Loai",
+        component: Loaihang,
+      },
+      ...nhanVienRoute,
+      {
+        path: "nha-cung-cap",
+        name: "Supplier",
+        component: nhaCungCap,
+      },
+      {
+        path: "xuat-Kho",
+        name: "xuatKho",
+        component: phieuXuatKho,
+      },
+      {
+        path: "nhap-Kho",
+        name: "nhapKho",
+        component: phieuNhapKho,
+      },
+      {
+        path: "phan-Quyen",
+        name: "phanQuyen",
+        component: Role,
+      },
+      {
+        path: "hang-hoa",
+        name: "hangHoa",
+        component: hangHoa,
+      },
+
+      {
+        path: "xuat-Nhap",
+        name: "xuatNhap",
+        component: xuatnhap,
+      },
+      {
+        path: "tai-khoan",
+        name: "taikhoan",
+        component: Account,
+      },
+    ],
+  },
 
   {
-    path: "/login",
-    name: "login",
-    component: Login,
-    meta: { public: true },
-  },
-  {
-    path: "/register",
-    name: "register",
-    component: Register,
-    meta: { public: true },
-  },
-  {
-    path: "/profile",
-    name: "profile",
-    component: Profile,
+    path: "/auth",
+    component: AuthLayout,
+    children: [
+      {
+        path: "login",
+        name: "login",
+        component: Login,
+        meta: { public: true },
+      },
+      {
+        path: "register",
+        name: "register",
+        component: Register,
+        meta: { public: true },
+      },
+    ],
   },
   {
     path: "/403",
     name: "Forbidden",
     component: Forbidden,
     meta: { internalOnly: true },
-  },
-  {
-    path: "/loai",
-    name: "Loai",
-    component: Loaihang,
-  },
-  ...nhanVienRoute,
-  {
-    path: "/nha-cung-cap",
-    name: "Supplier",
-    component: nhaCungCap,
-  },
-  {
-    path: "/xuat-Kho",
-    name: "xuatKho",
-    component: phieuXuatKho,
-  },
-  {
-    path: "/nhap-Kho",
-    name: "nhapKho",
-    component: phieuNhapKho,
-  },
-  {
-    path: "/phan-Quyen",
-    name: "phanQuyen",
-    component: Role,
-  },
-  {
-    path: "/hang-hoa",
-    name: "hangHoa",
-    component: hangHoa,
-  },
-
-  {
-    path: "/xuat-Nhap",
-    name: "xuatNhap",
-    component: xuatnhap,
-  },
-  {
-    path: "/tai-khoan",
-    name: "taikhoan",
-    component: Account,
   },
   {
     path: "/:pathMatch(.*)*",
@@ -103,12 +121,17 @@ router.beforeEach(async (to, from, next) => {
   const accessToken = VueCookies.get("accessToken");
   const isPublic = to.meta.public === true;
 
-  if (!isPublic && !accessToken && to.path !== "/403") {
+  if (
+    !accessToken &&
+    to.path !== "/auth/login" &&
+    to.path !== "/auth/register" &&
+    to.path !== "/403"
+  ) {
     const remember = localStorage.getItem("isRemember");
     const refreshToken = localStorage.getItem("refreshToken");
-    console.log(remember + "-" + refreshToken);
+
     if (!remember || !refreshToken) {
-      return next({ name: "login" });
+      return next({ path: "/auth/login" });
     }
 
     try {
@@ -120,19 +143,11 @@ router.beforeEach(async (to, from, next) => {
         return next();
       }
 
-      return next({ name: "login" });
+      return next({ path: "/auth/login" });
     } catch (error) {
       console.warn("Refresh token failed:", error);
-      return next({ name: "login" });
+      return next({ path: "/auth/login" });
     }
-  }
-
-  if (
-    isPublic &&
-    accessToken &&
-    (to.name === "login" || to.name === "register")
-  ) {
-    return next({ path: "/" });
   }
 
   const isInternal = from.name !== null && from.name !== undefined;
