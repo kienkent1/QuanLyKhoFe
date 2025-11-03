@@ -27,7 +27,7 @@ const validateData = reactive({
 });
 
 const previewUrl = ref(null);
-const emit = defineEmits(["updatePreview"]);
+const emit = defineEmits(["updatePreview", "createdNCC"]);
 
 function handleFileChange(e) {
   const file = e.target.files[0];
@@ -62,7 +62,7 @@ const refresh = () => {
 };
 
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-const phoneRegexVN = /^(0\d{9}|\+?[1-9]\d{1,14})$/;
+const phoneRegexVN = /^(0\d{9,10}|\+84\d{9,10})$/;
 const nameRegex = /^[A-Za-zÀ-ỹ0-9 _-]+$/;
 
 const createNCC = async () => {
@@ -108,8 +108,10 @@ const createNCC = async () => {
     if (res.status === 200 || res.status === 201) {
       alert("Thêm thành công");
       refresh();
+      emit("createdNCC", true);
     } else {
       validateData.message = res.message;
+      emit("createdNCC", false);
     }
   }
 };

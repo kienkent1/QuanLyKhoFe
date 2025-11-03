@@ -145,6 +145,8 @@
           <div class="flex-grow flex justify-center mx-6">
             <div class="relative w-[400px] max-w-full">
               <input
+                @keyup.enter="searchGoogle()"
+                v-model="query"
                 type="text"
                 placeholder="Tìm kiếm..."
                 class="w-full rounded-xl border border-gray-300 py-3 pl-4 pr-12 text-sm shadow-sm focus:outline-none focus:ring-1 focus:ring-blue-300"
@@ -159,30 +161,6 @@
         </div>
 
         <div class="flex items-center gap-5">
-          <button class="relative text-gray-600 hover:text-gray-800">
-            <span class="material-icons">notifications</span>
-            <span
-              class="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-white"
-              >23</span
-            >
-          </button>
-
-          <button class="relative text-gray-600 hover:text-gray-800">
-            <span class="material-icons">email</span>
-            <span
-              class="absolute -top-2 -right-2 bg-green-500 text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-white"
-              >68</span
-            >
-          </button>
-
-          <button class="relative text-gray-600 hover:text-gray-800">
-            <span class="material-icons">calendar_today</span>
-            <span
-              class="absolute -top-2 -right-2 bg-gray-500 text-white text-[10px] rounded-full w-5 h-5 flex items-center justify-center font-bold ring-2 ring-white"
-              >14</span
-            >
-          </button>
-
           <dropDownUser />
         </div>
       </header>
@@ -194,7 +172,7 @@
   </div>
 </template>
 <script setup>
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import slidebar_navbar from "./slidebar_navbar.js";
 import dropDownUser from "../users/DropDownUser.vue";
@@ -237,4 +215,12 @@ const getActiveIconClasses = (path) => {
     ? "material-icons w-5 h-5 text-[#007AFF]"
     : "material-icons w-5 h-5 text-[#7A8699] group-hover:text-[#007AFF]";
 };
+
+const query = ref("");
+function searchGoogle() {
+  const url = `https://www.google.com/search?q=${encodeURIComponent(
+    query.value
+  )}`;
+  window.open(url, "_blank");
+}
 </script>

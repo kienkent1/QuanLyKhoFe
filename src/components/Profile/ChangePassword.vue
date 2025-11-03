@@ -57,13 +57,7 @@ const submitForm = async () => {
 
     return;
   } else {
-    const body = {
-      oldPassword: formData.value.oldPassword,
-      newPassword: formData.value.newPassword,
-      confirmPassword: formData.value.confirmPassword,
-    };
-
-    const res = await changePassword(body);
+    const res = await changePassword(formData.value);
     if (res.status === 200) {
       alert("Đổi mật khẩu thành công!");
       refresh();
