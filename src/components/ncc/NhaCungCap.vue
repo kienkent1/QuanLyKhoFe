@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted, reactive, watch } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import { ref, onMounted, onUnmounted, reactive, watch, watchEffect } from "vue";
 import pagination from "../helper-components/Pagination.vue";
 import { vOnClickOutside } from "@vueuse/components";
 import themNhaCungCap from "./ThemNhaCungCap.vue";
@@ -18,6 +19,38 @@ const modalThem = ref(false);
 const modalUpdate = ref(false);
 const modalBox = ref(null);
 const listData = ref(null);
+
+//modal detail ncc----------
+const route = useRoute();
+const router = useRouter();
+const idNCC = ref("");
+function openModal(id) {
+  router.push({ query: { modal: "detail", id } });
+  modalUpdate.value = true;
+  idNCC.value = route.query.id;
+}
+
+function closeModal() {
+  const { modal, id, ...rest } = route.query;
+  router.replace({ query: rest });
+  modalUpdate.value = false;
+  idNCC.value = 0;
+}
+
+watch(
+  () => route.query,
+  (newQuery) => {
+    if (newQuery.modal === "detail" && newQuery.id) {
+      modalUpdate.value = true;
+      idNCC.value = newQuery.id;
+    } else {
+      modalUpdate.value = false;
+      idNCC.value = 0;
+    }
+  },
+  { immediate: true }
+);
+//end modal detail ncc-------
 //pagination & params-----------
 const currentPage = ref(1);
 const totalPages = ref(1);
@@ -25,17 +58,56 @@ const totalItems = ref(1);
 const params = ref({
   query: "",
   page: 1,
-  pageSize: 6,
+  pageSize: 5,
   FieldName: "createAt",
   Isdesc: false,
   FilterName: "",
   FilterValue: "",
 });
 
-const handlePageChange = (page) => {
-  currentPage.value = page;
-  params.value.page = page;
+//get data----------
+const loadData = async () => {
+  const pageNum = Number(route.query.page) || 1;
+  const query = route.query.q || "";
+
+  params.value.query = query;
+  params.value.page = pageNum;
+  const res = await getNCC(params.value);
+  listData.value = res?.data.data;
+  totalItems.value = res?.data.data.totalItems;
+  totalPages.value = res?.data.data.totalPages;
+};
+
+onMounted(() => {
   loadData();
+});
+//end --------------
+
+function search() {
+  const q = params.value.query?.trim() || "";
+  router.push({
+    query: {
+      ...route.query,
+      q,
+      page: 1,
+    },
+  });
+}
+
+watch(
+  () => ({ ...route.query }),
+  async (newQuery) => {
+    const pageNum = Number(newQuery.page) || 1;
+    currentPage.value = pageNum;
+    params.value.page = pageNum;
+    params.value.query = newQuery.q || "";
+    await loadData();
+  },
+  { immediate: true }
+);
+
+const handlePageChange = (page) => {
+  router.push({ query: { ...route.query, page } });
 };
 
 const handlePrev = () => {
@@ -53,7 +125,6 @@ const handleNext = () => {
 };
 //end pagination & params----------
 
-const idNCC = ref(0);
 const confirmModal = ref(false);
 
 //delete ncc-------------
@@ -91,19 +162,19 @@ watch(
   }
 );
 //end delete ncc-------------
+//start event create and update ncc
+function doneCreateNCC(e) {
+  if (e) {
+    loadData();
+  }
+}
 
-//get data----------
-const loadData = async () => {
-  const res = await getNCC(params.value);
-  listData.value = res?.data.data;
-  totalItems.value = res?.data.data.totalItems;
-  totalPages.value = res?.data.data.totalPages;
-};
-
-onMounted(() => {
-  loadData();
-});
-//end --------------
+function doneUpdateNCC(e) {
+  if (e) {
+    loadData();
+  }
+}
+//end event create and update ncc
 
 //kéo thả modal---------
 const position = ref({ x: 10, y: 0 });
@@ -136,10 +207,6 @@ const isModalResize = ref(false);
 const checkModalResize = (url) => {
   isModalResize.value = !!url;
 };
-
-function search() {
-  loadData();
-}
 
 //Mobile--------------
 const width = ref(window.innerWidth);
@@ -215,7 +282,10 @@ watch([width, height], ([newW, newH]) => {
       </button>
 
       <!-- Modal chính -->
-      <themNhaCungCap @updatePreview="checkModalResize" />
+      <themNhaCungCap
+        @updatePreview="checkModalResize"
+        @createdNCC="doneCreateNCC"
+      />
     </div>
   </div>
   <div class="relative grid grid-cols-1 place-items-center">
@@ -237,7 +307,7 @@ watch([width, height], ([newW, newH]) => {
     <div class="w-50 flex-auto relative">
       <input
         v-model="params.query"
-        @keyup.enter="search(params.q)"
+        @keyup.enter="search()"
         class="w-full border-0 rounded-md shadow-md focus:outline-gray-400"
         type="text"
         placeholder="Tìm kiếm nhà cung cấp "
@@ -384,7 +454,7 @@ watch([width, height], ([newW, newH]) => {
       <div class="p-3 flex h-8/12 place-self-center gap-3 col-span-2">
         <!-- Edit -->
         <button
-          @click="(idNCC = item.maNCC), (modalUpdate = true)"
+          @click="openModal(item.maNCC)"
           class="bg-[#4182F9] rounded-md p-2 text-white flex items-center hover:bg-[#2975FF] transition-colors duration-300 ease-in-out gap-2"
         >
           <svg
@@ -411,7 +481,7 @@ watch([width, height], ([newW, newH]) => {
         </button>
         <!-- xem -->
         <button
-          @click="(idNCC = item.maNCC), (modalUpdate = true)"
+          @click="openModal(item.maNCC)"
           class="bg-[#12ae39] rounded-md p-2 text-white flex items-center hover:bg-[#2BA449] transition-colors duration-300 ease-in-out gap-2"
         >
           <svg
@@ -525,7 +595,7 @@ watch([width, height], ([newW, newH]) => {
       <div class="p-2 flex h-8/12 place-self-center gap-3">
         <!-- Edit -->
         <button
-          @click="(idNCC = item.maNCC), (modalUpdate = true)"
+          @click="openModal(item.maNCC)"
           class="bg-[#4182F9] rounded-md p-2 text-white flex items-center hover:bg-[#2975FF] transition-colors duration-300 ease-in-out gap-2"
         >
           <svg
@@ -552,7 +622,7 @@ watch([width, height], ([newW, newH]) => {
         </button>
         <!-- xem -->
         <button
-          @click="(idNCC = item.maNCC), (modalUpdate = true)"
+          @click="openModal(item.maNCC)"
           class="bg-[#12ae39] rounded-md p-2 text-white flex items-center hover:bg-[#2BA449] transition-colors duration-300 ease-in-out gap-2"
         >
           <svg
@@ -648,21 +718,25 @@ watch([width, height], ([newW, newH]) => {
 
       <button
         v-if="isModalResize"
-        @click="(modalUpdate = false), (idNCC = 0), (isModalResize = false)"
+        @click="closeModal(), (isModalResize = false)"
         class="absolute top-1/9 left-11/12 text-gray-500 hover:text-gray-700 text-xl"
       >
         ✕
       </button>
       <button
         v-else
-        @click="(modalUpdate = false), (idNCC = 0), (isModalResize = false)"
+        @click="closeModal(), (isModalResize = false)"
         class="absolute top-38 left-165 text-gray-500 hover:text-gray-700 text-xl"
       >
         ✕
       </button>
 
       <!-- Modal chính -->
-      <updateNCC :id="idNCC" @updatePreview="checkModalResize" />
+      <updateNCC
+        :id="idNCC"
+        @updatePreview="checkModalResize"
+        @updatedNCC="doneCreateNCC"
+      />
     </div>
   </div>
 </template>
