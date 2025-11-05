@@ -138,8 +138,7 @@ async function submitForm() {
           <div class="mb-2">
             <label for="sdt" class="block mb-2 text-sm font-medium text-gray-700">Số điện thoại
             </label>
-            <input v-model="formData.sdt" @keyup.enter="validate()" name="sdt" type="tel"
-              placeholder="Nhập số điện thoại"
+            <input v-model="formData.sdt" name="sdt" type="tel" placeholder="Nhập số điện thoại"
               class="w-full rounded-lg border border-gray-300 bg-gray-50 px-3 py-2.5 text-sm focus:ring-2 focus:ring-blue-500 outline-none" />
           </div>
 
