@@ -98,6 +98,7 @@
           <button @click="toggleSidebar" class="text-gray-600 p-2">
             <span class="material-icons text-3xl">menu</span>
           </button>
+          <!-- Hiển thị tên page -->
           <h1 class="font-extrabold text-2xl text-gray-900 select-none">
             {{ currentPageTitle }}
           </h1>
@@ -136,20 +137,21 @@ const { sidebarOpen, windowWidth, toggleSidebar } = slidebar_navbar();
 const route = useRoute();
 
 const pageTitleMap = {
-  "/": "Trang chủ",
-  "/nha-cung-cap": "Nhà cung cấp",
-  "/xuat-Kho": "Tạo phiếu xuất",
-  "/nhap-Kho": "Tạo phiếu nhập",
-  "/loai": "Loại hàng hóa",
-  "/hang-Hoa": "Hàng hóa",
-  "/nhan-vien": "Nhân viên",
-  "/tai-khoan": "Trang tài khoản",
-  "/phan-Quyen": "Phân quyền",
-  "/xuat-Nhap": "Xuất - nhập file",
+  "home": "Trang chủ",
+  "Supplier": "Nhà cung cấp",
+  "xuatKho": "Tạo phiếu xuất",
+  "nhapKho": "Tạo phiếu nhập",
+  "Loai": "Loại hàng hóa",
+  "hangHoa": "Hàng hóa",
+  "User": "Nhân viên",
+  "DetailUser": "Nhân viên",
+  "taikhoan": "Trang tài khoản",
+  "phanQuyen": "Phân quyền",
+  "xuatNhap": "Xuất - nhập file",
 };
 
 const currentPageTitle = computed(() => {
-  return pageTitleMap[route.path] || "Trang chủ";
+  return pageTitleMap[route.name] || "Trang chủ";
 });
 
 // Function to check if a route is active

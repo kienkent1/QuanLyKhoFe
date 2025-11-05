@@ -450,5 +450,6 @@ const onDrag = (e) => {
         <button class="cursor-pointer" @click="openModalThem = false">✕</button>
       </div>
     </div>
-  </div>
+  </div> 
+  
 </template>

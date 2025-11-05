@@ -2,6 +2,7 @@ const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const phoneRegexVN = /^(0\d{9,10}|\+84\d{9,10})$/;
 const nameRegex = /^[A-Za-zÀ-ỹ0-9 _-]+$/;
 const stringRegex = /^[A-Za-zÀ-ỹ0-9_-]+$/;
+const onlyStringRegex = /^[A-Za-zÀ-ỹ _-]+$/;
 
 const fail = (message) => {
   return { message: message, success: false };
@@ -15,19 +16,26 @@ export const validatePhone = (phone = "") => {
   if (phone.trim().length < 1) {
     return fail("Số điện thoại không được trống");
   }
-  if (!phoneRegexVN.test(phone.trim())) {
+  if (!phoneRegexVN.test(phone)) {
     return fail("Số điện thoại không đúng định dạng");
   }
   return pass();
 };
 
-export const validateString = (string = "", message = "") => {
-  if (string.trim().length < 1) {
-    return fail(message);
+export const validateString = (string = "", message = "", isNotNull = true) => {
+  if (isNotNull) {
+    if (string.trim().length < 1) {
+      return fail(message);
+    }
+    if (!nameRegex.test(string)) {
+      return fail(message);
+    }
+  } else {
+    if (string.trim().length > 0) {
+      if (!nameRegex.test(string)) return fail(message);
+    }
   }
-  if (!nameRegex.test(string.trim())) {
-    return fail(message);
-  }
+
   return pass();
 };
 
@@ -35,19 +43,28 @@ export const validateEmail = (email = "") => {
   if (email.trim().length < 1) {
     return fail("Email không được trống");
   }
-  if (!emailRegex.test(email.trim())) {
+  if (!emailRegex.test(email)) {
     return fail("Email không đúng định dạng");
   }
   return pass();
 };
 
-export const stringNoSpace = (string = "", message = "") => {
-  if (string.trim().length < 1) {
-    return fail(message);
+export const stringNoSpace = (string = "", message = "", isNotNull = true) => {
+  if (isNotNull) {
+    if (string.trim().length < 1) {
+      return fail(message);
+    }
+    if (!stringRegex.test(string)) {
+      return fail(message);
+    }
+  } else {
+    if (string.trim().length > 0) {
+      if (!stringRegex.test(string)) {
+        return fail(message);
+      }
+    }
   }
-  if (!stringRegex.test(string)) {
-    return fail(message);
-  }
+
   return pass();
 };
 
@@ -88,5 +105,24 @@ export const validateDate = (date = "") => {
     return fail("Ngày sinh không được lớn hơn 100 tuổi");
   }
 
+  return pass();
+};
+
+export const onlyString = (s = "", message = "", isNotNull = true) => {
+  if (isNotNull) {
+    if (s.trim.length < 1) {
+      return fail(message);
+    }
+
+    if (!onlyStringRegex.test(s)) {
+      return fail(message);
+    }
+  } else {
+    if (s.trim().length > 0) {
+      if (!onlyStringRegex.test(s)) {
+        return fail(message);
+      }
+    }
+  }
   return pass();
 };

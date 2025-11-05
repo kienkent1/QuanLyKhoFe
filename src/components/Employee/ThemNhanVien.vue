@@ -2,6 +2,7 @@
 import { ref, reactive, defineEmits } from "vue";
 import * as validate from "../../helper/validate-input";
 import { themNhanVien } from "./user.js";
+import BtnLoader from "../helper-components/BtnLoader.vue";
 
 const message = ref("");
 
@@ -51,6 +52,7 @@ const refresh = () => {
   formData.diaChi.DiaChiNha = "";
 }
 //end refresh btn
+const isDoneCreate = ref(true)
 async function submitForm() {
 
   const nameNV = validate.validateString(formData.TenNhanVien, "Tên nhân viên không được trống hoặc có ký tự đặc biệt");
@@ -91,12 +93,15 @@ async function submitForm() {
   data.append("Hinh", formData.Hinh);
   data.append("diaChi", JSON.stringify(formData.diaChi));
 
+  isDoneCreate.value = false;
   const res = await themNhanVien(data);
   if (res.status === 200 || res.status === 201) {
+    isDoneCreate.value = true;
     alert('Thêm nhân viên thành công');
     emit("themNhanVien", true);
   } else {
     message.value = res.message;
+    isDoneCreate.value = true;
     emit("themNhanVien", false);
   }
 }
@@ -211,11 +216,12 @@ async function submitForm() {
             </textarea>
           </div>
           <!-- btn -->
-          <div class="mb-2 flex justify-between">
+          <div class="mb-2 flex justify-between ">
 
             <!-- button refresh -->
+
             <button @click="refresh()" type="button"
-              class="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white font-medium shadow transition">
+              class="flex min-h-fit items-center gap-2 py-2 px-4  rounded-lg bg-indigo-500 hover:bg-indigo-600 text-white font-medium shadow transition">
               <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -224,8 +230,8 @@ async function submitForm() {
 
             </button>
             <!-- button lưu -->
-            <button @click="submitForm()"
-              class="  rounded-lg p-2 mt-1 bg-blue-500 hover:bg-blue-600 text-white font-medium shadow transition flex gap-2">
+            <button v-if="isDoneCreate" @click="submitForm()"
+              class=" h-fit rounded-lg py-2 px-4 w-25  bg-blue-500 hover:bg-blue-600 text-white font-medium shadow transition flex gap-2">
               <svg class="w-6 h-6 text-gray-800 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
                 <path fill-rule="evenodd"
@@ -234,6 +240,10 @@ async function submitForm() {
               </svg>
 
               <span>Lưu</span>
+            </button>
+            <button v-else
+              class=" h-fit rounded-lg p-2.5 w-25 bg-blue-500 disabled:bg-blue-300 cursor-wait shadow transition flex gap-2 justify-center">
+              <BtnLoader />
             </button>
           </div>
         </div>
