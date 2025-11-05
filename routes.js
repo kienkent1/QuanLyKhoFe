@@ -120,7 +120,15 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const accessToken = VueCookies.get("accessToken");
   const isPublic = to.meta.public === true;
-
+  if (isPublic) {
+    if (
+      (accessToken && to.path === "/auth/login") ||
+      (accessToken && to.path === "/auth/register")
+    ) {
+      return next({ path: "/" });
+    }
+    return next();
+  }
   if (
     !accessToken &&
     to.path !== "/auth/login" &&
