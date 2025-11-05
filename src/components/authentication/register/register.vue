@@ -29,12 +29,13 @@ async function submitRegister() {
 
   if (Object.keys(errors.value).length === 0) {
     const obj = {
-      idNhanVien: idNhanVien.value,
+      maNV: idNhanVien.value,
       tenDangNhap: username.value,
       password: password.value,
     };
-    const res = await register(obj);
 
+    const res = await register(obj);
+    console.log(res)
     if (res.status === 200 || res.status === 201) {
       alert("Đăng ký thành công!");
       router.push("/login");
@@ -76,12 +77,8 @@ async function handleGoogleToken(token) {
 
     <div class="flex flex-1 items-center justify-center">
       <div
-        class="animate-slide-in-left bg-white p-8 rounded-2xl border border-gray-300 shadow-[10px_10px_25px_rgba(0,0,0,0.25),-10px_10px_25px_rgba(0,0,0,0.25),0px_-5px_5px_rgba(0,0,0,0.15)] w-full max-w-md"
-      >
-        <h2
-          class="text-2xl font-bold text-left text-gray-900 mb-2 text-shadow-lg"
-          style="color: #071b41"
-        >
+        class="animate-slide-in-left bg-white p-8 rounded-2xl border border-gray-300 shadow-[10px_10px_25px_rgba(0,0,0,0.25),-10px_10px_25px_rgba(0,0,0,0.25),0px_-5px_5px_rgba(0,0,0,0.15)] w-full max-w-md">
+        <h2 class="text-2xl font-bold text-left text-gray-900 mb-2 text-shadow-lg" style="color: #071b41">
           Tạo tài khoản mới
         </h2>
         <p class="text-center text-gray-600 mb-6">
@@ -94,93 +91,63 @@ async function handleGoogleToken(token) {
           </p>
           <!-- Tên tài khoản -->
           <div class="relative">
-            <input
-              v-model="username"
-              type="text"
-              id="username"
-              required
+            <input v-model="username" type="text" id="username" required
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm focus:ring-blue-500 focus:border-blue-700 placeholder-transparent"
-              placeholder="Tên tài khoản"
-            />
+              placeholder="Tên tài khoản" />
             <p v-if="errors.username" class="text-red-500 text-sm mt-1">
               {{ errors.username }}
             </p>
-            <label
-              for="username"
-              class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200 peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-6px] peer-focus:text-blue-700 peer-focus:text-xs peer-valid:top-[-6px] peer-valid:text-blue-700 peer-valid:text-xs"
-            >
+            <label for="username"
+              class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200 peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-6px] peer-focus:text-blue-700 peer-focus:text-xs peer-valid:top-[-6px] peer-valid:text-blue-700 peer-valid:text-xs">
               Tên tài khoản
             </label>
           </div>
 
           <!-- ID -->
           <div class="relative">
-            <input
-              v-model="idNhanVien"
-              type="text"
-              id="userid"
-              required
+            <input v-model="idNhanVien" type="text" id="userid" required
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm focus:ring-blue-500 focus:border-blue-700 placeholder-transparent"
-              placeholder="Id của bạn"
-            />
+              placeholder="Id của bạn" />
             <p v-if="errors.idNhanVien" class="text-red-500 text-sm mt-1">
               {{ errors.idNhanVien }}
             </p>
-            <label
-              for="userid"
-              class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200 peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-6px] peer-focus:text-blue-700 peer-focus:text-xs peer-valid:top-[-6px] peer-valid:text-blue-700 peer-valid:text-xs"
-            >
+            <label for="userid"
+              class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200 peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-6px] peer-focus:text-blue-700 peer-focus:text-xs peer-valid:top-[-6px] peer-valid:text-blue-700 peer-valid:text-xs">
               Id của bạn
             </label>
           </div>
 
           <!-- Mật khẩu -->
           <div class="relative">
-            <input
-              v-model="password"
-              type="password"
-              id="password"
-              required
+            <input v-model="password" type="password" id="password" required
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm focus:ring-blue-500 focus:border-blue-700 placeholder-transparent"
-              placeholder="Mật khẩu"
-            />
+              placeholder="Mật khẩu" />
             <p v-if="errors.password" class="text-red-500 text-sm mt-1">
               {{ errors.password }}
             </p>
-            <label
-              for="password"
-              class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200 peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-6px] peer-focus:text-blue-700 peer-focus:text-xs peer-valid:top-[-6px] peer-valid:text-blue-700 peer-valid:text-xs"
-            >
+            <label for="password"
+              class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200 peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-6px] peer-focus:text-blue-700 peer-focus:text-xs peer-valid:top-[-6px] peer-valid:text-blue-700 peer-valid:text-xs">
               Mật khẩu
             </label>
           </div>
 
           <!-- Xác nhận mật khẩu -->
           <div class="relative">
-            <input
-              v-model="confirmPassword"
-              type="password"
-              id="confirm-password"
-              required
+            <input v-model="confirmPassword" type="password" id="confirm-password" required
               class="peer w-full border-2 border-gray-500 rounded-lg px-2.5 pt-3 pb-2 text-sm focus:ring-blue-500 focus:border-blue-700 placeholder-transparent"
-              placeholder="Xác nhận mật khẩu"
-            />
+              placeholder="Xác nhận mật khẩu" />
             <p v-if="errors.confirmPassword" class="text-red-500 text-sm mt-1">
               {{ errors.confirmPassword }}
             </p>
-            <label
-              for="confirm-password"
-              class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200 peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-6px] peer-focus:text-blue-700 peer-focus:text-xs peer-valid:top-[-6px] peer-valid:text-blue-700 peer-valid:text-xs"
-            >
+            <label for="confirm-password"
+              class="absolute left-3 top-2 bg-white px-1 text-gray-600 text-sm transition-all duration-200 peer-placeholder-shown:top-2.5 peer-placeholder-shown:text-gray-400 peer-placeholder-shown:text-base peer-focus:top-[-6px] peer-focus:text-blue-700 peer-focus:text-xs peer-valid:top-[-6px] peer-valid:text-blue-700 peer-valid:text-xs">
               Xác nhận mật khẩu
             </label>
           </div>
 
           <!-- Nút Đăng ký -->
-          <button
-            @click="submitRegister()"
-            class="w-full bg-blue-800 text-white py-2.5 rounded-lg font-medium shadow-md shadow-gray-500/50 transition-all duration-300 hover:bg-blue-900 hover:scale-105 hover:shadow-lg hover:shadow-gray-600/60 active:scale-95"
-          >
+          <button @click="submitRegister()"
+            class="w-full bg-blue-800 text-white py-2.5 rounded-lg font-medium shadow-md shadow-gray-500/50 transition-all duration-300 hover:bg-blue-900 hover:scale-105 hover:shadow-lg hover:shadow-gray-600/60 active:scale-95">
             Đăng ký
           </button>
         </form>
@@ -191,7 +158,8 @@ async function handleGoogleToken(token) {
 
         <p class="text-center text-sm text-gray-600 mt-4">
           Bạn đã có tài khoản?
-          <a href="/login" class="text-blue-600 hover:underline">Đăng nhập</a>
+
+          <RouterLink to="/auth/login" class="text-blue-600 hover:underline">Đăng nhập</RouterLink>
         </p>
       </div>
     </div>
