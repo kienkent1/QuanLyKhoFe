@@ -4,7 +4,7 @@ import HomeView from "./src/components/home-page/HomePage.vue";
 import Loaihang from "./src/components/loai-hang/LoaiHang.vue";
 import Login from "./src/components/authentication/login/Login.vue";
 import Register from "./src/components/authentication/register/Register.vue";
-import NotFound from "./src/components/notfound/NotFound.vue";
+import NotFound from "./src/components/not-found/NotFound.vue";
 import Forbidden from "./src/components/403/403.vue";
 import nhanVienRoute from "./src/components/employee/nhan-vien.route.js";
 import nhaCungCap from "./src/components/ncc/NhaCungCap.vue";
