@@ -2,7 +2,7 @@
 // Composable dùng cho dropDownUser.vue
 // NOTE: chỉnh đường dẫn import theo cấu trúc dự án của bạn
 import { ref, onMounted, onBeforeUnmount } from "vue";
-import * as profileApi from "../Profile/Profile"; // <-- sửa đường dẫn nếu cần
+import * as profileApi from "../Profile/profile.js"; // <-- sửa đường dẫn nếu cần
 
 const user = ref({
   fullName: "Người dùng",

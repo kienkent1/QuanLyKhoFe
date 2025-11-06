@@ -22,5 +22,5 @@
 
 <script setup>
 import TrangChuBtn from "../buttons/TrangChuBtn.vue";
-import Logo from "../logo.vue";
+import Logo from "../Logo.vue";
 </script>
