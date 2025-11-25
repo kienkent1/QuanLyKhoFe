@@ -52,3 +52,5 @@ export const suaNhanVien = async (id, data = {}) => {
     return api.throwErr(error, controller);
   }
 };
+
+//test
